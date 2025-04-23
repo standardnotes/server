@@ -4,7 +4,7 @@
   "engines": {
     "node": ">=18.0.0 <21.0.0"
   },
-  "description": "Auth Server",
+  "description": "Auth Server for SN",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
   "author": "Karol Sójko <karol@standardnotes.com>",

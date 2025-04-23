@@ -1,4 +1,6 @@
-export const html = `<p>Hello,</p>
+import { safeHtml } from '@standardnotes/common'
+
+export const html = safeHtml`<p>Hello,</p>
 <p>We recently tried backing up your data to <strong>Dropbox</strong>, but an issue prevented us from doing so.</p>
 <p>
   The usual cause is an expired or revoked token from your sync provider. Please follow

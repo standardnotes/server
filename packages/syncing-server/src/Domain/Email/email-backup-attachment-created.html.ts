@@ -1,4 +1,6 @@
-export const html = (email: string) => `
+import { safeHtml } from '@standardnotes/common'
+
+export const html = (email: string) => safeHtml`
 <p>
   Your encrypted data backup is attached for ${email}. You can import this file using
   the Standard Notes web or desktop app, or by using the offline decryption script available at

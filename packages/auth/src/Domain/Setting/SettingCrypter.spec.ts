@@ -13,6 +13,8 @@ describe('SettingCrypter', () => {
   let userRepository: UserRepositoryInterface
   let crypter: CrypterInterface
   let user: User
+  const encryptedValue =
+    '{"version":1,"encrypted":{"iv":"foobar","tag":"foobar","aad":"","ciphertext":"foobar","encoding":"utf-8"}}'
 
   const createDecrypter = () => new SettingCrypter(userRepository, crypter)
 
@@ -32,14 +34,14 @@ describe('SettingCrypter', () => {
     it('should encrypt a string value', async () => {
       const string = 'decrypted'
 
-      crypter.encryptForUser = jest.fn().mockReturnValue('encrypted')
+      crypter.encryptForUser = jest.fn().mockReturnValue(encryptedValue)
 
       const encrypted = await createDecrypter().encryptValue(
         string,
         Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       )
 
-      expect(encrypted).toEqual('encrypted')
+      expect(encrypted).toEqual(encryptedValue)
     })
 
     it('should return null when trying to encrypt a null value', async () => {
@@ -67,7 +69,7 @@ describe('SettingCrypter', () => {
     it('should decrypt an encrypted value of a setting', async () => {
       const setting = Setting.create({
         name: SettingName.NAMES.ListedAuthorSecrets,
-        value: 'encrypted',
+        value: encryptedValue,
         serverEncryptionVersion: EncryptionVersion.Default,
         userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         sensitive: false,
@@ -107,10 +109,25 @@ describe('SettingCrypter', () => {
       )
     })
 
+    it('should return unencrypted value if the setting has unencrypted value but the encryption version indicates otherwise', async () => {
+      const setting = Setting.create({
+        name: SettingName.NAMES.ListedAuthorSecrets,
+        value: 'test',
+        serverEncryptionVersion: EncryptionVersion.Default,
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        sensitive: false,
+        timestamps: Timestamps.create(123, 123).getValue(),
+      }).getValue()
+
+      expect(await createDecrypter().decryptSettingValue(setting, '00000000-0000-0000-0000-000000000000')).toEqual(
+        'test',
+      )
+    })
+
     it('should throw if the user could not be found', async () => {
       const setting = Setting.create({
         name: SettingName.NAMES.ListedAuthorSecrets,
-        value: 'encrypted',
+        value: encryptedValue,
         serverEncryptionVersion: EncryptionVersion.Default,
         userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         sensitive: false,
@@ -131,7 +148,7 @@ describe('SettingCrypter', () => {
     it('should throw if the user uuid is invalid', async () => {
       const setting = Setting.create({
         name: SettingName.NAMES.ListedAuthorSecrets,
-        value: 'encrypted',
+        value: encryptedValue,
         serverEncryptionVersion: EncryptionVersion.Default,
         userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         sensitive: false,
@@ -153,7 +170,7 @@ describe('SettingCrypter', () => {
     it('should decrypt an encrypted value of a setting', async () => {
       const setting = SubscriptionSetting.create({
         name: SettingName.NAMES.ExtensionKey,
-        value: 'encrypted',
+        value: encryptedValue,
         sensitive: true,
         serverEncryptionVersion: EncryptionVersion.Default,
         userSubscriptionUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
@@ -198,7 +215,7 @@ describe('SettingCrypter', () => {
     it('should throw if the user could not be found', async () => {
       const setting = SubscriptionSetting.create({
         name: SettingName.NAMES.ExtensionKey,
-        value: 'encrypted',
+        value: encryptedValue,
         sensitive: true,
         serverEncryptionVersion: EncryptionVersion.Default,
         userSubscriptionUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
@@ -219,7 +236,7 @@ describe('SettingCrypter', () => {
     it('should throw if the user uuid is invalid', async () => {
       const setting = SubscriptionSetting.create({
         name: SettingName.NAMES.ExtensionKey,
-        value: 'encrypted',
+        value: encryptedValue,
         sensitive: true,
         serverEncryptionVersion: EncryptionVersion.Default,
         userSubscriptionUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),

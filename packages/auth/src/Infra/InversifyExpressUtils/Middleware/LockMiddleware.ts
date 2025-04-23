@@ -19,7 +19,7 @@ export class LockMiddleware extends BaseMiddleware {
   async handler(request: Request, response: Response, next: NextFunction): Promise<void> {
     try {
       let identifier = request.body.email ?? request.body.username
-      const usernameOrError = Username.create(identifier)
+      const usernameOrError = Username.create(identifier, { skipValidation: true })
       if (usernameOrError.isFailed()) {
         response.status(400).send({
           error: {

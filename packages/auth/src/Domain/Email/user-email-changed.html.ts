@@ -1,4 +1,6 @@
-export const html = (newEmail: string) => `
+import { safeHtml } from '@standardnotes/common'
+
+export const html = (newEmail: string) => safeHtml`
 <p>Hello,</p>
 
 <p>We are writing to inform you that your request to update your email address has been successfully processed. The email address associated with your Standard Notes account has now been changed to the following:</p>

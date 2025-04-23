@@ -52,9 +52,22 @@ export class SettingCrypter implements SettingCrypterInterface {
         throw new Error(`Could not find user with uuid: ${userUuid.value}`)
       }
 
+      if (!this.isValidJSONSubjectForDecryption(value)) {
+        return value
+      }
+
       return this.crypter.decryptForUser(value, user)
     }
 
     return value
+  }
+
+  private isValidJSONSubjectForDecryption(value: string): boolean {
+    try {
+      JSON.parse(value)
+      return true
+    } catch (error) {
+      return false
+    }
   }
 }

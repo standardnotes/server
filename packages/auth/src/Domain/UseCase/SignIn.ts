@@ -62,7 +62,8 @@ export class SignIn implements UseCaseInterface {
     }
     const apiVersion = apiVersionOrError.getValue()
 
-    const usernameOrError = Username.create(dto.email)
+    /** Skip validation which was newly added in 2025, to allow existing users to continue to sign in */
+    const usernameOrError = Username.create(dto.email, { skipValidation: true })
     if (usernameOrError.isFailed()) {
       return {
         success: false,
