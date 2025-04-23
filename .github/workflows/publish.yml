@@ -16,7 +16,7 @@ jobs:
 
     - name: Cache build
       id: cache-build
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           packages/**/dist
@@ -44,7 +44,7 @@ jobs:
 
     - name: Cache build
       id: cache-build
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           packages/**/dist
@@ -76,7 +76,7 @@ jobs:
 
     - name: Cache build
       id: cache-build
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           packages/**/dist
@@ -134,7 +134,7 @@ jobs:
 
       - name: Cache build
         id: cache-build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             packages/**/dist
@@ -154,7 +154,7 @@ jobs:
           git_commit_gpgsign: true
 
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           registry-url: 'https://registry.npmjs.org'
           node-version-file: '.nvmrc'
