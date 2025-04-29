@@ -94,7 +94,7 @@ jobs:
       run: for i in {1..30}; do curl -s http://localhost:3123/healthcheck && break || sleep 1; done
 
     - name: Run E2E Test Suite
-      run: yarn dlx mocha-headless-chrome --timeout 3600000 -f http://localhost:9001/mocha/test.html?suite=${{ inputs.suite }}
+      run: yarn dlx mocha-headless-chrome --timeout 3600000 -a no-sandbox -a disable-setuid-sandbox -f http://localhost:9001/mocha/test.html?suite=${{ inputs.suite }}
 
     - name: Archive failed run logs
       if: ${{ failure() }}

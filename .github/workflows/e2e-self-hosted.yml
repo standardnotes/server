@@ -57,7 +57,7 @@ jobs:
       run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
 
     - name: Run E2E Test Suite
-      run: yarn dlx mocha-headless-chrome --timeout 3600000 -f http://localhost:9001/mocha/test.html?suite=${{ inputs.suite }}
+      run: yarn dlx mocha-headless-chrome --timeout 3600000 -a no-sandbox -a disable-setuid-sandbox -f http://localhost:9001/mocha/test.html?suite=${{ inputs.suite }}
 
     - name: Archive failed run logs
       if: ${{ failure() }}
