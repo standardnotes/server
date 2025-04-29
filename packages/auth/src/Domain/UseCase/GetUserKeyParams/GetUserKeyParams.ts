@@ -22,7 +22,7 @@ export class GetUserKeyParams implements UseCaseInterface {
   async execute(dto: GetUserKeyParamsDTO): Promise<GetUserKeyParamsResponse> {
     let user: User | null = null
     if (dto.email !== undefined) {
-      const usernameOrError = Username.create(dto.email)
+      const usernameOrError = Username.create(dto.email, { skipValidation: true })
       if (usernameOrError.isFailed()) {
         throw Error(usernameOrError.getError())
       }

@@ -32,7 +32,7 @@ export class VerifyMFA implements UseCaseInterface {
 
   async execute(dto: VerifyMFADTO): Promise<VerifyMFAResponse> {
     try {
-      const usernameOrError = Username.create(dto.email)
+      const usernameOrError = Username.create(dto.email, { skipValidation: true })
       if (usernameOrError.isFailed()) {
         return {
           success: false,

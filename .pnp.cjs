@@ -6817,6 +6817,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/scheduler-server", "workspace:packages/scheduler"],\
           ["@aws-sdk/client-sns", "npm:3.484.0"],\
           ["@aws-sdk/client-sqs", "npm:3.484.0"],\
+          ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\

@@ -1,4 +1,6 @@
-export const html = () => `
+import { safeHtml } from '@standardnotes/common'
+
+export const html = () => safeHtml`
 <p>Hello,</p>
 
 <p>You've been invited to join a shared vault. This shared workspace will help you collaborate and securely manage notes and files.</p>

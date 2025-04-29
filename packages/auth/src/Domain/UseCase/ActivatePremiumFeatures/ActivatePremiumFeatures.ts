@@ -19,7 +19,7 @@ export class ActivatePremiumFeatures implements UseCaseInterface<string> {
   ) {}
 
   async execute(dto: ActivatePremiumFeaturesDTO): Promise<Result<string>> {
-    const usernameOrError = Username.create(dto.username)
+    const usernameOrError = Username.create(dto.username, { skipValidation: true })
     if (usernameOrError.isFailed()) {
       return Result.fail(usernameOrError.getError())
     }

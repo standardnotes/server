@@ -135,7 +135,7 @@ export class BaseUsersController extends BaseHttpController {
         400,
       )
     }
-    const usernameOrError = Username.create(locals.user.email)
+    const usernameOrError = Username.create(locals.user.email, { skipValidation: true })
     if (usernameOrError.isFailed()) {
       return this.json(
         {

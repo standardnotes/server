@@ -1,4 +1,6 @@
-export const html = `<div>
+import { safeHtml } from '@standardnotes/common'
+
+export const html = safeHtml`<div>
   <p>
     Did you know you can enable daily email backups for your account? This <strong>free</strong> feature sends an
     email to your inbox with an encrypted backup file including all your notes and tags.

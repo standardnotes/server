@@ -1,4 +1,6 @@
-export const html = (userEmail: string, offlineSubscriptionDashboardUrl: string) => `<div class="sn-component">
+import { safeHtml } from '@standardnotes/common'
+
+export const html = (userEmail: string, offlineSubscriptionDashboardUrl: string) => safeHtml`<div class="sn-component">
 <div class="sk-panel static">
   <div class="sk-panel-content">
     <div class="sk-panel-section">

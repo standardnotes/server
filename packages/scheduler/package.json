@@ -29,6 +29,7 @@
   "dependencies": {
     "@aws-sdk/client-sns": "^3.484.0",
     "@aws-sdk/client-sqs": "^3.484.0",
+    "@standardnotes/common": "workspace:^",
     "@standardnotes/domain-core": "workspace:^",
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",

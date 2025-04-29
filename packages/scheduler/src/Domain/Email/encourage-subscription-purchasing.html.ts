@@ -1,4 +1,6 @@
-export const html = (registrationDate: string, annualPlusPrice: number, annualProPrice: number) => `<div>
+import { safeHtml } from '@standardnotes/common'
+
+export const html = (registrationDate: string, annualPlusPrice: number, annualProPrice: number) => safeHtml`<div>
   <p>Hi there,</p>
   <p>
     We hope you've been finding great use out of Standard Notes. We built Standard Notes to be a secure place for

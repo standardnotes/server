@@ -1,4 +1,6 @@
-export const html = `<p>Hello,</p>
+import { safeHtml } from '@standardnotes/common'
+
+export const html = safeHtml`<p>Hello,</p>
 <p>We recently tried backing up your data to <strong>Google Drive Sync</strong>, but an issue prevented us from
   doing
   so.</p>
