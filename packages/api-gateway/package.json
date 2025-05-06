@@ -63,7 +63,7 @@
     "@types/jest": "^29.5.1",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^20.5.7",
-    "@types/prettyjson": "^0.0.30",
+    "@types/prettyjson": "^0.0.33",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
     "@typescript-eslint/parser": "^6.5.0",
     "eslint": "^8.39.0",
