@@ -1,4 +1,4 @@
-import { ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
+import { ControllerContainerInterface, MapperInterface, SettingName } from '@standardnotes/domain-core'
 import { BaseHttpController, results } from 'inversify-express-utils'
 import { ErrorTag } from '@standardnotes/responses'
 import { Request, Response } from 'express'
@@ -8,6 +8,8 @@ import { DeleteSetting } from '../../../Domain/UseCase/DeleteSetting/DeleteSetti
 import { GetSetting } from '../../../Domain/UseCase/GetSetting/GetSetting'
 import { GetAllSettingsForUser } from '../../../Domain/UseCase/GetAllSettingsForUser/GetAllSettingsForUser'
 import { SetSettingValue } from '../../../Domain/UseCase/SetSettingValue/SetSettingValue'
+import { GetMfaSecret } from '../../../Domain/UseCase/GetMfaSecret/GetMfaSecret'
+import { ValidateMfaToken } from '../../../Domain/UseCase/ValidateMfaToken/ValidateMfaToken'
 import { Setting } from '../../../Domain/Setting/Setting'
 import { SubscriptionSetting } from '../../../Domain/Setting/SubscriptionSetting'
 import { SubscriptionSettingHttpRepresentation } from '../../../Mapping/Http/SubscriptionSettingHttpRepresentation'
@@ -22,6 +24,8 @@ export class BaseSettingsController extends BaseHttpController {
     protected setSettingValue: SetSettingValue,
     protected triggerPostSettingUpdateActions: TriggerPostSettingUpdateActions,
     protected doDeleteSetting: DeleteSetting,
+    protected doGetMfaSecret: GetMfaSecret,
+    protected validateMfaToken: ValidateMfaToken,
     protected settingHttMapper: MapperInterface<Setting, SettingHttpRepresentation>,
     protected subscriptionSettingHttpMapper: MapperInterface<
       SubscriptionSetting,
@@ -37,6 +41,7 @@ export class BaseSettingsController extends BaseHttpController {
       this.controllerContainer.register('auth.users.getSetting', this.getSetting.bind(this))
       this.controllerContainer.register('auth.users.updateSetting', this.updateSetting.bind(this))
       this.controllerContainer.register('auth.users.deleteSetting', this.deleteSetting.bind(this))
+      this.controllerContainer.register('auth.users.getMfaSecret', this.getMfaSecret.bind(this))
     }
   }
 
@@ -103,11 +108,15 @@ export class BaseSettingsController extends BaseHttpController {
     }
 
     const { userUuid, settingName } = request.params
+    const serverPassword = request.headers['x-server-password'] as string | undefined
     const resultOrError = await this.doGetSetting.execute({
       allowSensitiveRetrieval: true,
       userUuid,
       decrypted: true,
       settingName: settingName.toUpperCase(),
+      serverPassword,
+      authTokenVersion: locals.authTokenVersion,
+      shouldVerifyUserServerPassword: true,
     })
     if (resultOrError.isFailed()) {
       return this.json(
@@ -165,7 +174,26 @@ export class BaseSettingsController extends BaseHttpController {
       )
     }
 
-    const { name, value } = request.body
+    const { name, value, totpToken } = request.body
+
+    if (name === SettingName.NAMES.MfaSecret) {
+      const validationResult = await this.validateMfaToken.execute({
+        userUuid: locals.user.uuid,
+        totpToken,
+        authTokenVersion: locals.authTokenVersion,
+      })
+
+      if (validationResult.isFailed()) {
+        return this.json(
+          {
+            error: {
+              message: validationResult.getError(),
+            },
+          },
+          400,
+        )
+      }
+    }
 
     const result = await this.setSettingValue.execute({
       settingName: name,
@@ -229,10 +257,14 @@ export class BaseSettingsController extends BaseHttpController {
     }
 
     const { userUuid, settingName } = request.params
+    const serverPassword = request.headers['x-server-password'] as string | undefined
 
     const result = await this.doDeleteSetting.execute({
       userUuid,
       settingName,
+      serverPassword,
+      authTokenVersion: locals.authTokenVersion,
+      shouldVerifyUserServerPassword: true,
     })
 
     if (result.success) {
@@ -240,5 +272,39 @@ export class BaseSettingsController extends BaseHttpController {
     }
 
     return this.json(result, 400)
+  }
+
+  async getMfaSecret(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
+    if (request.params.userUuid !== locals.user.uuid) {
+      return this.json(
+        {
+          error: {
+            message: 'Operation not allowed.',
+          },
+        },
+        401,
+      )
+    }
+
+    const userUuid = locals.user.uuid
+    const result = await this.doGetMfaSecret.execute({ userUuid })
+
+    if (result.isFailed()) {
+      return this.json(
+        {
+          error: {
+            message: result.getError(),
+          },
+        },
+        400,
+      )
+    }
+
+    return this.json({
+      success: true,
+      secret: result.getValue().secret,
+    })
   }
 }

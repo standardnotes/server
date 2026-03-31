@@ -1,12 +1,15 @@
+import { inject, injectable } from 'inversify'
 import * as IORedis from 'ioredis'
+import { TYPES } from '../../Bootstrap/Types'
 
 import { CrossServiceTokenCacheInterface } from '../../Service/Cache/CrossServiceTokenCacheInterface'
 
+@injectable()
 export class RedisCrossServiceTokenCache implements CrossServiceTokenCacheInterface {
   private readonly PREFIX = 'cst'
   private readonly USER_CST_PREFIX = 'user-cst'
 
-  constructor(private redisClient: IORedis.Redis) {}
+  constructor(@inject(TYPES.ApiGateway_Redis) private redisClient: IORedis.Redis) {}
 
   async set(dto: {
     key: string

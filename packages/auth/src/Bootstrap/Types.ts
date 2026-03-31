@@ -182,6 +182,7 @@ const TYPES = {
   Auth_RenewSharedSubscriptions: Symbol.for('Auth_RenewSharedSubscriptions'),
   Auth_FixStorageQuotaForUser: Symbol.for('Auth_FixStorageQuotaForUser'),
   Auth_VerifyHumanInteraction: Symbol.for('Auth_VerifyHumanInteraction'),
+  Auth_VerifyUserServerPassword: Symbol.for('Auth_VerifyUserServerPassword'),
   // Handlers
   Auth_AccountDeletionRequestedEventHandler: Symbol.for('Auth_AccountDeletionRequestedEventHandler'),
   Auth_AccountDeletionVerificationPassedEventHandler: Symbol.for('Auth_AccountDeletionVerificationPassedEventHandler'),
@@ -273,6 +274,10 @@ const TYPES = {
   Auth_CSVFileReader: Symbol.for('Auth_CSVFileReader'),
   Auth_CaptchaServer: Symbol.for('Auth_CaptchaServer'),
   Auth_HTTPClient: Symbol.for('Auth_HTTPClient'),
+  Auth_MfaSecretRepository: Symbol.for('Auth_MfaSecretRepository'),
+  Auth_GetMfaSecret: Symbol.for('Auth_GetMfaSecret'),
+  Auth_ValidateMfaToken: Symbol.for('Auth_ValidateMfaToken'),
+  Auth_HeapProfiler: Symbol.for('Auth_HeapProfiler'),
 }
 
 export default TYPES

@@ -16,9 +16,11 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
       sharedVaultOwnerContext?: string
     }
     cookies?: Map<string, string[]>
-    snjs?: string
-    application?: string
     retryAttempt?: number
+    requestMetadata?: {
+      snjs?: string
+      application?: string
+    }
   }): Promise<{
     status: number
     data: unknown
@@ -45,8 +47,8 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
           sharedVaultOwnerContext: dto.headers.sharedVaultOwnerContext,
         },
         headers: {
-          'x-snjs-version': dto.snjs,
-          'x-application-version': dto.application,
+          'x-snjs-version': dto.requestMetadata?.snjs,
+          'x-application-version': dto.requestMetadata?.application,
           cookie: stringOfCookies.trim(),
         },
       } as never,

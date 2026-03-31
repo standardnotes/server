@@ -75,6 +75,7 @@ export class BaseSessionsController extends BaseHttpController {
       user,
       session: authenticateRequestResponse.session,
       sharedVaultOwnerContext,
+      applicationVersion: request.headers['x-application-version'] as string,
     })
     if (resultOrError.isFailed()) {
       return this.json(

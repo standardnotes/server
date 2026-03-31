@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 import { AxiosInstance, AxiosError, AxiosResponse, Method } from 'axios'
 import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'

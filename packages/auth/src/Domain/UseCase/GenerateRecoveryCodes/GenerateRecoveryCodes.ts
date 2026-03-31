@@ -3,12 +3,14 @@ import { CryptoNode } from '@standardnotes/sncrypto-node'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { GenerateRecoveryCodesDTO } from './GenerateRecoveryCodesDTO'
 import { SetSettingValue } from '../SetSettingValue/SetSettingValue'
+import { VerifyUserServerPassword } from '../VerifyUserServerPassword/VerifyUserServerPassword'
 
 export class GenerateRecoveryCodes implements UseCaseInterface<string> {
   constructor(
     private userRepository: UserRepositoryInterface,
     private setSettingValue: SetSettingValue,
     private cryptoNode: CryptoNode,
+    private verifyUserServerPassword: VerifyUserServerPassword,
   ) {}
 
   async execute(dto: GenerateRecoveryCodesDTO): Promise<Result<string>> {
@@ -21,6 +23,18 @@ export class GenerateRecoveryCodes implements UseCaseInterface<string> {
     const user = await this.userRepository.findOneByUuid(userUuid)
     if (user === null) {
       return Result.fail('Could not generate recovery codes: user not found')
+    }
+
+    if (dto.shouldVerifyUserServerPassword) {
+      const verifyUserServerPasswordResult = await this.verifyUserServerPassword.execute({
+        user,
+        serverPassword: dto.serverPassword,
+        authTokenVersion: dto.authTokenVersion,
+      })
+
+      if (verifyUserServerPasswordResult.isFailed()) {
+        return Result.fail(verifyUserServerPasswordResult.getError())
+      }
     }
 
     const randomKey = await this.cryptoNode.generateRandomKey(160)

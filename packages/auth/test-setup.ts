@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import * as dayjs from 'dayjs'
 import * as utc from 'dayjs/plugin/utc'
 

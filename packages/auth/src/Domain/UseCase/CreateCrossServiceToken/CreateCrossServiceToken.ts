@@ -1,5 +1,6 @@
 import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/security'
 import { Result, RoleName, SettingName, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { gt } from 'semver'
 
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
 import { Role } from '../../Role/Role'
@@ -25,6 +26,8 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
     private getSubscriptionSettingUseCase: GetSubscriptionSetting,
     private sharedVaultUserRepository: SharedVaultUserRepositoryInterface,
     private getActiveSessions: GetActiveSessionsForUser,
+    private applicationVersionThresholdForTokenVersion2: string | undefined,
+    private applicationVersionThresholdForTokenVersion3: string | undefined,
   ) {}
 
   async execute(dto: CreateCrossServiceTokenDTO): Promise<Result<string>> {
@@ -56,6 +59,11 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
       Uuid.create(user.uuid).getValue(),
     )
 
+    const applicationVersionThresholds = {
+      2: this.applicationVersionThresholdForTokenVersion2,
+      3: this.applicationVersionThresholdForTokenVersion3,
+    }
+
     const authTokenData: CrossServiceTokenData = {
       user: this.projectUser(user),
       roles: this.projectRoles(roles),
@@ -65,6 +73,7 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
         permission: association.props.permission.value,
       })),
       hasContentLimit: hasContentLimit,
+      version: this.determineTokenVersion(applicationVersionThresholds, dto.applicationVersion),
     }
 
     if (dto.sharedVaultOwnerContext !== undefined) {
@@ -137,5 +146,35 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
 
   private projectRoles(roles: Array<Role>): Array<{ uuid: string; name: string }> {
     return roles.map((role) => <{ uuid: string; name: string }>this.roleProjector.projectSimple(role))
+  }
+
+  // TODO: Eventually roll out all clients to use version 3
+  private determineTokenVersion(
+    applicationVersionThresholds: Record<number, string | undefined>,
+    applicationVersion?: string,
+  ): number {
+    let tokenVersion = 1
+    // Default to version 1
+    if (!applicationVersion) {
+      return tokenVersion
+    }
+
+    // Extract version number from application version string (format: environment-version, e.g., "web-4.21.0")
+    const versionMatch = applicationVersion.match(/(\d+\.\d+\.\d+)/)
+
+    if (!versionMatch) {
+      return tokenVersion
+    }
+
+    const semver = versionMatch[1]
+
+    for (const [version, threshold] of Object.entries(applicationVersionThresholds)) {
+      const versionNumber = parseInt(version, 10)
+      if (threshold && gt(semver, threshold) && versionNumber > tokenVersion) {
+        tokenVersion = versionNumber
+      }
+    }
+
+    return tokenVersion
   }
 }

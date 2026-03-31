@@ -2,7 +2,9 @@ import { Either } from '@standardnotes/common'
 import { Session } from '../../Session/Session'
 import { User } from '../../User/User'
 
-export type CreateCrossServiceTokenDTO = Either<
+export type CreateCrossServiceTokenDTO = {
+  applicationVersion?: string
+} & Either<
   {
     user: User
     session?: Session

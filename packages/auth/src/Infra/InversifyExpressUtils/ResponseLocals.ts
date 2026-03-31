@@ -17,4 +17,5 @@ export interface ResponseLocals {
     refresh_expiration: string
   }
   readOnlyAccess: boolean
+  authTokenVersion?: number
 }

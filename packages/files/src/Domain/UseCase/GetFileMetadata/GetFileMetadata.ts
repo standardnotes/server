@@ -14,7 +14,7 @@ export class GetFileMetadata implements UseCaseInterface<number> {
       const size = await this.fileDownloader.getFileSize(`${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`)
 
       return Result.ok(size)
-    } catch (error) {
+    } catch (_error) {
       this.logger.error(`Could not get file metadata for resource: ${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`)
 
       return Result.fail('Could not get file metadata')

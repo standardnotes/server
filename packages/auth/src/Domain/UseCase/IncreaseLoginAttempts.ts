@@ -15,7 +15,7 @@ export class IncreaseLoginAttempts implements UseCaseInterface<IncreaseLoginAtte
   async execute(dto: IncreaseLoginAttemptsDTO): Promise<Result<IncreaseLoginAttemptsResponse>> {
     let identifier = dto.email
 
-    const usernameOrError = Username.create(dto.email)
+    const usernameOrError = Username.create(dto.email, { skipValidation: dto.skipUsernameValidation })
     if (usernameOrError.isFailed()) {
       return Result.fail(usernameOrError.getError())
     }

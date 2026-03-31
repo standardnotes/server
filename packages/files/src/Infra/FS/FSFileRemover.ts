@@ -13,7 +13,7 @@ export class FSFileRemover implements FileRemoverInterface {
     try {
       await promises.access(`${this.fileUploadPath}/${userOrSharedVaultUuid}`)
       directoryExists = true
-    } catch (error) {
+    } catch (_error) {
       directoryExists = false
     }
 

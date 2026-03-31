@@ -79,7 +79,7 @@ export class FinishUploadSession implements UseCaseInterface<void> {
       await this.valetTokenRepository.markAsUsed(dto.valetToken)
 
       return Result.ok()
-    } catch (error) {
+    } catch (_error) {
       return Result.fail('Could not finish upload session')
     }
   }

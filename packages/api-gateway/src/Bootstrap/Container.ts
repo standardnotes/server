@@ -161,14 +161,14 @@ export class ContainerConfigLoader {
     // Services
     container.bind<TimerInterface>(TYPES.ApiGateway_Timer).toConstantValue(new Timer())
 
-    if (isConfiguredForInMemoryCache) {
+    if (isConfiguredForHomeServer) {
       container
         .bind<CrossServiceTokenCacheInterface>(TYPES.ApiGateway_CrossServiceTokenCache)
         .toConstantValue(new InMemoryCrossServiceTokenCache(container.get(TYPES.ApiGateway_Timer)))
     } else {
       container
         .bind<CrossServiceTokenCacheInterface>(TYPES.ApiGateway_CrossServiceTokenCache)
-        .toConstantValue(new RedisCrossServiceTokenCache(container.get(TYPES.ApiGateway_Redis)))
+        .to(RedisCrossServiceTokenCache)
     }
     container
       .bind<EndpointResolverInterface>(TYPES.ApiGateway_EndpointResolver)

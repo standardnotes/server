@@ -26,6 +26,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",
+    "@eslint/js": "^9.37.0",
     "@lerna-lite/cli": "^2.3.0",
     "@lerna-lite/list": "^2.3.0",
     "@lerna-lite/publish": "^2.4.0",
@@ -33,11 +34,14 @@
     "@lerna-lite/version": "^2.3.0",
     "@types/jest": "^29.5.1",
     "@types/node": "^20.5.7",
-    "eslint": "^8.39.0",
+    "eslint": "^9.37.0",
     "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^5.0.0",
     "ini": "^4.1.1",
+    "prettier": "^3.0.3",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "typescript-eslint": "^8.0.0"
   },
   "packageManager": "yarn@4.1.0",
   "dependenciesMeta": {

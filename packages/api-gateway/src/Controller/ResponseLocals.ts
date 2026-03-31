@@ -27,4 +27,5 @@ export interface ResponseLocals {
     upload_bytes_limit: number
   }
   hasContentLimit: boolean
+  authTokenVersion?: number
 }

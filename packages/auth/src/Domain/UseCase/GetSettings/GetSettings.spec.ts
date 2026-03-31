@@ -27,9 +27,19 @@ describe('GetSettings', () => {
       sensitive: true,
       timestamps: Timestamps.create(123, 123).getValue(),
     }).getValue()
+    const recoveryCodesSetting = Setting.create({
+      name: SettingName.NAMES.RecoveryCodes,
+      value: 'test',
+      serverEncryptionVersion: 1,
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      sensitive: false,
+      timestamps: Timestamps.create(123, 123).getValue(),
+    }).getValue()
 
     settingRepository = {} as jest.Mocked<SettingRepositoryInterface>
-    settingRepository.findAllByUserUuid = jest.fn().mockReturnValue([unsensitiveSetting, sensitiveSetting])
+    settingRepository.findAllByUserUuid = jest
+      .fn()
+      .mockReturnValue([unsensitiveSetting, sensitiveSetting, recoveryCodesSetting])
 
     settingCrypter = {} as jest.Mocked<SettingCrypterInterface>
     settingCrypter.decryptSettingValue = jest.fn().mockReturnValue('decrypted')
@@ -52,6 +62,16 @@ describe('GetSettings', () => {
 
     expect(result.isFailed()).toBeFalsy()
     expect(result.getValue()[0].decryptedValue).toEqual('decrypted')
+  })
+
+  it('should not return recovery codes', async () => {
+    const result = await createUseCase().execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      decrypted: false,
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(result.getValue().map(({ setting }) => setting.props.name)).not.toContain(SettingName.NAMES.RecoveryCodes)
   })
 
   it('should fail if user uuid is invalid', async () => {

@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-sns": "^3.490.0",
-    "@grpc/grpc-js": "^1.9.13",
+    "@grpc/grpc-js": "1.9.13",
     "@standardnotes/domain-core": "workspace:^",
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",
@@ -64,12 +64,7 @@
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^20.5.7",
     "@types/prettyjson": "^0.0.30",
-    "@typescript-eslint/eslint-plugin": "^6.5.0",
-    "@typescript-eslint/parser": "^6.5.0",
-    "eslint": "^8.39.0",
-    "eslint-plugin-prettier": "^5.0.0",
     "jest": "^29.5.0",
-    "prettier": "^3.0.3",
     "ts-jest": "^29.1.0",
     "typescript": "^5.0.4"
   }

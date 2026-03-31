@@ -12,6 +12,7 @@ import { Result, RoleName } from '@standardnotes/domain-core'
 import { Role } from '../../Role/Role'
 import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
 import { GetSharedSubscriptionForUser } from '../GetSharedSubscriptionForUser/GetSharedSubscriptionForUser'
+import { VerifyUserServerPassword } from '../VerifyUserServerPassword/VerifyUserServerPassword'
 
 describe('DeleteAccount', () => {
   let userRepository: UserRepositoryInterface
@@ -19,6 +20,7 @@ describe('DeleteAccount', () => {
   let domainEventFactory: DomainEventFactoryInterface
   let getRegularSubscription: GetRegularSubscriptionForUser
   let getSharedSubscription: GetSharedSubscriptionForUser
+  let verifyUserServerPassword: VerifyUserServerPassword
   let user: User
   let regularSubscription: UserSubscription
   let sharedSubscription: UserSubscription
@@ -32,12 +34,14 @@ describe('DeleteAccount', () => {
       domainEventPublisher,
       domainEventFactory,
       timer,
+      verifyUserServerPassword,
     )
 
   beforeEach(() => {
     user = {
       uuid: '1-2-3',
       email: 'test@test.te',
+      encryptedPassword: 'hashed-password',
     } as jest.Mocked<User>
     user.roles = Promise.resolve([{ name: RoleName.NAMES.CoreUser } as jest.Mocked<Role>])
 
@@ -73,6 +77,92 @@ describe('DeleteAccount', () => {
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.convertDateToMicroseconds = jest.fn().mockReturnValue(1)
+
+    verifyUserServerPassword = {} as jest.Mocked<VerifyUserServerPassword>
+    verifyUserServerPassword.execute = jest.fn()
+  })
+
+  describe('password validation', () => {
+    it('should require server password when shouldVerifyUserServerPassword is true', async () => {
+      verifyUserServerPassword.execute = jest
+        .fn()
+        .mockReturnValue(Result.fail('Please update your application to the latest version.'))
+
+      const result = await createUseCase().execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        shouldVerifyUserServerPassword: true,
+      })
+
+      expect(result.isFailed()).toBeTruthy()
+      expect(result.getError()).toEqual('Please update your application to the latest version.')
+      expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+    })
+
+    it('should succeed with correct server password', async () => {
+      verifyUserServerPassword.execute = jest.fn().mockReturnValue(Result.ok())
+      getRegularSubscription.execute = jest.fn().mockReturnValue(Result.fail('not found'))
+      getSharedSubscription.execute = jest.fn().mockReturnValue(Result.fail('not found'))
+
+      const result = await createUseCase().execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        serverPassword: 'correct-password',
+        shouldVerifyUserServerPassword: true,
+      })
+
+      expect(result.isFailed()).toBeFalsy()
+      expect(verifyUserServerPassword.execute).toHaveBeenCalledWith({
+        user,
+        serverPassword: 'correct-password',
+      })
+      expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
+    })
+
+    it('should fail with incorrect server password', async () => {
+      verifyUserServerPassword.execute = jest
+        .fn()
+        .mockReturnValue(Result.fail('The password you entered is incorrect. Please try again.'))
+
+      const result = await createUseCase().execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        serverPassword: 'wrong-password',
+        shouldVerifyUserServerPassword: true,
+      })
+
+      expect(result.isFailed()).toBeTruthy()
+      expect(result.getError()).toEqual('The password you entered is incorrect. Please try again.')
+      expect(verifyUserServerPassword.execute).toHaveBeenCalledWith({
+        user,
+        serverPassword: 'wrong-password',
+      })
+      expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+    })
+
+    it('should skip password validation when shouldVerifyUserServerPassword is false', async () => {
+      getRegularSubscription.execute = jest.fn().mockReturnValue(Result.fail('not found'))
+      getSharedSubscription.execute = jest.fn().mockReturnValue(Result.fail('not found'))
+
+      const result = await createUseCase().execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        shouldVerifyUserServerPassword: false,
+      })
+
+      expect(result.isFailed()).toBeFalsy()
+      expect(verifyUserServerPassword.execute).not.toHaveBeenCalled()
+      expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
+    })
+
+    it('should skip password validation by default', async () => {
+      getRegularSubscription.execute = jest.fn().mockReturnValue(Result.fail('not found'))
+      getSharedSubscription.execute = jest.fn().mockReturnValue(Result.fail('not found'))
+
+      const result = await createUseCase().execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+      })
+
+      expect(result.isFailed()).toBeFalsy()
+      expect(verifyUserServerPassword.execute).not.toHaveBeenCalled()
+      expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
+    })
   })
 
   describe('when user uuid is provided', () => {
@@ -80,7 +170,10 @@ describe('DeleteAccount', () => {
       getRegularSubscription.execute = jest.fn().mockReturnValue(Result.fail('not found'))
       getSharedSubscription.execute = jest.fn().mockReturnValue(Result.fail('not found'))
 
-      const result = await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })
+      const result = await createUseCase().execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        shouldVerifyUserServerPassword: false,
+      })
 
       expect(result.isFailed()).toBeFalsy()
       expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
@@ -92,7 +185,10 @@ describe('DeleteAccount', () => {
     })
 
     it('should trigger account deletion - shared subscription present', async () => {
-      const result = await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })
+      const result = await createUseCase().execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        shouldVerifyUserServerPassword: false,
+      })
 
       expect(result.isFailed()).toBeFalsy()
 
@@ -115,7 +211,10 @@ describe('DeleteAccount', () => {
     it('should trigger account deletion - regular subscription present', async () => {
       getSharedSubscription.execute = jest.fn().mockReturnValue(Result.fail('not found'))
 
-      const result = await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })
+      const result = await createUseCase().execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        shouldVerifyUserServerPassword: false,
+      })
 
       expect(result.isFailed()).toBeFalsy()
 
@@ -157,7 +256,10 @@ describe('DeleteAccount', () => {
       getRegularSubscription.execute = jest.fn().mockReturnValue(Result.fail('not found'))
       getSharedSubscription.execute = jest.fn().mockReturnValue(Result.fail('not found'))
 
-      const result = await createUseCase().execute({ username: 'test@test.te' })
+      const result = await createUseCase().execute({
+        username: 'test@test.te',
+        shouldVerifyUserServerPassword: false,
+      })
 
       expect(result.isFailed()).toBeFalsy()
       expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
@@ -169,7 +271,10 @@ describe('DeleteAccount', () => {
     })
 
     it('should trigger account deletion - shared subscription present', async () => {
-      const result = await createUseCase().execute({ username: 'test@test.te' })
+      const result = await createUseCase().execute({
+        username: 'test@test.te',
+        shouldVerifyUserServerPassword: false,
+      })
 
       expect(result.isFailed()).toBeFalsy()
 
@@ -192,7 +297,10 @@ describe('DeleteAccount', () => {
     it('should trigger account deletion - regular subscription present', async () => {
       getSharedSubscription.execute = jest.fn().mockReturnValue(Result.fail('not found'))
 
-      const result = await createUseCase().execute({ username: 'test@test.te' })
+      const result = await createUseCase().execute({
+        username: 'test@test.te',
+        shouldVerifyUserServerPassword: false,
+      })
 
       expect(result.isFailed()).toBeFalsy()
 

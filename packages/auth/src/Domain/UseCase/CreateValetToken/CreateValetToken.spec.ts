@@ -59,12 +59,15 @@ describe('CreateValetToken', () => {
 
     regularSubscription = {
       uuid: '1-2-3',
+      endsAt: 200,
       subscriptionType: UserSubscriptionType.Regular,
       userUuid: '123',
     } as jest.Mocked<UserSubscription>
 
     sharedSubscription = {
       uuid: '2-3-4',
+      subscriptionId: 999,
+      endsAt: 200,
       subscriptionType: UserSubscriptionType.Shared,
       userUuid: '123',
     } as jest.Mocked<UserSubscription>
@@ -250,6 +253,262 @@ describe('CreateValetToken', () => {
       success: false,
       reason: 'no-subscription',
     })
+  })
+
+  it('should create a write valet token using most recent subscription if shared subscription is expired', async () => {
+    sharedSubscription.endsAt = 50
+    getSharedSubscription.execute = jest.fn().mockReturnValue(Result.ok(sharedSubscription))
+
+    const response = await createUseCase().execute({
+      operation: ValetTokenOperation.Write,
+      resources: [
+        {
+          remoteIdentifier: '2-3-4',
+          unencryptedFileSize: 123,
+        },
+      ],
+      userUuid: '1-2-3',
+    })
+
+    expect(getRegularSubscription.execute).toHaveBeenCalledWith({
+      userUuid: '1-2-3',
+      subscriptionId: undefined,
+    })
+
+    expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
+      {
+        sharedSubscriptionUuid: '2-3-4',
+        regularSubscriptionUuid: '1-2-3',
+        permittedOperation: 'write',
+        permittedResources: [
+          {
+            remoteIdentifier: '2-3-4',
+            unencryptedFileSize: 123,
+          },
+        ],
+        userUuid: '1-2-3',
+        uploadBytesUsed: 123,
+        uploadBytesLimit: 123,
+      },
+      123,
+    )
+
+    expect(response).toEqual({
+      success: true,
+      valetToken: 'foobar',
+    })
+  })
+
+  it('should return expired-subscription if both shared and regular subscriptions are expired', async () => {
+    sharedSubscription.endsAt = 50
+    regularSubscription.endsAt = 50
+    getSharedSubscription.execute = jest.fn().mockReturnValue(Result.ok(sharedSubscription))
+
+    const response = await createUseCase().execute({
+      operation: ValetTokenOperation.Read,
+      userUuid: '1-2-3',
+      resources: [
+        {
+          remoteIdentifier: '2-3-4',
+          unencryptedFileSize: 123,
+        },
+      ],
+    })
+
+    expect(response).toEqual({
+      success: false,
+      reason: 'expired-subscription',
+    })
+  })
+
+  it('should use user regular subscription when shared is active but has no subscription id', async () => {
+    sharedSubscription.subscriptionId = null
+    getSharedSubscription.execute = jest.fn().mockReturnValue(Result.ok(sharedSubscription))
+
+    const response = await createUseCase().execute({
+      operation: ValetTokenOperation.Read,
+      userUuid: '1-2-3',
+      resources: [
+        {
+          remoteIdentifier: '2-3-4',
+          unencryptedFileSize: 123,
+        },
+      ],
+    })
+
+    expect(getRegularSubscription.execute).toHaveBeenCalledWith({
+      userUuid: '1-2-3',
+      subscriptionId: undefined,
+    })
+    expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
+      expect.objectContaining({
+        sharedSubscriptionUuid: undefined,
+        regularSubscriptionUuid: '1-2-3',
+      }),
+      123,
+    )
+    expect(response).toEqual({
+      success: true,
+      valetToken: 'foobar',
+    })
+  })
+
+  it('should return no-subscription when shared is active without subscription id and user regular lookup fails', async () => {
+    sharedSubscription.subscriptionId = null
+    getSharedSubscription.execute = jest.fn().mockReturnValue(Result.ok(sharedSubscription))
+    getRegularSubscription.execute = jest.fn().mockReturnValue(Result.fail('not found'))
+
+    const response = await createUseCase().execute({
+      operation: ValetTokenOperation.Read,
+      userUuid: '1-2-3',
+      resources: [
+        {
+          remoteIdentifier: '2-3-4',
+          unencryptedFileSize: 123,
+        },
+      ],
+    })
+
+    expect(response).toEqual({
+      success: false,
+      reason: 'no-subscription',
+    })
+  })
+
+  it('should return no-subscription when regular lookup succeeds with undefined value', async () => {
+    getRegularSubscription.execute = jest
+      .fn()
+      .mockReturnValue(Result.ok(undefined as unknown as UserSubscription))
+
+    const response = await createUseCase().execute({
+      operation: ValetTokenOperation.Read,
+      userUuid: '1-2-3',
+      resources: [
+        {
+          remoteIdentifier: '2-3-4',
+          unencryptedFileSize: 123,
+        },
+      ],
+    })
+
+    expect(response).toEqual({
+      success: false,
+      reason: 'no-subscription',
+    })
+  })
+
+  it('should fallback to user regular when shared regular subscription is expired', async () => {
+    const sharedRegularSubscription = {
+      ...regularSubscription,
+      uuid: 'shared-regular',
+      endsAt: 50,
+    } as jest.Mocked<UserSubscription>
+
+    getSharedSubscription.execute = jest.fn().mockReturnValue(Result.ok(sharedSubscription))
+    getRegularSubscription.execute = jest.fn().mockImplementation((dto: { userUuid?: string; subscriptionId?: number }) => {
+      if (dto.subscriptionId !== undefined) {
+        return Result.ok(sharedRegularSubscription)
+      }
+
+      return Result.ok(regularSubscription)
+    })
+
+    const response = await createUseCase().execute({
+      operation: ValetTokenOperation.Read,
+      userUuid: '1-2-3',
+      resources: [
+        {
+          remoteIdentifier: '2-3-4',
+          unencryptedFileSize: 123,
+        },
+      ],
+    })
+
+    expect(getRegularSubscription.execute).toHaveBeenCalledTimes(2)
+    expect(getRegularSubscription.execute).toHaveBeenNthCalledWith(1, {
+      subscriptionId: 999,
+    })
+    expect(getRegularSubscription.execute).toHaveBeenNthCalledWith(2, {
+      userUuid: '1-2-3',
+    })
+    expect(response).toEqual({
+      success: true,
+      valetToken: 'foobar',
+    })
+  })
+
+  it('should fallback to user regular when shared regular subscription lookup fails', async () => {
+    getSharedSubscription.execute = jest.fn().mockReturnValue(Result.ok(sharedSubscription))
+    getRegularSubscription.execute = jest.fn().mockImplementation((dto: { userUuid?: string; subscriptionId?: number }) => {
+      if (dto.subscriptionId !== undefined) {
+        return Result.fail('not found')
+      }
+
+      return Result.ok(regularSubscription)
+    })
+
+    const response = await createUseCase().execute({
+      operation: ValetTokenOperation.Read,
+      userUuid: '1-2-3',
+      resources: [
+        {
+          remoteIdentifier: '2-3-4',
+          unencryptedFileSize: 123,
+        },
+      ],
+    })
+
+    expect(getRegularSubscription.execute).toHaveBeenCalledTimes(2)
+    expect(getRegularSubscription.execute).toHaveBeenNthCalledWith(1, {
+      subscriptionId: 999,
+    })
+    expect(getRegularSubscription.execute).toHaveBeenNthCalledWith(2, {
+      userUuid: '1-2-3',
+    })
+    expect(response).toEqual({
+      success: true,
+      valetToken: 'foobar',
+    })
+  })
+
+  it('should use shared owner regular subscription when user regular lookup fails', async () => {
+    const sharedOwnerRegularSubscription = {
+      ...regularSubscription,
+      uuid: 'shared-owner-regular',
+      endsAt: 300,
+    } as jest.Mocked<UserSubscription>
+
+    getSharedSubscription.execute = jest.fn().mockReturnValue(Result.ok(sharedSubscription))
+    getRegularSubscription.execute = jest.fn().mockImplementation((dto: { userUuid?: string; subscriptionId?: number }) => {
+      if (dto.subscriptionId !== undefined) {
+        return Result.ok(sharedOwnerRegularSubscription)
+      }
+
+      return Result.fail('not found')
+    })
+
+    const response = await createUseCase().execute({
+      operation: ValetTokenOperation.Read,
+      userUuid: '1-2-3',
+      resources: [
+        {
+          remoteIdentifier: '2-3-4',
+          unencryptedFileSize: 123,
+        },
+      ],
+    })
+
+    expect(response).toEqual({
+      success: true,
+      valetToken: 'foobar',
+    })
+    expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
+      expect.objectContaining({
+        sharedSubscriptionUuid: '2-3-4',
+        regularSubscriptionUuid: 'shared-owner-regular',
+      }),
+      123,
+    )
   })
 
   it('should create a write valet token with default subscription upload limit if upload bytes settings do not exist', async () => {

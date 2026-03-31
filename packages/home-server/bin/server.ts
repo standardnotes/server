@@ -17,10 +17,10 @@ try {
       environment: env.getAll(),
     }),
   ).catch((error) => {
-    // eslint-disable-next-line no-console
+     
     console.error(`Could not start server: ${error.message}`)
   })
 } catch (error) {
-  // eslint-disable-next-line no-console
+   
   console.error((error as Error).stack)
 }

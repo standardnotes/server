@@ -105,12 +105,14 @@ export class AuthServer implements IAuthServer {
         }
       }
 
+      const applicationVersion = call.metadata.get('x-application-version').pop() as string
+
       const authenticateRequestResponse = await this.authenticateRequest.execute({
         authTokenFromHeaders: call.request.getBearerToken(),
         authCookies: cookies,
         requestMetadata: {
           snjs: call.metadata.get('x-snjs-version').pop() as string,
-          application: call.metadata.get('x-application-version').pop() as string,
+          application: applicationVersion,
           url: call.metadata.get('x-origin-url').pop() as string,
           method: call.metadata.get('x-origin-method').pop() as string,
           userAgent: call.metadata.get('x-origin-user-agent').pop() as string,
@@ -145,6 +147,7 @@ export class AuthServer implements IAuthServer {
         user,
         session: authenticateRequestResponse.session,
         sharedVaultOwnerContext,
+        applicationVersion,
       })
       if (resultOrError.isFailed()) {
         const metadata = new grpc.Metadata()

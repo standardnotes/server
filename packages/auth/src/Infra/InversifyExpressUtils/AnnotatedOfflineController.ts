@@ -4,7 +4,7 @@ import {
   controller,
   httpGet,
   httpPost,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   results,
 } from 'inversify-express-utils'
 import { Logger } from 'winston'

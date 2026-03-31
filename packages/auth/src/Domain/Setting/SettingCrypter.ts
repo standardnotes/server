@@ -66,7 +66,7 @@ export class SettingCrypter implements SettingCrypterInterface {
     try {
       JSON.parse(value)
       return true
-    } catch (error) {
+    } catch (_error) {
       return false
     }
   }

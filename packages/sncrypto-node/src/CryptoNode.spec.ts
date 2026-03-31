@@ -173,4 +173,57 @@ describe('CryptoNode', function () {
   it('should base64 decode a utf8 string', () => {
     expect(crypto.base64Decode('SGVsbG8gV29ybGQ=')).toEqual('Hello World')
   })
+
+  it('should generate random OTP secret 160 bits long', async () => {
+    const secret = await crypto.generateOtpSecret()
+    expect(secret).toHaveLength(32)
+    expect(secret).not.toContain('=')
+    // Check if it's valid base32 (RFC4648)
+    const RFC4648 = /^[ABCDEFGHIJKLMNOPQRSTUVWXYZ234567]+$/
+    expect(RFC4648.test(secret)).toBe(true)
+  })
+
+  it('should generate different OTP secrets each time', async () => {
+    const secret1 = await crypto.generateOtpSecret()
+    const secret2 = await crypto.generateOtpSecret()
+    expect(secret1).not.toEqual(secret2)
+  })
+
+  it('should generate valid HOTP tokens', async () => {
+    const secret = 'JBSWY3DPEHPK3PXP'
+    const counter = 0
+    const token = await crypto.hotpToken(secret, counter, 6)
+    expect(token).toHaveLength(6)
+    expect(/^\d{6}$/.test(token)).toBe(true)
+  })
+
+  it('should generate valid TOTP tokens', async () => {
+    const secret = 'JBSWY3DPEHPK3PXP'
+    const timestamp = Date.now()
+    const token = await crypto.totpToken(secret, timestamp, 6, 30)
+    expect(token).toHaveLength(6)
+    expect(/^\d{6}$/.test(token)).toBe(true)
+  })
+
+  it('should generate same TOTP token for same timestamp', async () => {
+    const secret = 'JBSWY3DPEHPK3PXP'
+    const timestamp = 1234567890000
+    const token1 = await crypto.totpToken(secret, timestamp, 6, 30)
+    const token2 = await crypto.totpToken(secret, timestamp, 6, 30)
+    expect(token1).toEqual(token2)
+  })
+
+  it('should match RFC 4226 HOTP test vectors', async () => {
+    // base32 of "12345678901234567890"
+    const secret = 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ'
+    const expectedTokens = [
+      '755224', '287082', '359152', '969429', '338314',
+      '254676', '287922', '162583', '399871', '520489',
+    ]
+
+    for (let counter = 0; counter < expectedTokens.length; counter++) {
+      const token = await crypto.hotpToken(secret, counter, 6)
+      expect(token).toEqual(expectedTokens[counter])
+    }
+  })
 })

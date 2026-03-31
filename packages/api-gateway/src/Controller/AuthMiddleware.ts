@@ -101,6 +101,7 @@ export abstract class AuthMiddleware extends BaseMiddleware {
         readOnlyAccess: decodedToken.session?.readonly_access ?? false,
         isFreeUser: decodedToken.roles.length === 1 && decodedToken.roles[0].name === RoleName.NAMES.CoreUser,
         belongsToSharedVaults: decodedToken.belongs_to_shared_vaults ?? [],
+        authTokenVersion: decodedToken.version,
       } as ResponseLocals)
     } catch (error) {
       let detailedErrorMessage = (error as Error).message

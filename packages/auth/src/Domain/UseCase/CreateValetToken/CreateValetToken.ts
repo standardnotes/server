@@ -27,33 +27,30 @@ export class CreateValetToken implements UseCaseInterface {
 
   async execute(dto: CreateValetTokenDTO): Promise<CreateValetTokenResponseData> {
     const { userUuid, ...payload } = dto
+    const currentTimestamp = this.timer.getTimestampInMicroseconds()
 
-    let sharedSubscription: UserSubscription | undefined
-    const sharedSubscriptionOrError = await this.getSharedSubscription.execute({
-      userUuid,
-    })
-    if (!sharedSubscriptionOrError.isFailed()) {
-      sharedSubscription = sharedSubscriptionOrError.getValue()
-    }
-
-    const regularSubscriptionOrError = await this.getRegularSubscription.execute({
-      userUuid: sharedSubscription ? undefined : dto.userUuid,
-      subscriptionId: sharedSubscription ? (sharedSubscription.subscriptionId as number) : undefined,
-    })
-    if (regularSubscriptionOrError.isFailed()) {
+    const sharedSubscription = await this.getEligibleSharedSubscription(userUuid)
+    const ownersRegularSubscription = await this.getSharedOwnersRegularSubscription(sharedSubscription)
+    const mostRecentSubscription = await this.getMostRecentSubscription(
+      dto.userUuid,
+      ownersRegularSubscription,
+    )
+    if (mostRecentSubscription === undefined) {
       return {
         success: false,
         reason: 'no-subscription',
       }
     }
-    const regularSubscription = regularSubscriptionOrError.getValue()
+    const regularSubscription = mostRecentSubscription
 
-    if (regularSubscription.endsAt < this.timer.getTimestampInMicroseconds()) {
+    if (regularSubscription.endsAt < currentTimestamp) {
       return {
         success: false,
         reason: 'expired-subscription',
       }
     }
+    const selectedSharedSubscription =
+      ownersRegularSubscription?.uuid === regularSubscription.uuid ? sharedSubscription : undefined
 
     if (!this.isValidWritePayload(payload)) {
       return {
@@ -93,13 +90,66 @@ export class CreateValetToken implements UseCaseInterface {
       permittedResources: dto.resources,
       uploadBytesUsed,
       uploadBytesLimit,
-      sharedSubscriptionUuid: sharedSubscription ? sharedSubscription.uuid : undefined,
+      sharedSubscriptionUuid: selectedSharedSubscription?.uuid,
       regularSubscriptionUuid: regularSubscription.uuid,
     }
 
     const valetToken = this.tokenEncoder.encodeExpirableToken(tokenData, this.valetTokenTTL)
 
     return { success: true, valetToken }
+  }
+
+  private async getEligibleSharedSubscription(userUuid: string): Promise<UserSubscription | undefined> {
+    const sharedSubscriptionOrError = await this.getSharedSubscription.execute({ userUuid })
+    if (sharedSubscriptionOrError.isFailed()) {
+      return undefined
+    }
+
+    const sharedSubscription = sharedSubscriptionOrError.getValue()
+    const sharedSubscriptionId = sharedSubscription?.subscriptionId ?? undefined
+
+    return sharedSubscription !== undefined && sharedSubscriptionId !== undefined ? sharedSubscription : undefined
+  }
+
+  private async getSharedOwnersRegularSubscription(
+    activeSharedSubscription: UserSubscription | undefined,
+  ): Promise<UserSubscription | undefined> {
+    const sharedSubscriptionId = activeSharedSubscription?.subscriptionId ?? undefined
+    if (sharedSubscriptionId === undefined) {
+      return undefined
+    }
+
+    const regularSubscriptionFromSharedOrError = await this.getRegularSubscription.execute({
+      subscriptionId: sharedSubscriptionId,
+    })
+    if (regularSubscriptionFromSharedOrError.isFailed()) {
+      return undefined
+    }
+
+    return regularSubscriptionFromSharedOrError.getValue()
+  }
+
+  private async getMostRecentSubscription(
+    userUuid: string,
+    ownersRegularSubscription: UserSubscription | undefined,
+  ): Promise<UserSubscription | undefined> {
+    const regularSubscriptionByUserOrError = await this.getRegularSubscription.execute({
+      userUuid,
+    })
+    const usersRegularSubscription = regularSubscriptionByUserOrError.isFailed()
+      ? undefined
+      : regularSubscriptionByUserOrError.getValue()
+
+    if (ownersRegularSubscription === undefined) {
+      return usersRegularSubscription
+    }
+    if (usersRegularSubscription === undefined) {
+      return ownersRegularSubscription
+    }
+
+    return ownersRegularSubscription.endsAt >= usersRegularSubscription.endsAt
+      ? ownersRegularSubscription
+      : usersRegularSubscription
   }
 
   private isValidWritePayload(payload: CreateValetTokenPayload) {

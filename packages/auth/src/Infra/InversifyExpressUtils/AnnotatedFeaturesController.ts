@@ -3,7 +3,7 @@ import { inject } from 'inversify'
 import {
   controller,
   httpGet,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   results,
 } from 'inversify-express-utils'
 import TYPES from '../../Bootstrap/Types'

@@ -1,6 +1,7 @@
 import { Role } from '../Role/Role'
 
 export type CrossServiceTokenData = {
+  version?: number
   user: {
     uuid: string
     email: string

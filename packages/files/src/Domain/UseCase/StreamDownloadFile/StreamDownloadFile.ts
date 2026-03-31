@@ -31,7 +31,7 @@ export class StreamDownloadFile implements UseCaseInterface {
         success: true,
         readStream,
       }
-    } catch (error) {
+    } catch (_error) {
       this.logger.error(
         `Could not create a download stream for resource: ${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`,
       )

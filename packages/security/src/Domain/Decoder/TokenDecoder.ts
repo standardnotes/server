@@ -9,7 +9,7 @@ export class TokenDecoder<T> implements TokenDecoderInterface<T> {
       return <T>verify(token, this.jwtSecret, {
         algorithms: ['HS256'],
       })
-    } catch (error) {
+    } catch (_error) {
       return undefined
     }
   }

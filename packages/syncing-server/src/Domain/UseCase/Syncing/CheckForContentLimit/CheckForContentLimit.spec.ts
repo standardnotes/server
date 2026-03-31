@@ -92,4 +92,19 @@ describe('CheckForContentLimit', () => {
 
     expect(result.isFailed()).toBe(false)
   })
+
+  it('should ignore deleted items when computing total content size', async () => {
+    itemRepository.findContentSizeForComputingTransferLimit = jest.fn().mockResolvedValue([])
+
+    const useCase = createUseCase()
+    await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      itemsBeingModified: [itemHash],
+    })
+
+    expect(itemRepository.findContentSizeForComputingTransferLimit).toHaveBeenCalledWith({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      deleted: false,
+    })
+  })
 })

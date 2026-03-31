@@ -147,9 +147,11 @@ export class BaseAuthController extends BaseHttpController {
     })
 
     if (!signInResult.success) {
-      const resultOrError = await this.increaseLoginAttempts.execute({ email: request.body.email })
+      const resultOrError = await this.increaseLoginAttempts.execute({ email: request.body.email, skipUsernameValidation: true })
       if (resultOrError.isFailed()) {
-        this.logger.error(`Failed to increase login attempts ${resultOrError.getError()}`)
+        this.logger.error(`Failed to increase login attempts: ${resultOrError.getError()}`, {
+          application: request.headers['x-application-version'] as string,
+        })
       } else {
         const result = resultOrError.getValue()
         if (result.isNonCaptchaLimitReached) {
@@ -193,11 +195,13 @@ export class BaseAuthController extends BaseHttpController {
     return this.json(signInResult.result.legacyResponse)
   }
 
-  async generateRecoveryCodes(_request: Request, response: Response): Promise<results.JsonResult> {
+  async generateRecoveryCodes(request: Request, response: Response): Promise<results.JsonResult> {
     const locals = response.locals as ResponseLocals
 
     const result = await this.authController.generateRecoveryCodes({
       userUuid: locals.user.uuid,
+      serverPassword: request.headers['x-server-password'] as string | undefined,
+      authTokenVersion: locals.authTokenVersion,
     })
 
     return this.json(result.data, result.status)
@@ -223,7 +227,12 @@ export class BaseAuthController extends BaseHttpController {
         email: request.body.username,
       })
       if (increasLoginAttemtpsResultOrError.isFailed()) {
-        this.logger.error(`Failed to increase login attempts ${increasLoginAttemtpsResultOrError.getError()}`)
+        this.logger.error(
+          `Failed to increase login attempts on recovery login: ${increasLoginAttemtpsResultOrError.getError()}`,
+          {
+            application: request.headers['x-application-version'] as string,
+          },
+        )
       } else {
         const increasLoginAttemtpsResult = increasLoginAttemtpsResultOrError.getValue()
         if (increasLoginAttemtpsResult.isNonCaptchaLimitReached) {

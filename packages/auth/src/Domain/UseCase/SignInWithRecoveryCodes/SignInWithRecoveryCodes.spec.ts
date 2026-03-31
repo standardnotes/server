@@ -321,7 +321,10 @@ describe('SignInWithRecoveryCodes', () => {
     })
 
     expect(clearLoginAttempts.execute).toHaveBeenCalled()
-    expect(deleteSetting.execute).toHaveBeenCalled()
+    expect(deleteSetting.execute).toHaveBeenCalledWith({
+      settingName: 'MFA_SECRET',
+      userUuid: '00000000-0000-0000-0000-000000000000',
+    })
     expect(authenticatorRepository.removeByUserUuid).toHaveBeenCalled()
     expect(result.isFailed()).toBe(false)
   })
@@ -337,7 +340,10 @@ describe('SignInWithRecoveryCodes', () => {
     })
 
     expect(clearLoginAttempts.execute).toHaveBeenCalled()
-    expect(deleteSetting.execute).toHaveBeenCalled()
+    expect(deleteSetting.execute).toHaveBeenCalledWith({
+      settingName: 'MFA_SECRET',
+      userUuid: '00000000-0000-0000-0000-000000000000',
+    })
     expect(authenticatorRepository.removeByUserUuid).toHaveBeenCalled()
     expect(result.isFailed()).toBe(false)
   })

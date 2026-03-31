@@ -1,4 +1,4 @@
-import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, SettingName, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { Setting } from '../../Setting/Setting'
 import { GetSettingsDTO } from './GetSettingsDTO'
 import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'
@@ -19,7 +19,9 @@ export class GetSettings implements UseCaseInterface<Array<{ setting: Setting; d
 
     const settings = await this.settingRepository.findAllByUserUuid(userUuid.value)
 
-    const unsensitiveSettings = settings.filter((setting) => !setting.props.sensitive)
+    const unsensitiveSettings = settings.filter(
+      (setting) => !setting.props.sensitive && setting.props.name !== SettingName.NAMES.RecoveryCodes,
+    )
 
     if (dto.decrypted) {
       const result = []

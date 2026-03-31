@@ -5,7 +5,7 @@ import {
   httpDelete,
   httpGet,
   httpPut,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   results,
 } from 'inversify-express-utils'
 import TYPES from '../../Bootstrap/Types'
@@ -20,6 +20,8 @@ import { SettingHttpRepresentation } from '../../Mapping/Http/SettingHttpReprese
 import { SubscriptionSettingHttpRepresentation } from '../../Mapping/Http/SubscriptionSettingHttpRepresentation'
 import { GetAllSettingsForUser } from '../../Domain/UseCase/GetAllSettingsForUser/GetAllSettingsForUser'
 import { TriggerPostSettingUpdateActions } from '../../Domain/UseCase/TriggerPostSettingUpdateActions/TriggerPostSettingUpdateActions'
+import { GetMfaSecret } from '../../Domain/UseCase/GetMfaSecret/GetMfaSecret'
+import { ValidateMfaToken } from '../../Domain/UseCase/ValidateMfaToken/ValidateMfaToken'
 import { Logger } from 'winston'
 
 @controller('/users/:userUuid')
@@ -31,6 +33,8 @@ export class AnnotatedSettingsController extends BaseSettingsController {
     @inject(TYPES.Auth_TriggerPostSettingUpdateActions)
     override triggerPostSettingUpdateActions: TriggerPostSettingUpdateActions,
     @inject(TYPES.Auth_DeleteSetting) override doDeleteSetting: DeleteSetting,
+    @inject(TYPES.Auth_GetMfaSecret) override doGetMfaSecret: GetMfaSecret,
+    @inject(TYPES.Auth_ValidateMfaToken) override validateMfaToken: ValidateMfaToken,
     @inject(TYPES.Auth_SettingHttpMapper) settingHttMapper: MapperInterface<Setting, SettingHttpRepresentation>,
     @inject(TYPES.Auth_SubscriptionSettingHttpMapper)
     subscriptionSettingHttpMapper: MapperInterface<SubscriptionSetting, SubscriptionSettingHttpRepresentation>,
@@ -42,6 +46,8 @@ export class AnnotatedSettingsController extends BaseSettingsController {
       setSettingValue,
       triggerPostSettingUpdateActions,
       doDeleteSetting,
+      doGetMfaSecret,
+      validateMfaToken,
       settingHttMapper,
       subscriptionSettingHttpMapper,
       logger,
@@ -69,5 +75,10 @@ export class AnnotatedSettingsController extends BaseSettingsController {
   @httpDelete('/settings/:settingName', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   override async deleteSetting(request: Request, response: Response): Promise<results.JsonResult> {
     return super.deleteSetting(request, response)
+  }
+
+  @httpGet('/mfa-secret', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
+  override async getMfaSecret(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.getMfaSecret(request, response)
   }
 }

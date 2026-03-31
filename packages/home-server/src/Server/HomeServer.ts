@@ -16,7 +16,7 @@ import * as http from 'http'
 import { text, json, Request, Response, NextFunction, raw } from 'express'
 import * as winston from 'winston'
 import { PassThrough } from 'stream'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const robots = require('express-robots-txt')
 
 import { Env } from '../Bootstrap/Env'

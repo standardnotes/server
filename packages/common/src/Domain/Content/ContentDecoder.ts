@@ -8,7 +8,7 @@ export class ContentDecoder implements ContentDecoderInterface {
       const decodedContent = contentBuffer.toString()
 
       return JSON.parse(decodedContent)
-    } catch (error) {
+    } catch (_error) {
       return {}
     }
   }

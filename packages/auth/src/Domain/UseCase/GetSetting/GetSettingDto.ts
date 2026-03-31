@@ -3,4 +3,7 @@ export type GetSettingDto = {
   settingName: string
   allowSensitiveRetrieval: boolean
   decrypted: boolean
+  serverPassword?: string
+  shouldVerifyUserServerPassword?: boolean
+  authTokenVersion?: number
 }

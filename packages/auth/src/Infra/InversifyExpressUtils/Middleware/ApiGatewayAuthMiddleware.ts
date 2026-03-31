@@ -40,6 +40,7 @@ export abstract class ApiGatewayAuthMiddleware extends BaseMiddleware {
         roles: token.roles,
         session: token.session,
         readOnlyAccess: token.session?.readonly_access ?? false,
+        authTokenVersion: token.version,
       } as ResponseLocals)
 
       return next()

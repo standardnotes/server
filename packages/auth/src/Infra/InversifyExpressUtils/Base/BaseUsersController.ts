@@ -33,6 +33,18 @@ export class BaseUsersController extends BaseHttpController {
   async deleteAccount(request: Request, response: Response): Promise<results.JsonResult> {
     const locals = response.locals as ResponseLocals
 
+    if (locals.readOnlyAccess) {
+      return this.json(
+        {
+          error: {
+            tag: ErrorTag.ReadOnlyAccess,
+            message: 'Session has read-only access.',
+          },
+        },
+        401,
+      )
+    }
+
     if (request.params.userUuid !== locals.user.uuid) {
       return this.json(
         {
@@ -46,6 +58,9 @@ export class BaseUsersController extends BaseHttpController {
 
     const result = await this.doDeleteAccount.execute({
       userUuid: request.params.userUuid,
+      serverPassword: request.headers['x-server-password'] as string | undefined,
+      authTokenVersion: locals.authTokenVersion,
+      shouldVerifyUserServerPassword: true,
     })
 
     if (result.isFailed()) {

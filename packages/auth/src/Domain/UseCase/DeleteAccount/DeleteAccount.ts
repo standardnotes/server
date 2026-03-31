@@ -10,6 +10,7 @@ import { User } from '../../User/User'
 import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
 import { UserSubscription } from '../../Subscription/UserSubscription'
 import { GetSharedSubscriptionForUser } from '../GetSharedSubscriptionForUser/GetSharedSubscriptionForUser'
+import { VerifyUserServerPassword } from '../VerifyUserServerPassword/VerifyUserServerPassword'
 
 export class DeleteAccount implements UseCaseInterface<string> {
   constructor(
@@ -19,6 +20,7 @@ export class DeleteAccount implements UseCaseInterface<string> {
     private domainEventPublisher: DomainEventPublisherInterface,
     private domainEventFactory: DomainEventFactoryInterface,
     private timer: TimerInterface,
+    private verifyUserServerPassword: VerifyUserServerPassword,
   ) {}
 
   async execute(dto: DeleteAccountDTO): Promise<Result<string>> {
@@ -45,6 +47,18 @@ export class DeleteAccount implements UseCaseInterface<string> {
 
     if (user === null) {
       return Result.ok('User already deleted.')
+    }
+
+    if (dto.shouldVerifyUserServerPassword) {
+      const verifyUserServerPasswordResult = await this.verifyUserServerPassword.execute({
+        user,
+        serverPassword: dto.serverPassword,
+        authTokenVersion: dto.authTokenVersion,
+      })
+
+      if (verifyUserServerPasswordResult.isFailed()) {
+        return Result.fail(verifyUserServerPasswordResult.getError())
+      }
     }
 
     let sharedSubscription: UserSubscription | undefined

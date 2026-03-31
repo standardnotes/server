@@ -30,7 +30,7 @@ export class BaseAdminController extends BaseHttpController {
   }
 
   async getUser(request: Request): Promise<results.JsonResult> {
-    const usernameOrError = Username.create(request.params.email ?? '')
+    const usernameOrError = Username.create(request.params.email ?? '', { skipValidation: true })
     if (usernameOrError.isFailed()) {
       return this.json(
         {

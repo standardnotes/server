@@ -43,7 +43,10 @@ describe('CreateCrossServiceToken', () => {
   let role: Role
   let permission: Permission
 
-  const createUseCase = () =>
+  const createUseCase = (
+    applicationVersionThresholdForTokenVersion2?: string,
+    applicationVersionThresholdForTokenVersion3?: string,
+  ) =>
     new CreateCrossServiceToken(
       userProjector,
       sessionProjector,
@@ -55,6 +58,8 @@ describe('CreateCrossServiceToken', () => {
       getSubscriptionSetting,
       sharedVaultUserRepository,
       getActiveSessionsForUser,
+      applicationVersionThresholdForTokenVersion2,
+      applicationVersionThresholdForTokenVersion3,
     )
 
   beforeEach(() => {
@@ -153,6 +158,7 @@ describe('CreateCrossServiceToken', () => {
           uuid: '00000000-0000-0000-0000-000000000000',
         },
         hasContentLimit: false,
+        version: 1,
       },
       60,
     )
@@ -193,6 +199,7 @@ describe('CreateCrossServiceToken', () => {
           uuid: '00000000-0000-0000-0000-000000000000',
         },
         hasContentLimit: true,
+        version: 1,
       },
       60,
     )
@@ -222,6 +229,7 @@ describe('CreateCrossServiceToken', () => {
           uuid: '00000000-0000-0000-0000-000000000000',
         },
         hasContentLimit: false,
+        version: 1,
       },
       60,
     )
@@ -251,6 +259,7 @@ describe('CreateCrossServiceToken', () => {
           uuid: '00000000-0000-0000-0000-000000000000',
         },
         hasContentLimit: false,
+        version: 1,
       },
       60,
     )
@@ -284,6 +293,7 @@ describe('CreateCrossServiceToken', () => {
           uuid: '00000000-0000-0000-0000-000000000000',
         },
         hasContentLimit: false,
+        version: 1,
       },
       60,
     )
@@ -316,6 +326,7 @@ describe('CreateCrossServiceToken', () => {
           uuid: '00000000-0000-0000-0000-000000000000',
         },
         hasContentLimit: false,
+        version: 1,
       },
       60,
     )
@@ -375,6 +386,7 @@ describe('CreateCrossServiceToken', () => {
             uuid: '00000000-0000-0000-0000-000000000000',
           },
           hasContentLimit: false,
+          version: 1,
         },
         60,
       )
@@ -403,6 +415,240 @@ describe('CreateCrossServiceToken', () => {
       })
 
       expect(result.isFailed()).toBeTruthy()
+    })
+  })
+
+  describe('version determination', () => {
+    describe('when no threshold is configured', () => {
+      it('should set version to 1 when no application version is provided', async () => {
+        const useCase = createUseCase(undefined)
+        tokenEncoder.encodeExpirableToken = jest.fn().mockImplementation((data: CrossServiceTokenData) => {
+          expect(data.version).toBe(1)
+          return 'mocked-token'
+        })
+
+        await useCase.execute({
+          user,
+        })
+
+        expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalled()
+      })
+
+      it('should set version to 1 when application version is provided but no threshold is configured', async () => {
+        const useCase = createUseCase(undefined)
+        tokenEncoder.encodeExpirableToken = jest.fn().mockImplementation((data: CrossServiceTokenData) => {
+          expect(data.version).toBe(1)
+          return 'mocked-token'
+        })
+
+        await useCase.execute({
+          user,
+          applicationVersion: 'web-4.0.0',
+        })
+
+        expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalled()
+      })
+    })
+
+    describe('when threshold is configured', () => {
+      it('should set version to 1 when application version is equal to threshold', async () => {
+        const useCase = createUseCase('2.0.0')
+        tokenEncoder.encodeExpirableToken = jest.fn().mockImplementation((data: CrossServiceTokenData) => {
+          expect(data.version).toBe(1)
+          return 'mocked-token'
+        })
+
+        await useCase.execute({
+          user,
+          applicationVersion: 'web-2.0.0',
+        })
+
+        expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalled()
+      })
+
+      it('should set version to 1 when application version is lower than threshold', async () => {
+        const useCase = createUseCase('2.0.0')
+        tokenEncoder.encodeExpirableToken = jest.fn().mockImplementation((data: CrossServiceTokenData) => {
+          expect(data.version).toBe(1)
+          return 'mocked-token'
+        })
+
+        await useCase.execute({
+          user,
+          applicationVersion: 'web-1.0.0',
+        })
+
+        expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalled()
+      })
+
+      it('should set version to 2 when application version is higher than threshold', async () => {
+        const useCase = createUseCase('2.0.0')
+        tokenEncoder.encodeExpirableToken = jest.fn().mockImplementation((data: CrossServiceTokenData) => {
+          expect(data.version).toBe(2)
+          return 'mocked-token'
+        })
+
+        await useCase.execute({
+          user,
+          applicationVersion: 'web-3.0.0',
+        })
+
+        expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalled()
+      })
+
+      it('should work with different client prefixes', async () => {
+        const useCase = createUseCase('1.0.0')
+        tokenEncoder.encodeExpirableToken = jest.fn().mockImplementation((data: CrossServiceTokenData) => {
+          expect(data.version).toBe(2)
+          return 'mocked-token'
+        })
+
+        await useCase.execute({
+          user,
+          applicationVersion: 'mobile-2.0.0',
+        })
+
+        expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalled()
+      })
+    })
+
+    describe('edge cases', () => {
+      it('should set version to 1 when application version format is invalid', async () => {
+        const useCase = createUseCase('2.0.0')
+        tokenEncoder.encodeExpirableToken = jest.fn().mockImplementation((data: CrossServiceTokenData) => {
+          expect(data.version).toBe(1)
+          return 'mocked-token'
+        })
+
+        await useCase.execute({
+          user,
+          applicationVersion: 'invalid-version',
+        })
+
+        expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalled()
+      })
+
+      it('should handle version without client prefix', async () => {
+        const useCase = createUseCase('2.0.0')
+        tokenEncoder.encodeExpirableToken = jest.fn().mockImplementation((data: CrossServiceTokenData) => {
+          expect(data.version).toBe(2)
+          return 'mocked-token'
+        })
+
+        await useCase.execute({
+          user,
+          applicationVersion: '3.0.0',
+        })
+
+        expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalled()
+      })
+
+      it('should handle prerelease versions correctly', async () => {
+        const useCase = createUseCase('2.0.0')
+        tokenEncoder.encodeExpirableToken = jest.fn().mockImplementation((data: CrossServiceTokenData) => {
+          expect(data.version).toBe(2)
+          return 'mocked-token'
+        })
+
+        await useCase.execute({
+          user,
+          applicationVersion: 'web-3.0.0-beta.1',
+        })
+
+        expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalled()
+      })
+    })
+
+    describe('when both thresholds are configured', () => {
+      it('should set version to 1 when application version is below both thresholds', async () => {
+        const useCase = createUseCase('2.0.0', '3.0.0')
+        tokenEncoder.encodeExpirableToken = jest.fn().mockImplementation((data: CrossServiceTokenData) => {
+          expect(data.version).toBe(1)
+          return 'mocked-token'
+        })
+
+        await useCase.execute({
+          user,
+          applicationVersion: 'web-1.0.0',
+        })
+
+        expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalled()
+      })
+
+      it('should set version to 2 when application version is above version 2 threshold but below version 3 threshold', async () => {
+        const useCase = createUseCase('2.0.0', '3.0.0')
+        tokenEncoder.encodeExpirableToken = jest.fn().mockImplementation((data: CrossServiceTokenData) => {
+          expect(data.version).toBe(2)
+          return 'mocked-token'
+        })
+
+        await useCase.execute({
+          user,
+          applicationVersion: 'web-2.1.0',
+        })
+
+        expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalled()
+      })
+
+      it('should set version to 3 when application version is above both thresholds', async () => {
+        const useCase = createUseCase('2.0.0', '3.0.0')
+        tokenEncoder.encodeExpirableToken = jest.fn().mockImplementation((data: CrossServiceTokenData) => {
+          expect(data.version).toBe(3)
+          return 'mocked-token'
+        })
+
+        await useCase.execute({
+          user,
+          applicationVersion: 'web-4.0.0',
+        })
+
+        expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalled()
+      })
+
+      it('should return highest applicable version when application version exceeds multiple thresholds', async () => {
+        const useCase = createUseCase('1.0.0', '2.0.0')
+        tokenEncoder.encodeExpirableToken = jest.fn().mockImplementation((data: CrossServiceTokenData) => {
+          expect(data.version).toBe(3)
+          return 'mocked-token'
+        })
+
+        await useCase.execute({
+          user,
+          applicationVersion: 'mobile-3.0.0',
+        })
+
+        expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalled()
+      })
+
+      it('should handle equal thresholds by selecting highest version', async () => {
+        const useCase = createUseCase('2.0.0', '2.0.0')
+        tokenEncoder.encodeExpirableToken = jest.fn().mockImplementation((data: CrossServiceTokenData) => {
+          expect(data.version).toBe(3)
+          return 'mocked-token'
+        })
+
+        await useCase.execute({
+          user,
+          applicationVersion: 'web-2.1.0',
+        })
+
+        expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalled()
+      })
+
+      it('should work when only version 3 threshold is set', async () => {
+        const useCase = createUseCase(undefined, '2.0.0')
+        tokenEncoder.encodeExpirableToken = jest.fn().mockImplementation((data: CrossServiceTokenData) => {
+          expect(data.version).toBe(3)
+          return 'mocked-token'
+        })
+
+        await useCase.execute({
+          user,
+          applicationVersion: 'web-3.0.0',
+        })
+
+        expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalled()
+      })
     })
   })
 })

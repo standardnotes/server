@@ -100,7 +100,7 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
       return
     }
 
-    const usernameOrError = Username.create(event.payload.userEmail)
+    const usernameOrError = Username.create(event.payload.userEmail, { skipValidation: true })
     if (usernameOrError.isFailed()) {
       this.logger.warn(`Could not sync subscription: ${usernameOrError.getError()}`, {
         subscriptionId: event.payload.subscriptionId,

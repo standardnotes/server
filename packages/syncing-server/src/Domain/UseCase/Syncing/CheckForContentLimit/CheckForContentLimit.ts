@@ -20,6 +20,7 @@ export class CheckForContentLimit implements UseCaseInterface<void> {
 
     const contentSizeDescriptors = await this.itemRepository.findContentSizeForComputingTransferLimit({
       userUuid: userUuid.value,
+      deleted: false,
     })
 
     const isContentLimitExceeded = await this.isContentLimitExceeded(contentSizeDescriptors)

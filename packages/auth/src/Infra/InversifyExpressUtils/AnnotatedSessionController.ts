@@ -4,7 +4,7 @@ import {
   controller,
   httpDelete,
   httpPost,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   results,
 } from 'inversify-express-utils'
 import TYPES from '../../Bootstrap/Types'

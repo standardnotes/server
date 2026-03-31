@@ -8,16 +8,18 @@ import { UseCaseInterface } from '../UseCaseInterface'
 import TYPES from '../../../Bootstrap/Types'
 import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'
 import { Setting } from '../../Setting/Setting'
+import { VerifyUserServerPassword } from '../VerifyUserServerPassword/VerifyUserServerPassword'
 
 @injectable()
 export class DeleteSetting implements UseCaseInterface {
   constructor(
     @inject(TYPES.Auth_SettingRepository) private settingRepository: SettingRepositoryInterface,
+    @inject(TYPES.Auth_VerifyUserServerPassword) private verifyUserServerPassword: VerifyUserServerPassword,
     @inject(TYPES.Auth_Timer) private timer: TimerInterface,
   ) {}
 
   async execute(dto: DeleteSettingDto): Promise<DeleteSettingResponse> {
-    const { userUuid, settingName } = dto
+    const { userUuid, settingName, serverPassword, shouldVerifyUserServerPassword } = dto
 
     const setting = await this.getSetting(dto)
 
@@ -27,6 +29,23 @@ export class DeleteSetting implements UseCaseInterface {
         error: {
           message: `Setting ${settingName} for user ${userUuid} not found.`,
         },
+      }
+    }
+
+    if (shouldVerifyUserServerPassword && [SettingName.NAMES.MfaSecret].includes(setting.props.name)) {
+      const verifyUserServerPasswordResult = await this.verifyUserServerPassword.execute({
+        userUuid,
+        serverPassword,
+        authTokenVersion: dto.authTokenVersion,
+      })
+
+      if (verifyUserServerPasswordResult.isFailed()) {
+        return {
+          success: false,
+          error: {
+            message: verifyUserServerPasswordResult.getError(),
+          },
+        }
       }
     }
 

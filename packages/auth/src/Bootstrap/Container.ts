@@ -65,6 +65,8 @@ import { SubscriptionRefundedEventHandler } from '../Domain/Handler/Subscription
 import { SubscriptionExpiredEventHandler } from '../Domain/Handler/SubscriptionExpiredEventHandler'
 import { DeleteAccount } from '../Domain/UseCase/DeleteAccount/DeleteAccount'
 import { DeleteSetting } from '../Domain/UseCase/DeleteSetting/DeleteSetting'
+import { GetMfaSecret } from '../Domain/UseCase/GetMfaSecret/GetMfaSecret'
+import { ValidateMfaToken } from '../Domain/UseCase/ValidateMfaToken/ValidateMfaToken'
 import { UserSubscription } from '../Domain/Subscription/UserSubscription'
 import { TypeORMUserSubscriptionRepository } from '../Infra/TypeORM/TypeORMUserSubscriptionRepository'
 import { WebSocketsClientService } from '../Infra/WebSockets/WebSocketsClientService'
@@ -146,6 +148,7 @@ import { TypeORMSubscriptionSettingRepository } from '../Infra/TypeORM/TypeORMSu
 import { ListSharedSubscriptionInvitations } from '../Domain/UseCase/ListSharedSubscriptionInvitations/ListSharedSubscriptionInvitations'
 import { SubscriptionSettingsAssociationService } from '../Domain/Setting/SubscriptionSettingsAssociationService'
 import { SubscriptionSettingsAssociationServiceInterface } from '../Domain/Setting/SubscriptionSettingsAssociationServiceInterface'
+import { HeapProfiler } from '../Domain/Profiler/HeapProfiler'
 import { PKCERepositoryInterface } from '../Domain/User/PKCERepositoryInterface'
 import { LockRepositoryInterface } from '../Domain/User/LockRepositoryInterface'
 import { RedisPKCERepository } from '../Infra/Redis/RedisPKCERepository'
@@ -292,6 +295,9 @@ import { HttpCaptchaServer } from '../Infra/Http/HumanVerification/HttpCaptchaSe
 import { CookieFactoryInterface } from '../Domain/Auth/Cookies/CookieFactoryInterface'
 import { CookieFactory } from '../Domain/Auth/Cookies/CookieFactory'
 import { RedisLockRepository } from '../Infra/Redis/RedisLockRepository'
+import { RedisMfaSecretRepository } from '../Infra/Redis/RedisMfaSecretRepository'
+import { TypeORMMfaSecretRepository } from '../Infra/TypeORM/TypeORMMfaSecretRepository'
+import { MfaSecretRepositoryInterface } from '../Domain/Mfa/MfaSecretRepositoryInterface'
 import { DeleteSessionByToken } from '../Domain/UseCase/DeleteSessionByToken/DeleteSessionByToken'
 import { GetSessionFromToken } from '../Domain/UseCase/GetSessionFromToken/GetSessionFromToken'
 import { CooldownSessionTokens } from '../Domain/UseCase/CooldownSessionTokens/CooldownSessionTokens'
@@ -299,6 +305,7 @@ import { SessionTokensCooldownRepositoryInterface } from '../Domain/Session/Sess
 import { RedisSessionTokensCooldownRepository } from '../Infra/Redis/RedisSessionTokensCooldownRepository'
 import { InMemorySessionTokensCooldownRepository } from '../Infra/InMemory/InMemorySessionTokensCooldownRepository'
 import { GetCooldownSessionTokens } from '../Domain/UseCase/GetCooldownSessionTokens/GetCooldownSessionTokens'
+import { VerifyUserServerPassword } from '../Domain/UseCase/VerifyUserServerPassword/VerifyUserServerPassword'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -408,6 +415,21 @@ export class ContainerConfigLoader {
         .toConstantValue(
           new S3CsvFileReader(env.get('S3_AUTH_SCRIPTS_DATA_BUCKET', true), container.get<S3Client>(TYPES.Auth_S3)),
         )
+
+      if (env.get('PROFILER_ENABLED', true) === 'true') {
+        const s3BucketName = env.get('S3_PROFILER_BUCKET_NAME', true)
+
+        container
+          .bind<HeapProfiler>(TYPES.Auth_HeapProfiler)
+          .toConstantValue(
+            new HeapProfiler(
+              container.get<winston.Logger>(TYPES.Auth_Logger),
+              container.get<S3Client>(TYPES.Auth_S3),
+              s3BucketName,
+            ),
+          )
+        logger.debug('Heap profiler configured')
+      }
     }
 
     container.bind(TYPES.Auth_SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN', true))
@@ -709,7 +731,15 @@ export class ContainerConfigLoader {
         )
       container
         .bind<SessionTokensCooldownRepositoryInterface>(TYPES.Auth_SessionTokensCooldownRepository)
-        .toConstantValue(new InMemorySessionTokensCooldownRepository())
+        .toConstantValue(new InMemorySessionTokensCooldownRepository(container.get<winston.Logger>(TYPES.Auth_Logger)))
+      container
+        .bind<MfaSecretRepositoryInterface>(TYPES.Auth_MfaSecretRepository)
+        .toConstantValue(
+          new TypeORMMfaSecretRepository(
+            container.get(TYPES.Auth_CacheEntryRepository),
+            container.get(TYPES.Auth_Timer),
+          ),
+        )
     } else {
       container.bind<PKCERepositoryInterface>(TYPES.Auth_PKCERepository).to(RedisPKCERepository)
       container
@@ -722,6 +752,7 @@ export class ContainerConfigLoader {
             container.get<number>(TYPES.Auth_FAILED_LOGIN_CAPTCHA_LOCKOUT),
           ),
         )
+      container.bind<MfaSecretRepositoryInterface>(TYPES.Auth_MfaSecretRepository).to(RedisMfaSecretRepository)
       container
         .bind<EphemeralSessionRepositoryInterface>(TYPES.Auth_EphemeralSessionRepository)
         .to(RedisEphemeralSessionRepository)
@@ -759,11 +790,15 @@ export class ContainerConfigLoader {
         ),
       )
     container
+      .bind<VerifyUserServerPassword>(TYPES.Auth_VerifyUserServerPassword)
+      .toConstantValue(new VerifyUserServerPassword(container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository)))
+    container
       .bind<GetSetting>(TYPES.Auth_GetSetting)
       .toConstantValue(
         new GetSetting(
           container.get<SettingRepositoryInterface>(TYPES.Auth_SettingRepository),
           container.get<SettingCrypterInterface>(TYPES.Auth_SettingCrypter),
+          container.get<VerifyUserServerPassword>(TYPES.Auth_VerifyUserServerPassword),
         ),
       )
     container
@@ -1061,6 +1096,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.Auth_UserRepository),
           container.get(TYPES.Auth_SetSettingValue),
           container.get(TYPES.Auth_CryptoNode),
+          container.get(TYPES.Auth_VerifyUserServerPassword),
         ),
       )
     container
@@ -1282,6 +1318,8 @@ export class ContainerConfigLoader {
       )
     container.bind<GetUserFeatures>(TYPES.Auth_GetUserFeatures).to(GetUserFeatures)
     container.bind<DeleteSetting>(TYPES.Auth_DeleteSetting).to(DeleteSetting)
+    container.bind<GetMfaSecret>(TYPES.Auth_GetMfaSecret).to(GetMfaSecret)
+    container.bind<ValidateMfaToken>(TYPES.Auth_ValidateMfaToken).to(ValidateMfaToken)
     container
       .bind<SignInWithRecoveryCodes>(TYPES.Auth_SignInWithRecoveryCodes)
       .toConstantValue(
@@ -1311,6 +1349,7 @@ export class ContainerConfigLoader {
           container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
           container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
           container.get<TimerInterface>(TYPES.Auth_Timer),
+          container.get<VerifyUserServerPassword>(TYPES.Auth_VerifyUserServerPassword),
         ),
       )
     container.bind<GetUserSubscription>(TYPES.Auth_GetUserSubscription).to(GetUserSubscription)
@@ -1381,6 +1420,8 @@ export class ContainerConfigLoader {
           container.get<GetSubscriptionSetting>(TYPES.Auth_GetSubscriptionSetting),
           container.get<SharedVaultUserRepositoryInterface>(TYPES.Auth_SharedVaultUserRepository),
           container.get<GetActiveSessionsForUser>(TYPES.Auth_GetActiveSessionsForUser),
+          env.get('APPLICATION_VERSION_THRESHOLD_FOR_TOKEN_VERSION_2', true),
+          env.get('APPLICATION_VERSION_THRESHOLD_FOR_TOKEN_VERSION_3', true),
         ),
       )
     container.bind<ProcessUserRequest>(TYPES.Auth_ProcessUserRequest).to(ProcessUserRequest)
@@ -1963,6 +2004,8 @@ export class ContainerConfigLoader {
             container.get<SetSettingValue>(TYPES.Auth_SetSettingValue),
             container.get<TriggerPostSettingUpdateActions>(TYPES.Auth_TriggerPostSettingUpdateActions),
             container.get<DeleteSetting>(TYPES.Auth_DeleteSetting),
+            container.get<GetMfaSecret>(TYPES.Auth_GetMfaSecret),
+            container.get<ValidateMfaToken>(TYPES.Auth_ValidateMfaToken),
             container.get<MapperInterface<Setting, SettingHttpRepresentation>>(TYPES.Auth_SettingHttpMapper),
             container.get<MapperInterface<SubscriptionSetting, SubscriptionSettingHttpRepresentation>>(
               TYPES.Auth_SubscriptionSettingHttpMapper,

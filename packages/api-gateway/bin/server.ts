@@ -30,7 +30,8 @@ import * as cors from 'cors'
 import * as cookieParser from 'cookie-parser'
 import { text, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const robots = require('express-robots-txt')
 
 import { InversifyExpressServer } from 'inversify-express-utils'
@@ -55,7 +56,7 @@ void container.load().then((container) => {
   server.setConfig((app) => {
     app.use((request: Request, _response: Response, next: NextFunction) => {
       if (request.hostname.includes('standardnotes.org')) {
-        logger.warn('Request is using deprecated domain', {
+        logger.debug('Request is using deprecated domain', {
           origin: request.headers.origin,
           method: request.method,
           url: request.url,

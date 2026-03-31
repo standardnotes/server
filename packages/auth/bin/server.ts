@@ -37,9 +37,10 @@ import { AuthenticateRequest } from '../src/Domain/UseCase/AuthenticateRequest'
 import { CreateCrossServiceToken } from '../src/Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
 import { TokenDecoderInterface, WebSocketConnectionTokenData } from '@standardnotes/security'
 import { ResponseLocals } from '../src/Infra/InversifyExpressUtils/ResponseLocals'
+import { HeapProfiler } from '../src/Domain/Profiler/HeapProfiler'
 
 const container = new ContainerConfigLoader()
-void container.load().then((container) => {
+void container.load().then(async (container) => {
   dayjs.extend(utc)
 
   const env: Env = new Env()
@@ -133,8 +134,29 @@ void container.load().then((container) => {
     logger.info('gRPC server started')
   })
 
+  if (env.get('PROFILER_ENABLED', true) === 'true') {
+    try {
+      const heapProfiler = container.get<HeapProfiler>(TYPES.Auth_HeapProfiler)
+      heapProfiler.start()
+      logger.info('Heap profiler started successfully')
+    } catch (error) {
+      logger.error(`Failed to start heap profiler: ${(error as Error).message}`)
+    }
+  }
+
   process.on('SIGTERM', () => {
     logger.info('SIGTERM signal received: closing HTTP server')
+
+    if (env.get('PROFILER_ENABLED', true) === 'true') {
+      try {
+        const heapProfiler = container.get<HeapProfiler>(TYPES.Auth_HeapProfiler)
+        heapProfiler.stop()
+        logger.info('Heap profiler stopped')
+      } catch (error) {
+        logger.error(`Failed to stop heap profiler: ${(error as Error).message}`)
+      }
+    }
+
     serverInstance.close(() => {
       logger.info('HTTP server closed')
     })

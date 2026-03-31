@@ -11,7 +11,8 @@ import helmet from 'helmet'
 import * as cors from 'cors'
 import { urlencoded, json, raw, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const robots = require('express-robots-txt')
 
 import { InversifyExpressServer } from 'inversify-express-utils'

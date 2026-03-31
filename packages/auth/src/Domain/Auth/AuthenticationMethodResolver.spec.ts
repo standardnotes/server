@@ -89,7 +89,7 @@ describe('AuthenticationMethodResolver', () => {
         authTokenFromHeaders: 'test',
         requestMetadata: { url: '/foobar', method: 'GET' },
       }),
-    ).toBeUndefined
+    ).toBeUndefined()
   })
 
   it('should resolve session authentication method', async () => {
@@ -122,7 +122,7 @@ describe('AuthenticationMethodResolver', () => {
         authTokenFromHeaders: 'test',
         requestMetadata: { url: '/foobar', method: 'GET' },
       }),
-    ).toBeUndefined
+    ).toBeUndefined()
   })
 
   it('should resolve archvied session authentication method', async () => {
@@ -148,6 +148,6 @@ describe('AuthenticationMethodResolver', () => {
         authTokenFromHeaders: 'test',
         requestMetadata: { url: '/foobar', method: 'GET' },
       }),
-    ).toBeUndefined
+    ).toBeUndefined()
   })
 })

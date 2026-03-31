@@ -52,6 +52,7 @@ export class EndpointResolver implements EndpointResolverInterface {
     ['[GET]:users/:userUuid/subscription', 'auth.users.getSubscription'],
     ['[GET]:offline/users/subscription', 'auth.users.getOfflineSubscriptionByToken'],
     ['[POST]:users/:userUuid/requests', 'auth.users.createRequest'],
+    ['[GET]:users/:userUuid/mfa-secret', 'auth.users.getMfaSecret'],
     // Syncing Server
     ['[POST]:items/sync', 'sync.items.sync'],
     ['[POST]:items/check-integrity', 'sync.items.check_integrity'],

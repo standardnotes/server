@@ -260,4 +260,17 @@ export class UsersController extends BaseHttpController {
       request.body,
     )
   }
+
+  @httpGet('/:userUuid/mfa-secret', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
+  async getMfaSecret(request: Request, response: Response): Promise<void> {
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'GET',
+        'users/:userUuid/mfa-secret',
+        request.params.userUuid,
+      ),
+    )
+  }
 }

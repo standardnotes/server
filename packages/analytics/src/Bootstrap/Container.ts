@@ -8,7 +8,8 @@ import {
   DomainEventSubscriberInterface,
 } from '@standardnotes/domain-events'
 import { MapperInterface } from '@standardnotes/domain-core'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const Mixpanel = require('mixpanel')
 
 import { Env } from './Env'

@@ -2,6 +2,7 @@ import { ControllerContainerInterface } from '@standardnotes/domain-core'
 import { Request, Response } from 'express'
 import { BaseHttpController, results } from 'inversify-express-utils'
 import { ApiVersion } from '@standardnotes/api'
+import { ErrorTag } from '@standardnotes/responses'
 
 import { SubscriptionInvitesController } from '../../../Controller/SubscriptionInvitesController'
 import { ResponseLocals } from '../ResponseLocals'
@@ -48,6 +49,18 @@ export class BaseSubscriptionInvitesController extends BaseHttpController {
   async inviteToSubscriptionSharing(request: Request, response: Response): Promise<results.JsonResult> {
     const locals = response.locals as ResponseLocals
 
+    if (locals.readOnlyAccess) {
+      return this.json(
+        {
+          error: {
+            tag: ErrorTag.ReadOnlyAccess,
+            message: 'Session has read-only access.',
+          },
+        },
+        401,
+      )
+    }
+
     const result = await this.subscriptionInvitesController.invite({
       ...request.body,
       inviterEmail: locals.user.email,
@@ -72,6 +85,18 @@ export class BaseSubscriptionInvitesController extends BaseHttpController {
 
   async listInvites(request: Request, response: Response): Promise<results.JsonResult> {
     const locals = response.locals as ResponseLocals
+
+    if (locals.readOnlyAccess) {
+      return this.json(
+        {
+          error: {
+            tag: ErrorTag.ReadOnlyAccess,
+            message: 'Session has read-only access.',
+          },
+        },
+        401,
+      )
+    }
 
     const result = await this.subscriptionInvitesController.listInvites({
       ...request.body,
