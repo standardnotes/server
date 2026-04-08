@@ -25,46 +25,46 @@ jobs:
       snjs:
         image: standardnotes/snjs:${{ inputs.snjs_image_tag }}
         ports:
-        - 9001:9001
+          - 9001:9001
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Node
-      uses: actions/setup-node@v4
-      with:
-        registry-url: 'https://registry.npmjs.org'
-        node-version-file: '.nvmrc'
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          registry-url: 'https://registry.npmjs.org'
+          node-version-file: '.nvmrc'
 
-    - name: Install
-      run: yarn install --immutable
+      - name: Install
+        run: yarn install --immutable
 
-    - name: Run Server
-      run: docker compose -f docker-compose.ci.yml up -d
-      env:
-        DB_TYPE: mysql
-        CACHE_TYPE: redis
-        SERVICE_PROXY_TYPE: ${{ matrix.service_proxy_type }}
+      - name: Run Server
+        run: docker compose -f docker-compose.ci.yml up -d
+        env:
+          DB_TYPE: mysql
+          CACHE_TYPE: redis
+          SERVICE_PROXY_TYPE: ${{ matrix.service_proxy_type }}
 
-    - name: Output Server Logs to File
-      run: docker compose -f docker-compose.ci.yml logs -f > logs/docker-compose.log 2>&1 &
-      env:
-        DB_TYPE: mysql
-        CACHE_TYPE: redis
-        SERVICE_PROXY_TYPE: ${{ matrix.service_proxy_type }}
+      - name: Output Server Logs to File
+        run: docker compose -f docker-compose.ci.yml logs -f > logs/docker-compose.log 2>&1 &
+        env:
+          DB_TYPE: mysql
+          CACHE_TYPE: redis
+          SERVICE_PROXY_TYPE: ${{ matrix.service_proxy_type }}
 
-    - name: Wait for server to start
-      run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
+      - name: Wait for server to start
+        run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
 
-    - name: Run E2E Test Suite
-      run: yarn dlx mocha-headless-chrome --timeout 3600000 -a no-sandbox -a disable-setuid-sandbox -f http://localhost:9001/mocha/test.html?suite=${{ inputs.suite }}
+      - name: Run E2E Test Suite
+        run: yarn dlx mocha-headless-chrome --timeout 3600000 --polling 1000 -a no-sandbox -a disable-setuid-sandbox -f http://localhost:9001/mocha/test.html?suite=${{ inputs.suite }}
 
-    - name: Archive failed run logs
-      if: ${{ failure() }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: self-hosted-failure-logs-${{ inputs.suite }}
-        retention-days: 5
-        path: |
-          logs/*.err
-          logs/*.log
+      - name: Archive failed run logs
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: self-hosted-failure-logs-${{ inputs.suite }}
+          retention-days: 5
+          path: |
+            logs/*.err
+            logs/*.log
