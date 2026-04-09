@@ -39,24 +39,12 @@ jobs:
       - name: Install
         run: yarn install --immutable
 
-      - name: Resolve token ages for suite
-        run: |
-          if [[ "${{ inputs.suite }}" == "session" || "${{ inputs.suite }}" == "all" ]]; then
-            echo "AUTH_SERVER_ACCESS_TOKEN_AGE=4" >> $GITHUB_ENV
-            echo "AUTH_SERVER_REFRESH_TOKEN_AGE=10" >> $GITHUB_ENV
-          else
-            echo "AUTH_SERVER_ACCESS_TOKEN_AGE=120" >> $GITHUB_ENV
-            echo "AUTH_SERVER_REFRESH_TOKEN_AGE=600" >> $GITHUB_ENV
-          fi
-
       - name: Run Server
         run: docker compose -f docker-compose.ci.yml up -d
         env:
           DB_TYPE: mysql
           CACHE_TYPE: redis
           SERVICE_PROXY_TYPE: ${{ matrix.service_proxy_type }}
-          AUTH_SERVER_ACCESS_TOKEN_AGE: ${{ env.AUTH_SERVER_ACCESS_TOKEN_AGE }}
-          AUTH_SERVER_REFRESH_TOKEN_AGE: ${{ env.AUTH_SERVER_REFRESH_TOKEN_AGE }}
 
       - name: Output Server Logs to File
         run: docker compose -f docker-compose.ci.yml logs -f > logs/docker-compose.log 2>&1 &
@@ -64,14 +52,12 @@ jobs:
           DB_TYPE: mysql
           CACHE_TYPE: redis
           SERVICE_PROXY_TYPE: ${{ matrix.service_proxy_type }}
-          AUTH_SERVER_ACCESS_TOKEN_AGE: ${{ env.AUTH_SERVER_ACCESS_TOKEN_AGE }}
-          AUTH_SERVER_REFRESH_TOKEN_AGE: ${{ env.AUTH_SERVER_REFRESH_TOKEN_AGE }}
 
       - name: Wait for server to start
         run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
 
       - name: Run E2E Test Suite
-        run: yarn dlx mocha-headless-chrome --timeout 3600000 --polling 1000 -a no-sandbox -a disable-setuid-sandbox -f "http://localhost:9001/mocha/test.html?suite=${{ inputs.suite }}&trace=1"
+        run: yarn dlx mocha-headless-chrome --timeout 3600000 --polling 1000 -a no-sandbox -a disable-setuid-sandbox -f http://localhost:9001/mocha/test.html?suite=${{ inputs.suite }}
 
       - name: Archive failed run logs
         if: ${{ failure() }}
