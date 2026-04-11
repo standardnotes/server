@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.41.4](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.41.3...@standardnotes/domain-core@1.41.4) (2026-04-11)
+
+**Note:** Version bump only for package @standardnotes/domain-core
+
 ## [1.41.3](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.41.2...@standardnotes/domain-core@1.41.3) (2025-04-29)
 
 **Note:** Version bump only for package @standardnotes/domain-core
