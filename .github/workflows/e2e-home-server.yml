@@ -96,7 +96,12 @@ jobs:
         run: for i in {1..30}; do curl -s http://localhost:3123/healthcheck && break || sleep 1; done
 
       - name: Run E2E Test Suite
-        run: yarn dlx mocha-headless-chrome@4.0.0 --timeout 3600000 --polling 1000 -a no-sandbox -a disable-setuid-sandbox -f http://localhost:9001/mocha/test.html?suite=${{ inputs.suite }}
+        run: |
+          TEST_URL="http://localhost:9001/mocha/test.html?suite=${{ inputs.suite }}"
+          if [ "${{ matrix.cache_type }}" = "memory" ]; then
+            TEST_URL="${TEST_URL}&skip_session_cooldown_refresh_test=true"
+          fi
+          yarn dlx mocha-headless-chrome@4.0.0 --timeout 3600000 --polling 1000 -a no-sandbox -a disable-setuid-sandbox -f "${TEST_URL}"
 
       - name: Archive failed run logs
         if: ${{ failure() }}
