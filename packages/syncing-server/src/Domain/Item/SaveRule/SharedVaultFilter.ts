@@ -101,8 +101,12 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
     }
   }
 
-  private isAuthorizedToSaveContentType(contentType: string | null, permission: SharedVaultUserPermission): boolean {
-    if (contentType === ContentType.TYPES.KeySystemItemsKey) {
+  private isAuthorizedToSaveContentType(
+    incomingContentType: string | null,
+    existingContentType: string | null,
+    permission: SharedVaultUserPermission,
+  ): boolean {
+    if ([incomingContentType, existingContentType].includes(ContentType.TYPES.KeySystemItemsKey)) {
       return permission.value === SharedVaultUserPermission.PERMISSIONS.Admin
     }
 
@@ -177,8 +181,14 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
     operation: SharedVaultOperationOnItem,
     sharedVaultPermission: SharedVaultUserPermission,
   ): boolean {
+    const existingContentType = operation.props.existingItem?.props.contentType.value ?? null
+
     if (
-      !this.isAuthorizedToSaveContentType(operation.props.incomingItemHash.props.content_type, sharedVaultPermission)
+      !this.isAuthorizedToSaveContentType(
+        operation.props.incomingItemHash.props.content_type,
+        existingContentType,
+        sharedVaultPermission,
+      )
     ) {
       return false
     }
