@@ -1,6 +1,6 @@
 import * as dayjs from 'dayjs'
 import * as utc from 'dayjs/plugin/utc'
-import * as microtime from 'microtime'
+import * as microtime from 'node:perf_hooks'
 import { Time } from './Time'
 import { TimerInterface } from './TimerInterface'
 import { TimeStructure } from './TimeStructure'
