@@ -30,14 +30,14 @@ export abstract class AuthMiddleware extends BaseMiddleware {
 
     const authHeaderValue = request.headers.authorization as string
     const sharedVaultOwnerContextHeaderValue = request.headers['x-shared-vault-owner-context'] as string | undefined
-    const cacheKey = `${authHeaderValue}${
-      sharedVaultOwnerContextHeaderValue ? `:${sharedVaultOwnerContextHeaderValue}` : ''
-    }`
+    const shouldUseCrossServiceTokenCache =
+      !!this.crossServiceTokenCacheTTL && sharedVaultOwnerContextHeaderValue === undefined
+    const cacheKey = authHeaderValue
 
     try {
       let crossServiceTokenFetchedFromCache = true
       let crossServiceToken = null
-      if (this.crossServiceTokenCacheTTL) {
+      if (shouldUseCrossServiceTokenCache) {
         crossServiceToken = await this.crossServiceTokenCache.get(cacheKey)
       }
 
@@ -83,7 +83,7 @@ export abstract class AuthMiddleware extends BaseMiddleware {
 
       const decodedToken = <CrossServiceTokenData>verify(crossServiceToken, this.jwtSecret, { algorithms: ['HS256'] })
 
-      if (this.crossServiceTokenCacheTTL && !crossServiceTokenFetchedFromCache) {
+      if (shouldUseCrossServiceTokenCache && !crossServiceTokenFetchedFromCache) {
         await this.crossServiceTokenCache.set({
           key: cacheKey,
           encodedCrossServiceToken: crossServiceToken,

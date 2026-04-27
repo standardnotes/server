@@ -27,6 +27,10 @@ import { GetActiveSessionsForUser } from '../GetActiveSessionsForUser'
 import { Permission } from '../../Permission/Permission'
 
 describe('CreateCrossServiceToken', () => {
+  const authenticatedUserUuid = '00000000-0000-0000-0000-000000000000'
+  const sharedVaultOwnerContextUuid = '10000000-0000-0000-0000-000000000000'
+  const sharedVaultUuid = '00000000-0000-0000-0000-000000000000'
+
   let userProjector: ProjectorInterface<User>
   let sessionProjector: ProjectorInterface<Session>
   let roleProjector: ProjectorInterface<Role>
@@ -78,15 +82,13 @@ describe('CreateCrossServiceToken', () => {
     role.permissions = Promise.resolve([])
 
     user = {
-      uuid: '00000000-0000-0000-0000-000000000000',
+      uuid: authenticatedUserUuid,
       email: 'test@test.te',
     } as jest.Mocked<User>
     user.roles = Promise.resolve([role])
 
     userProjector = {} as jest.Mocked<ProjectorInterface<User>>
-    userProjector.projectSimple = jest
-      .fn()
-      .mockReturnValue({ uuid: '00000000-0000-0000-0000-000000000000', email: 'test@test.te' })
+    userProjector.projectSimple = jest.fn().mockReturnValue({ uuid: authenticatedUserUuid, email: 'test@test.te' })
 
     roleProjector = {} as jest.Mocked<ProjectorInterface<Role>>
     roleProjector.projectSimple = jest.fn().mockReturnValue({ name: 'role1', uuid: '1-3-4' })
@@ -110,7 +112,7 @@ describe('CreateCrossServiceToken', () => {
           value: '100',
           timestamps: Timestamps.create(123456789, 123456789).getValue(),
           serverEncryptionVersion: EncryptionVersion.Unencrypted,
-          userSubscriptionUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+          userSubscriptionUuid: Uuid.create(authenticatedUserUuid).getValue(),
         }).getValue(),
       }),
     )
@@ -119,15 +121,21 @@ describe('CreateCrossServiceToken', () => {
     getRegularSubscription.execute = jest.fn().mockReturnValue(Result.fail('not found'))
 
     sharedVaultUserRepository = {} as jest.Mocked<SharedVaultUserRepositoryInterface>
-    sharedVaultUserRepository.findByUserUuid = jest.fn().mockReturnValue([
-      SharedVaultUser.create({
+    sharedVaultUserRepository.findByUserUuid = jest.fn().mockImplementation((userUuid: Uuid) => {
+      const commonAssociation = SharedVaultUser.create({
         permission: SharedVaultUserPermission.create('read').getValue(),
-        sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        sharedVaultUuid: Uuid.create(sharedVaultUuid).getValue(),
         timestamps: Timestamps.create(123456789, 123456789).getValue(),
-        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        userUuid: Uuid.create(userUuid.value).getValue(),
         isDesignatedSurvivor: false,
-      }).getValue(),
-    ])
+      }).getValue()
+
+      if ([authenticatedUserUuid, sharedVaultOwnerContextUuid].includes(userUuid.value)) {
+        return [commonAssociation]
+      }
+
+      return []
+    })
   })
 
   it('should create a cross service token for user', async () => {
@@ -358,7 +366,7 @@ describe('CreateCrossServiceToken', () => {
       await createUseCase().execute({
         user,
         session,
-        sharedVaultOwnerContext: '00000000-0000-0000-0000-000000000000',
+        sharedVaultOwnerContext: sharedVaultOwnerContextUuid,
       })
 
       expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
@@ -396,7 +404,7 @@ describe('CreateCrossServiceToken', () => {
       const result = await createUseCase().execute({
         user,
         session,
-        sharedVaultOwnerContext: '00000000-0000-0000-0000-000000000000',
+        sharedVaultOwnerContext: sharedVaultOwnerContextUuid,
       })
 
       expect(result.isFailed()).toBeTruthy()
@@ -411,10 +419,77 @@ describe('CreateCrossServiceToken', () => {
       const result = await createUseCase().execute({
         user,
         session,
-        sharedVaultOwnerContext: '00000000-0000-0000-0000-000000000000',
+        sharedVaultOwnerContext: sharedVaultOwnerContextUuid,
       })
 
       expect(result.isFailed()).toBeTruthy()
+    })
+
+    it('should return an error if user does not belong to any shared vault with owner context user', async () => {
+      const regularSubscription = {} as jest.Mocked<UserSubscription>
+      getRegularSubscription.execute = jest.fn().mockReturnValue(Result.ok(regularSubscription))
+
+      sharedVaultUserRepository.findByUserUuid = jest.fn().mockImplementation((userUuid: Uuid) => {
+        const userSpecificSharedVaultUuid =
+          userUuid.value === authenticatedUserUuid
+            ? Uuid.create('00000000-0000-0000-0000-000000000000').getValue()
+            : Uuid.create('20000000-0000-0000-0000-000000000000').getValue()
+
+        return [
+          SharedVaultUser.create({
+            permission: SharedVaultUserPermission.create('read').getValue(),
+            sharedVaultUuid: userSpecificSharedVaultUuid,
+            timestamps: Timestamps.create(123456789, 123456789).getValue(),
+            userUuid: Uuid.create(userUuid.value).getValue(),
+            isDesignatedSurvivor: false,
+          }).getValue(),
+        ]
+      })
+
+      const result = await createUseCase().execute({
+        user,
+        session,
+        sharedVaultOwnerContext: sharedVaultOwnerContextUuid,
+      })
+
+      expect(result.isFailed()).toBeTruthy()
+      expect(getRegularSubscription.execute).not.toHaveBeenCalled()
+    })
+
+    it('should return an error if shared vault owner context is not a valid uuid', async () => {
+      const result = await createUseCase().execute({
+        user,
+        session,
+        sharedVaultOwnerContext: 'invalid-uuid',
+      })
+
+      expect(result.isFailed()).toBeTruthy()
+      expect(result.getError()).toContain('Could not create cross service token with shared vault owner context')
+      expect(getRegularSubscription.execute).not.toHaveBeenCalled()
+    })
+
+    it('should skip shared vault membership validation if shared vault owner context matches the authenticated user', async () => {
+      const regularSubscription = {} as jest.Mocked<UserSubscription>
+      getRegularSubscription.execute = jest.fn().mockReturnValue(Result.ok(regularSubscription))
+
+      await createUseCase().execute({
+        user,
+        session,
+        sharedVaultOwnerContext: authenticatedUserUuid,
+      })
+
+      expect(sharedVaultUserRepository.findByUserUuid).toHaveBeenCalledTimes(1)
+      expect(getRegularSubscription.execute).toHaveBeenCalledWith({
+        userUuid: authenticatedUserUuid,
+      })
+      expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
+        expect.objectContaining({
+          shared_vault_owner_context: {
+            upload_bytes_limit: 100,
+          },
+        }),
+        60,
+      )
     })
   })
 

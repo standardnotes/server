@@ -77,8 +77,34 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
     }
 
     if (dto.sharedVaultOwnerContext !== undefined) {
+      const sharedVaultOwnerContextUuidOrError = Uuid.create(dto.sharedVaultOwnerContext)
+      if (sharedVaultOwnerContextUuidOrError.isFailed()) {
+        return Result.fail(
+          `Could not create cross service token with shared vault owner context: ${sharedVaultOwnerContextUuidOrError.getError()}`,
+        )
+      }
+      const sharedVaultOwnerContextUuid = sharedVaultOwnerContextUuidOrError.getValue()
+
+      if (sharedVaultOwnerContextUuid.value !== user.uuid) {
+        const sharedVaultOwnerAssociations = await this.sharedVaultUserRepository.findByUserUuid(
+          sharedVaultOwnerContextUuid,
+        )
+        const authenticatedUserSharedVaultUuids = new Set(
+          sharedVaultAssociations.map((association) => association.props.sharedVaultUuid.value),
+        )
+        const authenticatedUserSharesVaultWithContextOwner = sharedVaultOwnerAssociations.some((association) =>
+          authenticatedUserSharedVaultUuids.has(association.props.sharedVaultUuid.value),
+        )
+
+        if (!authenticatedUserSharesVaultWithContextOwner) {
+          return Result.fail(
+            `Could not create cross service token with shared vault owner context for user ${user.uuid}`,
+          )
+        }
+      }
+
       const regularSubscriptionOrError = await this.getRegularSubscription.execute({
-        userUuid: dto.sharedVaultOwnerContext,
+        userUuid: sharedVaultOwnerContextUuid.value,
       })
       if (regularSubscriptionOrError.isFailed()) {
         return Result.fail(regularSubscriptionOrError.getError())
