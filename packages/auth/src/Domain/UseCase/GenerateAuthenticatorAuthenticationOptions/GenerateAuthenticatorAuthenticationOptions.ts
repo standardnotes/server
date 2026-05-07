@@ -30,22 +30,7 @@ export class GenerateAuthenticatorAuthenticationOptions
 
     const user = await this.userRepository.findOneByUsernameOrEmail(username)
     if (user === null) {
-      const credentialIdHash = crypto
-        .createHash('sha256')
-        .update(`u2f-selector-${dto.username}${this.pseudoKeyParamsKey}`)
-        .digest('base64url')
-
-      const options = await generateAuthenticationOptions({
-        allowCredentials: [
-          {
-            id: Buffer.from(credentialIdHash),
-            type: 'public-key',
-            transports: [],
-          },
-        ],
-        userVerification: 'discouraged',
-      })
-
+      const options = await this.generatePseudoOptions(dto.username)
       return Result.ok(options)
     }
 
@@ -56,6 +41,11 @@ export class GenerateAuthenticatorAuthenticationOptions
     const userUuid = userUuidOrError.getValue()
 
     const authenticators = await this.authenticatorRepository.findByUserUuid(userUuid)
+    if (authenticators.length === 0) {
+      const options = await this.generatePseudoOptions(dto.username)
+      return Result.ok(options)
+    }
+
     const options = await generateAuthenticationOptions({
       allowCredentials: authenticators.map((authenticator) => ({
         id: authenticator.props.credentialId,
@@ -80,5 +70,23 @@ export class GenerateAuthenticatorAuthenticationOptions
     await this.authenticatorChallengeRepository.save(authenticatorChallenge)
 
     return Result.ok(options)
+  }
+
+  private async generatePseudoOptions(username: string): Promise<PublicKeyCredentialRequestOptionsJSON> {
+    const credentialIdHash = crypto
+      .createHash('sha256')
+      .update(`u2f-selector-${username}${this.pseudoKeyParamsKey}`)
+      .digest('base64url')
+
+    return generateAuthenticationOptions({
+      allowCredentials: [
+        {
+          id: Buffer.from(credentialIdHash),
+          type: 'public-key',
+          transports: [],
+        },
+      ],
+      userVerification: 'preferred',
+    })
   }
 }

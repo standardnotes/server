@@ -83,6 +83,20 @@ describe('GenerateAuthenticatorAuthenticationOptions', () => {
     })
 
     expect(result.isFailed()).toBe(false)
+    expect(result.getValue().userVerification).toBe('preferred')
+    expect(authenticatorChallengeRepository.save).not.toHaveBeenCalled()
+  })
+
+  it('should return pseudo options if user does not have authenticators', async () => {
+    authenticatorRepository.findByUserUuid = jest.fn().mockReturnValue([])
+
+    const result = await createUseCase().execute({
+      username: 'test@test.te',
+    })
+
+    expect(result.isFailed()).toBe(false)
+    expect(result.getValue().userVerification).toBe('preferred')
+    expect(authenticatorChallengeRepository.save).not.toHaveBeenCalled()
   })
 
   it('should return error if authenticator challenge is invalid', async () => {
