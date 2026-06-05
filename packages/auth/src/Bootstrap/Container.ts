@@ -1964,6 +1964,7 @@ export class ContainerConfigLoader {
             container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
             container.get<CreateSubscriptionToken>(TYPES.Auth_CreateSubscriptionToken),
             container.get<CreateOfflineSubscriptionToken>(TYPES.Auth_CreateOfflineSubscriptionToken),
+            container.get<ClearLoginAttempts>(TYPES.Auth_ClearLoginAttempts),
             container.get<ControllerContainerInterface>(TYPES.Auth_ControllerContainer),
           ),
         )

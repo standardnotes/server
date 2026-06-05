@@ -4,6 +4,7 @@ import { Request } from 'express'
 
 import { CreateOfflineSubscriptionToken } from '../../../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
 import { CreateSubscriptionToken } from '../../../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
+import { ClearLoginAttempts } from '../../../Domain/UseCase/ClearLoginAttempts'
 import { GetSetting } from './../../../Domain/UseCase/GetSetting/GetSetting'
 import { DeleteSetting } from '../../../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { UserRepositoryInterface } from '../../../Domain/User/UserRepositoryInterface'
@@ -16,6 +17,7 @@ export class BaseAdminController extends BaseHttpController {
     protected userRepository: UserRepositoryInterface,
     protected createSubscriptionToken: CreateSubscriptionToken,
     protected createOfflineSubscriptionToken: CreateOfflineSubscriptionToken,
+    protected clearLoginAttempts: ClearLoginAttempts,
     private controllerContainer?: ControllerContainerInterface,
   ) {
     super()
@@ -26,6 +28,7 @@ export class BaseAdminController extends BaseHttpController {
       this.controllerContainer.register('admin.createToken', this.createToken.bind(this))
       this.controllerContainer.register('admin.createOfflineToken', this.createOfflineToken.bind(this))
       this.controllerContainer.register('admin.disableEmailBackups', this.disableEmailBackups.bind(this))
+      this.controllerContainer.register('admin.deleteLoginAttempts', this.deleteLoginAttempts.bind(this))
     }
   }
 
@@ -144,5 +147,35 @@ export class BaseAdminController extends BaseHttpController {
     }
 
     return this.badRequest('No email backups found')
+  }
+
+  async deleteLoginAttempts(request: Request): Promise<results.JsonResult | results.OkResult> {
+    const { email } = request.params
+
+    if (!email) {
+      return this.json(
+        {
+          error: {
+            message: 'Missing email parameter.',
+          },
+        },
+        400,
+      )
+    }
+
+    const result = await this.clearLoginAttempts.execute({ email })
+
+    if (result.isFailed()) {
+      return this.json(
+        {
+          error: {
+            message: result.getError(),
+          },
+        },
+        400,
+      )
+    }
+
+    return this.ok()
   }
 }

@@ -12,6 +12,7 @@ import TYPES from '../../Bootstrap/Types'
 import { BaseAdminController } from './Base/BaseAdminController'
 import { CreateOfflineSubscriptionToken } from '../../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
 import { CreateSubscriptionToken } from '../../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
+import { ClearLoginAttempts } from '../../Domain/UseCase/ClearLoginAttempts'
 import { DeleteSetting } from '../../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { GetSetting } from './../../Domain/UseCase/GetSetting/GetSetting'
 import { UserRepositoryInterface } from '../../Domain/User/UserRepositoryInterface'
@@ -25,8 +26,16 @@ export class AnnotatedAdminController extends BaseAdminController {
     @inject(TYPES.Auth_CreateSubscriptionToken) override createSubscriptionToken: CreateSubscriptionToken,
     @inject(TYPES.Auth_CreateOfflineSubscriptionToken)
     override createOfflineSubscriptionToken: CreateOfflineSubscriptionToken,
+    @inject(TYPES.Auth_ClearLoginAttempts) override clearLoginAttempts: ClearLoginAttempts,
   ) {
-    super(doDeleteSetting, doGetSetting, userRepository, createSubscriptionToken, createOfflineSubscriptionToken)
+    super(
+      doDeleteSetting,
+      doGetSetting,
+      userRepository,
+      createSubscriptionToken,
+      createOfflineSubscriptionToken,
+      clearLoginAttempts,
+    )
   }
 
   @httpGet('/user/:email')
@@ -59,5 +68,12 @@ export class AnnotatedAdminController extends BaseAdminController {
     request: Request,
   ): Promise<results.BadRequestErrorMessageResult | results.OkResult> {
     return super.disableEmailBackups(request)
+  }
+
+  @httpDelete('/users/:email/login-attempts')
+  override async deleteLoginAttempts(
+    request: Request,
+  ): Promise<results.JsonResult | results.OkResult> {
+    return super.deleteLoginAttempts(request)
   }
 }
