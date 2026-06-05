@@ -1172,6 +1172,24 @@ export class ContainerConfigLoader {
         ),
       )
     container
+      .bind<ClearLoginAttempts>(TYPES.Auth_ClearLoginAttempts)
+      .toConstantValue(
+        new ClearLoginAttempts(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<LockRepositoryInterface>(TYPES.Auth_LockRepository),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
+    container
+      .bind<IncreaseLoginAttempts>(TYPES.Auth_IncreaseLoginAttempts)
+      .toConstantValue(
+        new IncreaseLoginAttempts(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<LockRepositoryInterface>(TYPES.Auth_LockRepository),
+          container.get<number>(TYPES.Auth_MAX_LOGIN_ATTEMPTS),
+        ),
+      )
+    container
       .bind<SignIn>(TYPES.Auth_SignIn)
       .toConstantValue(
         new SignIn(
@@ -1186,6 +1204,8 @@ export class ContainerConfigLoader {
           container.get<number>(TYPES.Auth_MAX_LOGIN_ATTEMPTS),
           container.get<LockRepositoryInterface>(TYPES.Auth_LockRepository),
           container.get<VerifyHumanInteraction>(TYPES.Auth_VerifyHumanInteraction),
+          container.get<IncreaseLoginAttempts>(TYPES.Auth_IncreaseLoginAttempts),
+          container.get<ClearLoginAttempts>(TYPES.Auth_ClearLoginAttempts),
         ),
       )
     container
@@ -1202,24 +1222,6 @@ export class ContainerConfigLoader {
           ),
           container.get<GetSetting>(TYPES.Auth_GetSetting),
           container.get<winston.Logger>(TYPES.Auth_Logger),
-        ),
-      )
-    container
-      .bind<ClearLoginAttempts>(TYPES.Auth_ClearLoginAttempts)
-      .toConstantValue(
-        new ClearLoginAttempts(
-          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
-          container.get<LockRepositoryInterface>(TYPES.Auth_LockRepository),
-          container.get<winston.Logger>(TYPES.Auth_Logger),
-        ),
-      )
-    container
-      .bind<IncreaseLoginAttempts>(TYPES.Auth_IncreaseLoginAttempts)
-      .toConstantValue(
-        new IncreaseLoginAttempts(
-          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
-          container.get<LockRepositoryInterface>(TYPES.Auth_LockRepository),
-          container.get<number>(TYPES.Auth_MAX_LOGIN_ATTEMPTS),
         ),
       )
     container
@@ -1871,7 +1873,6 @@ export class ContainerConfigLoader {
           container.get<SignIn>(TYPES.Auth_SignIn),
           container.get<GetUserKeyParams>(TYPES.Auth_GetUserKeyParams),
           container.get<ClearLoginAttempts>(TYPES.Auth_ClearLoginAttempts),
-          container.get<IncreaseLoginAttempts>(TYPES.Auth_IncreaseLoginAttempts),
           container.get<winston.Logger>(TYPES.Auth_Logger),
           container.get<AuthController>(TYPES.Auth_AuthController),
           container.get<Register>(TYPES.Auth_Register),

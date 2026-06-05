@@ -1,13 +1,13 @@
 import * as bcrypt from 'bcryptjs'
-import { Result, SettingName, UseCaseInterface, Username, Uuid, Validator } from '@standardnotes/domain-core'
+import { Result, SettingName, Username, Uuid, Validator } from '@standardnotes/domain-core'
 
-import { AuthResponse20200115 } from '../../Auth/AuthResponse20200115'
 import { CrypterInterface } from '../../Encryption/CrypterInterface'
 import { PKCERepositoryInterface } from '../../User/PKCERepositoryInterface'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { GenerateRecoveryCodes } from '../GenerateRecoveryCodes/GenerateRecoveryCodes'
 
 import { SignInWithRecoveryCodesDTO } from './SignInWithRecoveryCodesDTO'
+import { SignInWithRecoveryCodesResponse } from './SignInWithRecoveryCodesResponse'
 import { AuthResponseFactory20200115 } from '../../Auth/AuthResponseFactory20200115'
 import { IncreaseLoginAttempts } from '../IncreaseLoginAttempts'
 import { ClearLoginAttempts } from '../ClearLoginAttempts'
@@ -17,8 +17,9 @@ import { ApiVersion } from '../../Api/ApiVersion'
 import { GetSetting } from '../GetSetting/GetSetting'
 import { LockRepositoryInterface } from '../../User/LockRepositoryInterface'
 import { VerifyHumanInteraction } from '../VerifyHumanInteraction/VerifyHumanInteraction'
+import { UseCaseInterface } from '../UseCaseInterface'
 
-export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse20200115> {
+export class SignInWithRecoveryCodes implements UseCaseInterface {
   constructor(
     private userRepository: UserRepositoryInterface,
     private authResponseFactory: AuthResponseFactory20200115,
@@ -35,20 +36,23 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
     private verifyHumanInteractionUseCase: VerifyHumanInteraction,
   ) {}
 
-  async execute(dto: SignInWithRecoveryCodesDTO): Promise<Result<AuthResponse20200115>> {
+  async execute(dto: SignInWithRecoveryCodesDTO): Promise<SignInWithRecoveryCodesResponse> {
     const apiVersionOrError = ApiVersion.create(dto.apiVersion)
     if (apiVersionOrError.isFailed()) {
-      return Result.fail(apiVersionOrError.getError())
+      return this.failAfterIncrementingLoginAttempts(dto.username, apiVersionOrError.getError())
     }
     const apiVersion = apiVersionOrError.getValue()
 
     if (!apiVersion.isSupportedForRecoverySignIn()) {
-      return Result.fail('Unsupported api version')
+      return this.failAfterIncrementingLoginAttempts(dto.username, 'Unsupported api version')
     }
 
     const usernameOrError = Username.create(dto.username)
     if (usernameOrError.isFailed()) {
-      return Result.fail(`Could not sign in with recovery codes: ${usernameOrError.getError()}`)
+      return this.failAfterIncrementingLoginAttempts(
+        dto.username,
+        `Could not sign in with recovery codes: ${usernameOrError.getError()}`,
+      )
     }
     const username = usernameOrError.getValue()
 
@@ -60,49 +64,41 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
       dto.hvmToken,
     )
     if (humanVerificationBeforeCheckingUsernameAndPasswordResult.isFailed()) {
-      return Result.fail(humanVerificationBeforeCheckingUsernameAndPasswordResult.getError())
+      return {
+        success: false,
+        errorMessage: humanVerificationBeforeCheckingUsernameAndPasswordResult.getError(),
+        isNonCaptchaLimitReached: true,
+      }
     }
 
     const validCodeVerifier = await this.validateCodeVerifier(dto.codeVerifier)
     if (!validCodeVerifier) {
-      await this.increaseLoginAttempts.execute({ email: username.value })
-
-      return Result.fail('Invalid code verifier')
+      return this.failAfterIncrementingLoginAttempts(username.value, 'Invalid code verifier')
     }
 
     const passwordValidationResult = Validator.isNotEmpty(dto.password)
     if (passwordValidationResult.isFailed()) {
-      await this.increaseLoginAttempts.execute({ email: username.value })
-
-      return Result.fail('Empty password')
+      return this.failAfterIncrementingLoginAttempts(username.value, 'Empty password')
     }
 
     const recoveryCodesValidationResult = Validator.isNotEmpty(dto.recoveryCodes)
     if (recoveryCodesValidationResult.isFailed()) {
-      await this.increaseLoginAttempts.execute({ email: username.value })
-
-      return Result.fail('Empty recovery codes')
+      return this.failAfterIncrementingLoginAttempts(username.value, 'Empty recovery codes')
     }
 
     if (!user) {
-      await this.increaseLoginAttempts.execute({ email: username.value })
-
-      return Result.fail('Could not find user')
+      return this.failAfterIncrementingLoginAttempts(username.value, 'Could not find user')
     }
 
     const userUuidOrError = Uuid.create(user.uuid)
     if (userUuidOrError.isFailed()) {
-      await this.increaseLoginAttempts.execute({ email: username.value })
-
-      return Result.fail('Invalid user uuid')
+      return this.failAfterIncrementingLoginAttempts(username.value, 'Invalid user uuid')
     }
     const userUuid = userUuidOrError.getValue()
 
     const passwordMatches = await bcrypt.compare(dto.password, user.encryptedPassword)
     if (!passwordMatches) {
-      await this.increaseLoginAttempts.execute({ email: username.value })
-
-      return Result.fail('Invalid password')
+      return this.failAfterIncrementingLoginAttempts(username.value, 'Invalid password')
     }
 
     const recoveryCodesSettingOrError = await this.getSetting.execute({
@@ -112,19 +108,25 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
       allowSensitiveRetrieval: true,
     })
     if (recoveryCodesSettingOrError.isFailed()) {
-      await this.increaseLoginAttempts.execute({ email: username.value })
-
-      return Result.fail('User does not have recovery codes generated')
+      return this.failAfterIncrementingLoginAttempts(username.value, 'User does not have recovery codes generated')
     }
     const recoveryCodesSetting = recoveryCodesSettingOrError.getValue()
 
     if (recoveryCodesSetting.decryptedValue !== dto.recoveryCodes) {
-      await this.increaseLoginAttempts.execute({ email: username.value })
-
-      return Result.fail('Invalid recovery codes')
+      return this.failAfterIncrementingLoginAttempts(username.value, 'Invalid recovery codes')
     }
 
-    const authResponse = await this.authResponseFactory.createResponse({
+    const generateNewRecoveryCodesResult = await this.generateRecoveryCodes.execute({
+      userUuid: user.uuid,
+    })
+    if (generateNewRecoveryCodesResult.isFailed()) {
+      return this.failAfterIncrementingLoginAttempts(
+        username.value,
+        `Could not sign in with recovery codes: ${generateNewRecoveryCodesResult.getError()}`,
+      )
+    }
+
+    const authResponseCreationResult = await this.authResponseFactory.createResponse({
       user,
       apiVersion,
       userAgent: dto.userAgent,
@@ -133,15 +135,6 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
       snjs: dto.snjs,
       application: dto.application,
     })
-
-    const generateNewRecoveryCodesResult = await this.generateRecoveryCodes.execute({
-      userUuid: user.uuid,
-    })
-    if (generateNewRecoveryCodesResult.isFailed()) {
-      await this.increaseLoginAttempts.execute({ email: username.value })
-
-      return Result.fail(`Could not sign in with recovery codes: ${generateNewRecoveryCodesResult.getError()}`)
-    }
 
     await this.deleteSetting.execute({
       settingName: SettingName.NAMES.MfaSecret,
@@ -152,7 +145,28 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
 
     await this.clearLoginAttempts.execute({ email: username.value })
 
-    return Result.ok(authResponse.response as AuthResponse20200115)
+    return {
+      success: true,
+      result: authResponseCreationResult,
+    }
+  }
+
+  private async failAfterIncrementingLoginAttempts(
+    email: string,
+    errorMessage: string,
+  ): Promise<SignInWithRecoveryCodesResponse> {
+    const increaseResultOrError = await this.increaseLoginAttempts.execute({
+      email,
+      skipUsernameValidation: true,
+    })
+
+    return {
+      success: false,
+      errorMessage,
+      isNonCaptchaLimitReached: increaseResultOrError.isFailed()
+        ? undefined
+        : increaseResultOrError.getValue().isNonCaptchaLimitReached,
+    }
   }
 
   private async validateCodeVerifier(codeVerifier: string): Promise<boolean> {

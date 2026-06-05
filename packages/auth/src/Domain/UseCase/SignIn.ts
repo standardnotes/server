@@ -18,6 +18,8 @@ import { ApiVersion } from '../Api/ApiVersion'
 import { HttpStatusCode } from '@standardnotes/responses'
 import { VerifyHumanInteraction } from './VerifyHumanInteraction/VerifyHumanInteraction'
 import { LockRepositoryInterface } from '../User/LockRepositoryInterface'
+import { IncreaseLoginAttempts } from './IncreaseLoginAttempts'
+import { ClearLoginAttempts } from './ClearLoginAttempts'
 
 export class SignIn implements UseCaseInterface {
   constructor(
@@ -32,43 +34,36 @@ export class SignIn implements UseCaseInterface {
     private maxNonCaptchaAttempts: number,
     private lockRepository: LockRepositoryInterface,
     private verifyHumanInteractionUseCase: VerifyHumanInteraction,
+    private increaseLoginAttempts: IncreaseLoginAttempts,
+    private clearLoginAttempts: ClearLoginAttempts,
   ) {}
 
   async execute(dto: SignInDTO): Promise<SignInResponse> {
     if (!dto.codeVerifier) {
-      return {
-        success: false,
-        errorMessage: 'Please update your client application.',
-        errorCode: HttpStatusCode.Gone,
-      }
+      return this.failAfterIncrementingLoginAttempts(
+        dto.email,
+        'Please update your client application.',
+        HttpStatusCode.Gone,
+      )
     }
 
     const validCodeVerifier = await this.validateCodeVerifier(dto.codeVerifier)
     if (!validCodeVerifier) {
       this.logger.debug('Code verifier does not match')
 
-      return {
-        success: false,
-        errorMessage: 'Invalid email or password',
-      }
+      return this.failAfterIncrementingLoginAttempts(dto.email, 'Invalid email or password')
     }
 
     const apiVersionOrError = ApiVersion.create(dto.apiVersion)
     if (apiVersionOrError.isFailed()) {
-      return {
-        success: false,
-        errorMessage: apiVersionOrError.getError(),
-      }
+      return this.failAfterIncrementingLoginAttempts(dto.email, apiVersionOrError.getError())
     }
     const apiVersion = apiVersionOrError.getValue()
 
     /** Skip validation which was newly added in 2025, to allow existing users to continue to sign in */
     const usernameOrError = Username.create(dto.email, { skipValidation: true })
     if (usernameOrError.isFailed()) {
-      return {
-        success: false,
-        errorMessage: usernameOrError.getError(),
-      }
+      return this.failAfterIncrementingLoginAttempts(dto.email, usernameOrError.getError())
     }
     const username = usernameOrError.getValue()
 
@@ -83,26 +78,21 @@ export class SignIn implements UseCaseInterface {
       return {
         success: false,
         errorMessage: humanVerificationBeforeCheckingUsernameAndPasswordResult.getError(),
+        isNonCaptchaLimitReached: true,
       }
     }
 
     if (!user) {
       this.logger.debug(`User with email ${dto.email} was not found`)
 
-      return {
-        success: false,
-        errorMessage: 'Invalid email or password',
-      }
+      return this.failAfterIncrementingLoginAttempts(dto.email, 'Invalid email or password')
     }
 
     const passwordMatches = await bcrypt.compare(dto.password, user.encryptedPassword)
     if (!passwordMatches) {
       this.logger.debug('Password does not match')
 
-      return {
-        success: false,
-        errorMessage: 'Invalid email or password',
-      }
+      return this.failAfterIncrementingLoginAttempts(dto.email, 'Invalid email or password')
     }
 
     const authResponseFactory = this.authResponseFactoryResolver.resolveAuthResponseFactoryVersion(apiVersion)
@@ -119,9 +109,31 @@ export class SignIn implements UseCaseInterface {
       application: dto.application,
     })
 
+    await this.clearLoginAttempts.execute({ email: dto.email })
+
     return {
       success: true,
       result,
+    }
+  }
+
+  private async failAfterIncrementingLoginAttempts(
+    email: string,
+    errorMessage: string,
+    errorCode?: HttpStatusCode,
+  ): Promise<SignInResponse> {
+    const increaseResultOrError = await this.increaseLoginAttempts.execute({
+      email,
+      skipUsernameValidation: true,
+    })
+
+    return {
+      success: false,
+      errorMessage,
+      errorCode,
+      isNonCaptchaLimitReached: increaseResultOrError.isFailed()
+        ? undefined
+        : increaseResultOrError.getValue().isNonCaptchaLimitReached,
     }
   }
 
