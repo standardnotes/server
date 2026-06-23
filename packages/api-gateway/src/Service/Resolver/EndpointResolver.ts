@@ -96,7 +96,7 @@ export class EndpointResolver implements EndpointResolverInterface {
   resolveEndpointOrMethodIdentifier(method: string, endpoint: string, ...params: string[]): string {
     if (!this.isConfiguredForHomeServer) {
       if (params.length > 0) {
-        return params.reduce((acc, param) => acc.replace(/:[a-zA-Z0-9]+/, param), endpoint)
+        return params.reduce((acc, param) => acc.replace(/:[a-zA-Z0-9]+/, encodeURIComponent(param)), endpoint)
       }
 
       return endpoint
