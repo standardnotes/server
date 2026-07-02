@@ -1434,8 +1434,8 @@ export class ContainerConfigLoader {
           container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
           container.get<GetRegularSubscriptionForUser>(TYPES.Auth_GetRegularSubscriptionForUser),
           container.get<GetSharedSubscriptionForUser>(TYPES.Auth_GetSharedSubscriptionForUser),
-          container.get<GetSubscriptionSetting>(TYPES.Auth_GetSubscriptionSetting),
-          container.get<SetSubscriptionSettingValue>(TYPES.Auth_SetSubscriptionSettingValue),
+          container.get<SubscriptionSettingRepositoryInterface>(TYPES.Auth_SubscriptionSettingRepository),
+          container.get<TimerInterface>(TYPES.Auth_Timer),
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )

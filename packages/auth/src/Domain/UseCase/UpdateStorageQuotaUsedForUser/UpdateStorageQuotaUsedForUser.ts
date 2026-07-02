@@ -1,21 +1,21 @@
 import { Result, SettingName, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { TimerInterface } from '@standardnotes/time'
 
 import { UserSubscription } from '../../Subscription/UserSubscription'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { UpdateStorageQuotaUsedForUserDTO } from './UpdateStorageQuotaUsedForUserDTO'
 import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
-import { GetSubscriptionSetting } from '../GetSubscriptionSetting/GetSubscriptionSetting'
-import { SetSubscriptionSettingValue } from '../SetSubscriptionSettingValue/SetSubscriptionSettingValue'
 import { Logger } from 'winston'
 import { GetSharedSubscriptionForUser } from '../GetSharedSubscriptionForUser/GetSharedSubscriptionForUser'
+import { SubscriptionSettingRepositoryInterface } from '../../Setting/SubscriptionSettingRepositoryInterface'
 
 export class UpdateStorageQuotaUsedForUser implements UseCaseInterface<void> {
   constructor(
     private userRepository: UserRepositoryInterface,
     private getRegularSubscription: GetRegularSubscriptionForUser,
     private getSharedSubscription: GetSharedSubscriptionForUser,
-    private getSubscriptionSetting: GetSubscriptionSetting,
-    private setSubscriptonSettingValue: SetSubscriptionSettingValue,
+    private subscriptionSettingRepository: SubscriptionSettingRepositoryInterface,
+    private timer: TimerInterface,
     private logger: Logger,
   ) {}
 
@@ -55,31 +55,23 @@ export class UpdateStorageQuotaUsedForUser implements UseCaseInterface<void> {
   }
 
   private async updateUploadBytesUsedSetting(subscription: UserSubscription, bytesUsed: number): Promise<void> {
-    let bytesAlreadyUsed = '0'
-
-    const bytesUsedSettingExists = await this.getSubscriptionSetting.execute({
-      userSubscriptionUuid: subscription.uuid,
-      settingName: SettingName.NAMES.FileUploadBytesUsed,
-      allowSensitiveRetrieval: false,
-    })
-
-    if (!bytesUsedSettingExists.isFailed()) {
-      const bytesUsedSetting = bytesUsedSettingExists.getValue()
-      bytesAlreadyUsed = bytesUsedSetting.setting.props.value as string
+    const userSubscriptionUuidOrError = Uuid.create(subscription.uuid)
+    if (userSubscriptionUuidOrError.isFailed()) {
+      this.logger.error(
+        `Could not update file upload bytes used for subscription ${subscription.uuid}: ${userSubscriptionUuidOrError.getError()}`,
+      )
+      return
     }
+    const userSubscriptionUuid = userSubscriptionUuidOrError.getValue()
 
-    const bytesUsedNewTotal = +bytesAlreadyUsed + bytesUsed
-    const bytesUsedValue = bytesUsedNewTotal < 0 ? 0 : bytesUsedNewTotal
-
-    const result = await this.setSubscriptonSettingValue.execute({
-      userSubscriptionUuid: subscription.uuid,
-      settingName: SettingName.NAMES.FileUploadBytesUsed,
-      value: bytesUsedValue.toString(),
-    })
-
-    /* istanbul ignore next */
-    if (result.isFailed()) {
-      this.logger.error(`Could not set file upload bytes used for subscription ${subscription.uuid}`)
-    }
+    // Apply the change as an atomic database-level delta that creates the row if it does not exist.
+    // The unique index on (name, user_subscription_uuid) makes this race-safe for both concurrent
+    // increments and concurrent first-time creations, so no read/lock/transaction is needed here.
+    await this.subscriptionSettingRepository.incrementCounterValueForNameAndUserSubscriptionUuid(
+      SettingName.NAMES.FileUploadBytesUsed,
+      userSubscriptionUuid,
+      bytesUsed,
+      this.timer.getTimestampInMicroseconds(),
+    )
   }
 }
