@@ -8,15 +8,20 @@ import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInter
 import { DeleteSetting } from './DeleteSetting'
 import { SettingName, Timestamps, Uuid, Result } from '@standardnotes/domain-core'
 import { VerifyUserServerPassword } from '../VerifyUserServerPassword/VerifyUserServerPassword'
+import { SettingsAssociationService } from '../../Setting/SettingsAssociationService'
 
 describe('DeleteSetting', () => {
   let setting: Setting
   let sensitiveSetting: Setting
+  let recoveryCodesSetting: Setting
+  let listedAuthorSecretsSetting: Setting
   let settingRepository: SettingRepositoryInterface
   let verifyUserServerPassword: VerifyUserServerPassword
+  let settingsAssociationService: SettingsAssociationService
   let timer: TimerInterface
 
-  const createUseCase = () => new DeleteSetting(settingRepository, verifyUserServerPassword, timer)
+  const createUseCase = () =>
+    new DeleteSetting(settingRepository, verifyUserServerPassword, timer, settingsAssociationService)
 
   beforeEach(() => {
     setting = Setting.create({
@@ -37,6 +42,24 @@ describe('DeleteSetting', () => {
       timestamps: Timestamps.create(123, 123).getValue(),
     }).getValue()
 
+    recoveryCodesSetting = Setting.create({
+      name: SettingName.NAMES.RecoveryCodes,
+      value: 'ABCD EFGH IJKL MNOP',
+      serverEncryptionVersion: 0,
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      sensitive: true,
+      timestamps: Timestamps.create(123, 123).getValue(),
+    }).getValue()
+
+    listedAuthorSecretsSetting = Setting.create({
+      name: SettingName.NAMES.ListedAuthorSecrets,
+      value: '[]',
+      serverEncryptionVersion: 0,
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      sensitive: false,
+      timestamps: Timestamps.create(123, 123).getValue(),
+    }).getValue()
+
     settingRepository = {} as jest.Mocked<SettingRepositoryInterface>
     settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValue(setting)
     settingRepository.findOneByUuid = jest.fn().mockReturnValue(setting)
@@ -45,6 +68,8 @@ describe('DeleteSetting', () => {
 
     verifyUserServerPassword = {} as jest.Mocked<VerifyUserServerPassword>
     verifyUserServerPassword.execute = jest.fn()
+
+    settingsAssociationService = new SettingsAssociationService()
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(1)
@@ -218,6 +243,90 @@ describe('DeleteSetting', () => {
     })
   })
 
+  describe('client permission validation for immutable settings', () => {
+    it('should not allow client to delete recovery codes', async () => {
+      settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValue(recoveryCodesSetting)
+
+      const result = await createUseCase().execute({
+        settingName: SettingName.NAMES.RecoveryCodes,
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        checkUserPermissions: true,
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.error.message).toBe(
+          'User 00000000-0000-0000-0000-000000000000 does not have permission to delete setting RECOVERY_CODES.',
+        )
+      }
+      expect(settingRepository.deleteByUserUuid).not.toHaveBeenCalled()
+    })
+
+    it('should not allow client to delete listed author secrets', async () => {
+      settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValue(listedAuthorSecretsSetting)
+
+      const result = await createUseCase().execute({
+        settingName: SettingName.NAMES.ListedAuthorSecrets,
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        checkUserPermissions: true,
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.error.message).toBe(
+          'User 00000000-0000-0000-0000-000000000000 does not have permission to delete setting LISTED_AUTHOR_SECRETS.',
+        )
+      }
+      expect(settingRepository.deleteByUserUuid).not.toHaveBeenCalled()
+    })
+
+    it('should allow delete of immutable settings when checkUserPermissions is false', async () => {
+      settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValue(recoveryCodesSetting)
+
+      const result = await createUseCase().execute({
+        settingName: SettingName.NAMES.RecoveryCodes,
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        checkUserPermissions: false,
+      })
+
+      expect(result.success).toBe(true)
+      expect(settingRepository.deleteByUserUuid).toHaveBeenCalledWith({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        settingName: SettingName.NAMES.RecoveryCodes,
+      })
+    })
+
+    it('should allow client to delete mutable settings when checkUserPermissions is true', async () => {
+      const result = await createUseCase().execute({
+        settingName: SettingName.NAMES.LogSessionUserAgent,
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        checkUserPermissions: true,
+      })
+
+      expect(result.success).toBe(true)
+      expect(settingRepository.deleteByUserUuid).toHaveBeenCalledWith({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        settingName: SettingName.NAMES.LogSessionUserAgent,
+      })
+    })
+
+    it('should return error for invalid setting name when checkUserPermissions is true', async () => {
+      settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValue(setting)
+
+      const result = await createUseCase().execute({
+        settingName: 'INVALID_SETTING',
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        checkUserPermissions: true,
+      })
+
+      expect(result.success).toBe(false)
+      if (!result.success) {
+        expect(result.error.message).toBe('Invalid setting name: INVALID_SETTING')
+      }
+      expect(settingRepository.deleteByUserUuid).not.toHaveBeenCalled()
+    })
+  })
+
   it('should delete a setting by name and user uuid', async () => {
     const result = await createUseCase().execute({
       settingName: SettingName.NAMES.LogSessionUserAgent,
@@ -240,6 +349,7 @@ describe('DeleteSetting', () => {
       userUuid: '00000000-0000-0000-0000-000000000000',
       serverPassword: 'correct-password',
       shouldVerifyUserServerPassword: true,
+      checkUserPermissions: true,
     })
 
     expect(result.success).toBe(true)

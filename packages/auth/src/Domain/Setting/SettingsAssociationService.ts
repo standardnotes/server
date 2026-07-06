@@ -34,6 +34,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
 
   private readonly CLIENT_IMMUTABLE_SETTINGS = [
     SettingName.NAMES.ListedAuthorSecrets,
+    SettingName.NAMES.RecoveryCodes,
     SettingName.NAMES.FileUploadBytesLimit,
     SettingName.NAMES.FileUploadBytesUsed,
   ]
