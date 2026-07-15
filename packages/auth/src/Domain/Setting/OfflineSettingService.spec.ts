@@ -20,6 +20,7 @@ describe('OfflineSettingService', () => {
     offlineSettingRepository = {} as jest.Mocked<OfflineSettingRepositoryInterface>
     offlineSettingRepository.findOneByNameAndEmail = jest.fn().mockReturnValue(null)
     offlineSettingRepository.save = jest.fn()
+    offlineSettingRepository.deleteByNameAndValueExcludingEmail = jest.fn()
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123)
@@ -40,6 +41,11 @@ describe('OfflineSettingService', () => {
       updatedAt: 123,
       serverEncryptionVersion: 0,
     })
+    expect(offlineSettingRepository.deleteByNameAndValueExcludingEmail).toHaveBeenCalledWith(
+      OfflineSettingName.FeaturesToken,
+      'test',
+      'test@test.com',
+    )
   })
 
   it('should update an existing offline setting', async () => {
@@ -55,5 +61,34 @@ describe('OfflineSettingService', () => {
       value: 'test',
       updatedAt: 123,
     })
+    expect(offlineSettingRepository.deleteByNameAndValueExcludingEmail).toHaveBeenCalledWith(
+      OfflineSettingName.FeaturesToken,
+      'test',
+      'test@test.com',
+    )
+  })
+
+  it('should delete stale offline settings mapped to the same token under a different email', async () => {
+    await createService().createOrUpdate({
+      email: 'new@test.com',
+      name: OfflineSettingName.FeaturesToken,
+      value: 'shared-token',
+    })
+
+    expect(offlineSettingRepository.deleteByNameAndValueExcludingEmail).toHaveBeenCalledWith(
+      OfflineSettingName.FeaturesToken,
+      'shared-token',
+      'new@test.com',
+    )
+  })
+
+  it('should not delete stale settings for non-extension-key offline settings', async () => {
+    await createService().createOrUpdate({
+      email: 'test@test.com',
+      name: 'OTHER_SETTING' as OfflineSettingName,
+      value: 'test',
+    })
+
+    expect(offlineSettingRepository.deleteByNameAndValueExcludingEmail).not.toHaveBeenCalled()
   })
 })

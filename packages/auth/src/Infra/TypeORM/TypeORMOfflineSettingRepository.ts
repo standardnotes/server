@@ -33,4 +33,16 @@ export class TypeORMOfflineSettingRepository implements OfflineSettingRepository
       })
       .getOne()
   }
+
+  async deleteByNameAndValueExcludingEmail(name: OfflineSettingName, value: string, email: string): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder()
+      .delete()
+      .where('name = :name AND value = :value AND email != :email', {
+        name,
+        value,
+        email,
+      })
+      .execute()
+  }
 }
