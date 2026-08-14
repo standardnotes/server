@@ -26,11 +26,17 @@ export class RedisEphemeralSessionRepository implements EphemeralSessionReposito
   }
 
   async deleteOne(uuid: string, userUuid: string): Promise<void> {
+    const session = await this.findOneByUuidAndUserUuid(uuid, userUuid)
+
     const pipeline = this.redisClient.pipeline()
 
     pipeline.del(`${this.PREFIX}:${uuid}`)
     pipeline.del(`${this.PREFIX}:${uuid}:${userUuid}`)
     pipeline.srem(`${this.USER_SESSIONS_PREFIX}:${userUuid}`, uuid)
+
+    if (session?.privateIdentifier) {
+      pipeline.del(`${this.PREFIX_PRIVATE_ID}:${session.privateIdentifier}`)
+    }
 
     await pipeline.exec()
   }
