@@ -13,4 +13,15 @@ describe('AuthenticatorChallenge', () => {
     expect(entityOrError.isFailed()).toBeFalsy()
     expect(entityOrError.getValue().id).not.toBeNull()
   })
+
+  it('should detect expired challenges', () => {
+    const challenge = AuthenticatorChallenge.create({
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      createdAt: new Date(Date.now() - 301_000),
+      challenge: 'challenge',
+    }).getValue()
+
+    expect(challenge.isExpired(300)).toBeTruthy()
+    expect(challenge.isExpired(600)).toBeFalsy()
+  })
 })

@@ -40,4 +40,15 @@ export class TypeORMAuthenticatorChallengeRepository implements AuthenticatorCha
 
     return this.mapper.toDomain(persistence)
   }
+
+  async deleteByUserUuid(userUuid: Uuid): Promise<number> {
+    const result = await this.ormRepository
+      .createQueryBuilder()
+      .delete()
+      .from(TypeORMAuthenticatorChallenge)
+      .where('user_uuid = :userUuid', { userUuid: userUuid.value })
+      .execute()
+
+    return result.affected ?? 0
+  }
 }

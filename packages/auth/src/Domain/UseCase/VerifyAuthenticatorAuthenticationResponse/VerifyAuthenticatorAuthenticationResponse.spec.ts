@@ -19,6 +19,7 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
       'standardnotes.com',
       ['localhost', 'https://app.standardnotes.com'],
       true,
+      300,
     )
 
   beforeEach(() => {
@@ -38,11 +39,14 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
     authenticatorRepository.updateCounter = jest.fn()
 
     authenticatorChallengeRepository = {} as jest.Mocked<AuthenticatorChallengeRepositoryInterface>
-    authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
-      props: {
+    authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue(
+      AuthenticatorChallenge.create({
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         challenge: 'challenge',
-      },
-    } as jest.Mocked<AuthenticatorChallenge>)
+        createdAt: new Date(),
+      }).getValue(),
+    )
+    authenticatorChallengeRepository.deleteByUserUuid = jest.fn().mockResolvedValue(1)
   })
 
   it('should return error if user uuid is invalid', async () => {
@@ -221,5 +225,67 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
 
     expect(result.isFailed()).toBeFalsy()
     expect(authenticatorRepository.updateCounter).toHaveBeenCalled()
+    expect(authenticatorChallengeRepository.deleteByUserUuid).toHaveBeenCalled()
+  })
+
+  it('should return error if authenticator challenge is already consumed', async () => {
+    authenticatorChallengeRepository.deleteByUserUuid = jest.fn().mockResolvedValue(0)
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      authenticatorResponse: {
+        authenticatorAttachment: 'platform',
+        clientExtensionResults: {},
+        id: 'id',
+        rawId: 'rawId',
+        response: {
+          authenticatorData: 'authenticatorData',
+          clientDataJSON: 'clientDataJSON',
+          signature: 'signature',
+          userHandle: 'userHandle',
+        },
+        type: 'public-key',
+      },
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+    expect(result.getError()).toEqual(
+      'Could not verify authenticator authentication response: challenge already consumed',
+    )
+  })
+
+  it('should return error if authenticator challenge is expired', async () => {
+    authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue(
+      AuthenticatorChallenge.create({
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        challenge: 'challenge',
+        createdAt: new Date(Date.now() - 301_000),
+      }).getValue(),
+    )
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      authenticatorResponse: {
+        authenticatorAttachment: 'platform',
+        clientExtensionResults: {},
+        id: 'id',
+        rawId: 'rawId',
+        response: {
+          authenticatorData: 'authenticatorData',
+          clientDataJSON: 'clientDataJSON',
+          signature: 'signature',
+          userHandle: 'userHandle',
+        },
+        type: 'public-key',
+      },
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+    expect(result.getError()).toEqual('Could not verify authenticator authentication response: challenge expired')
+    expect(authenticatorChallengeRepository.deleteByUserUuid).toHaveBeenCalled()
   })
 })

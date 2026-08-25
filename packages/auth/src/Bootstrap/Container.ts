@@ -675,6 +675,12 @@ export class ContainerConfigLoader {
     container
       .bind(TYPES.Auth_U2F_REQUIRE_USER_VERIFICATION)
       .toConstantValue(env.get('U2F_REQUIRE_USER_VERIFICATION', true) === 'true')
+    const challengeMaxAgeSeconds = Number(env.get('U2F_CHALLENGE_MAX_AGE_SECONDS', true))
+    container
+      .bind(TYPES.Auth_AUTHENTICATOR_CHALLENGE_MAX_AGE_SECONDS)
+      .toConstantValue(
+        Number.isFinite(challengeMaxAgeSeconds) && challengeMaxAgeSeconds > 0 ? challengeMaxAgeSeconds : 300,
+      )
     container
       .bind(TYPES.Auth_READONLY_USERS)
       .toConstantValue(env.get('READONLY_USERS', true) ? env.get('READONLY_USERS', true).split(',') : [])
@@ -1036,6 +1042,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.Auth_U2F_REQUIRE_USER_VERIFICATION),
           container.get(TYPES.Auth_UserRepository),
           container.get(TYPES.Auth_FeatureService),
+          container.get(TYPES.Auth_AUTHENTICATOR_CHALLENGE_MAX_AGE_SECONDS),
         ),
       )
     container
@@ -1057,6 +1064,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.Auth_U2F_RELYING_PARTY_ID),
           container.get(TYPES.Auth_U2F_EXPECTED_ORIGIN),
           container.get(TYPES.Auth_U2F_REQUIRE_USER_VERIFICATION),
+          container.get(TYPES.Auth_AUTHENTICATOR_CHALLENGE_MAX_AGE_SECONDS),
         ),
       )
     container
