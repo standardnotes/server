@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcryptjs'
 import { Result, SettingName, Username, Uuid, Validator } from '@standardnotes/domain-core'
+import { Logger } from 'winston'
 
 import { CrypterInterface } from '../../Encryption/CrypterInterface'
 import { PKCERepositoryInterface } from '../../User/PKCERepositoryInterface'
@@ -34,6 +35,7 @@ export class SignInWithRecoveryCodes implements UseCaseInterface {
     private maxNonCaptchaAttempts: number,
     private lockRepository: LockRepositoryInterface,
     private verifyHumanInteractionUseCase: VerifyHumanInteraction,
+    private logger: Logger,
   ) {}
 
   async execute(dto: SignInWithRecoveryCodesDTO): Promise<SignInWithRecoveryCodesResponse> {
@@ -71,8 +73,16 @@ export class SignInWithRecoveryCodes implements UseCaseInterface {
       }
     }
 
-    const validCodeVerifier = await this.validateCodeVerifier(dto.codeVerifier)
+    if (!user) {
+      this.logger.debug(`User with username ${username.value} was not found`)
+
+      return this.failAfterIncrementingLoginAttempts(username.value, 'Invalid code verifier')
+    }
+
+    const validCodeVerifier = await this.validateCodeVerifier(dto.codeVerifier, user.uuid)
     if (!validCodeVerifier) {
+      this.logger.debug('Code verifier does not match')
+
       return this.failAfterIncrementingLoginAttempts(username.value, 'Invalid code verifier')
     }
 
@@ -84,10 +94,6 @@ export class SignInWithRecoveryCodes implements UseCaseInterface {
     const recoveryCodesValidationResult = Validator.isNotEmpty(dto.recoveryCodes)
     if (recoveryCodesValidationResult.isFailed()) {
       return this.failAfterIncrementingLoginAttempts(username.value, 'Empty recovery codes')
-    }
-
-    if (!user) {
-      return this.failAfterIncrementingLoginAttempts(username.value, 'Could not find user')
     }
 
     const userUuidOrError = Uuid.create(user.uuid)
@@ -169,7 +175,7 @@ export class SignInWithRecoveryCodes implements UseCaseInterface {
     }
   }
 
-  private async validateCodeVerifier(codeVerifier: string): Promise<boolean> {
+  private async validateCodeVerifier(codeVerifier: string, userUuid: string): Promise<boolean> {
     const codeEmptinessVerificationResult = Validator.isNotEmpty(codeVerifier)
     if (codeEmptinessVerificationResult.isFailed()) {
       return false
@@ -177,7 +183,10 @@ export class SignInWithRecoveryCodes implements UseCaseInterface {
 
     const codeChallenge = this.crypter.base64URLEncode(this.crypter.sha256Hash(codeVerifier))
 
-    const matchingCodeChallengeWasPresentAndRemoved = await this.pkceRepository.removeCodeChallenge(codeChallenge)
+    const matchingCodeChallengeWasPresentAndRemoved = await this.pkceRepository.removeCodeChallenge(
+      codeChallenge,
+      userUuid,
+    )
 
     return matchingCodeChallengeWasPresentAndRemoved
   }

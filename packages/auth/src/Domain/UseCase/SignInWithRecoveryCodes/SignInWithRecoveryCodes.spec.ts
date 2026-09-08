@@ -16,6 +16,7 @@ import { GetSetting } from '../GetSetting/GetSetting'
 import { ApiVersion } from '../../Api/ApiVersion'
 import { LockRepositoryInterface } from '../../User/LockRepositoryInterface'
 import { VerifyHumanInteraction } from '../VerifyHumanInteraction/VerifyHumanInteraction'
+import { Logger } from 'winston'
 
 describe('SignInWithRecoveryCodes', () => {
   let userRepository: UserRepositoryInterface
@@ -31,6 +32,7 @@ describe('SignInWithRecoveryCodes', () => {
   let maxNonCaptchaAttempts: number
   let lockRepository: LockRepositoryInterface
   let verifyHumanInteractionUseCase: VerifyHumanInteraction
+  let logger: Logger
 
   const createUseCase = () =>
     new SignInWithRecoveryCodes(
@@ -47,6 +49,7 @@ describe('SignInWithRecoveryCodes', () => {
       maxNonCaptchaAttempts,
       lockRepository,
       verifyHumanInteractionUseCase,
+      logger,
     )
 
   beforeEach(() => {
@@ -93,6 +96,9 @@ describe('SignInWithRecoveryCodes', () => {
 
     verifyHumanInteractionUseCase = {} as jest.Mocked<VerifyHumanInteraction>
     verifyHumanInteractionUseCase.execute = jest.fn().mockReturnValue(Result.ok())
+
+    logger = {} as jest.Mocked<Logger>
+    logger.debug = jest.fn()
   })
 
   const requireHumanVerification = () => {
@@ -201,7 +207,7 @@ describe('SignInWithRecoveryCodes', () => {
 
     expect(result).toEqual({
       success: false,
-      errorMessage: 'Could not find user',
+      errorMessage: 'Invalid code verifier',
       isNonCaptchaLimitReached: false,
     })
   })

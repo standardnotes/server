@@ -1347,6 +1347,7 @@ export class ContainerConfigLoader {
           container.get<number>(TYPES.Auth_MAX_LOGIN_ATTEMPTS),
           container.get<LockRepositoryInterface>(TYPES.Auth_LockRepository),
           container.get<VerifyHumanInteraction>(TYPES.Auth_VerifyHumanInteraction),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
     container

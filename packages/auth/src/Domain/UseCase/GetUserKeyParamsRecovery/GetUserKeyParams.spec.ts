@@ -22,7 +22,7 @@ describe('GetUserKeyParamsRecovery', () => {
     keyParamsFactory.create = jest.fn().mockReturnValue({ foo: 'bar' })
     keyParamsFactory.createPseudoParams = jest.fn().mockReturnValue({ bar: 'baz' })
 
-    user = {} as jest.Mocked<User>
+    user = { uuid: 'user-uuid' } as jest.Mocked<User>
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
     userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
@@ -121,6 +121,7 @@ describe('GetUserKeyParamsRecovery', () => {
     })
 
     expect(keyParamsFactory.create).toHaveBeenCalled()
+    expect(pkceRepository.storeCodeChallenge).toHaveBeenCalledWith('codeChallenge', 'user-uuid')
     expect(result.isFailed()).toBe(false)
   })
 

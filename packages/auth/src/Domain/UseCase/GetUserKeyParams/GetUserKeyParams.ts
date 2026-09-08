@@ -63,7 +63,7 @@ export class GetUserKeyParams implements UseCaseInterface {
 
   private async createKeyParams(dto: GetUserKeyParamsDTO, user: User, authenticated: boolean): Promise<KeyParamsData> {
     if (this.isCodeChallengedVersion(dto)) {
-      await this.pkceRepository.storeCodeChallenge(dto.codeChallenge)
+      await this.pkceRepository.storeCodeChallenge(dto.codeChallenge, user.uuid)
     }
 
     return this.keyParamsFactory.create(user, authenticated)

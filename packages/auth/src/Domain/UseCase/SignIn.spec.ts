@@ -242,7 +242,29 @@ describe('SignIn', () => {
 
     expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
     expect(domainEventPublisher.publish).toHaveBeenCalled()
+    expect(pkceRepository.removeCodeChallenge).toHaveBeenCalledWith('base64-url-encoded', '1-2-3')
     expect(clearLoginAttempts.execute).toHaveBeenCalledWith({ email: 'test@test.te' })
+  })
+
+  it('should not sign in when pkce challenge was registered for a different user', async () => {
+    pkceRepository.removeCodeChallenge = jest.fn().mockReturnValue(false)
+
+    expect(
+      await createUseCase().execute({
+        email: 'test@test.te',
+        password: 'qweqwe123123',
+        userAgent: 'Google Chrome',
+        apiVersion: '20190520',
+        ephemeralSession: false,
+        codeVerifier: 'test',
+      }),
+    ).toEqual({
+      success: false,
+      errorMessage: 'Invalid email or password',
+      isNonCaptchaLimitReached: false,
+    })
+
+    expect(pkceRepository.removeCodeChallenge).toHaveBeenCalledWith('base64-url-encoded', '1-2-3')
   })
 
   it('should sign in a user even if publishing a sign in event fails', async () => {

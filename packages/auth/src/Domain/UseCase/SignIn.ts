@@ -47,13 +47,6 @@ export class SignIn implements UseCaseInterface {
       )
     }
 
-    const validCodeVerifier = await this.validateCodeVerifier(dto.codeVerifier)
-    if (!validCodeVerifier) {
-      this.logger.debug('Code verifier does not match')
-
-      return this.failAfterIncrementingLoginAttempts(dto.email, 'Invalid email or password')
-    }
-
     const apiVersionOrError = ApiVersion.create(dto.apiVersion)
     if (apiVersionOrError.isFailed()) {
       return this.failAfterIncrementingLoginAttempts(dto.email, apiVersionOrError.getError())
@@ -84,6 +77,13 @@ export class SignIn implements UseCaseInterface {
 
     if (!user) {
       this.logger.debug(`User with email ${dto.email} was not found`)
+
+      return this.failAfterIncrementingLoginAttempts(dto.email, 'Invalid email or password')
+    }
+
+    const validCodeVerifier = await this.validateCodeVerifier(dto.codeVerifier, user.uuid)
+    if (!validCodeVerifier) {
+      this.logger.debug('Code verifier does not match')
 
       return this.failAfterIncrementingLoginAttempts(dto.email, 'Invalid email or password')
     }
@@ -137,10 +137,13 @@ export class SignIn implements UseCaseInterface {
     }
   }
 
-  private async validateCodeVerifier(codeVerifier: string): Promise<boolean> {
+  private async validateCodeVerifier(codeVerifier: string, userUuid: string): Promise<boolean> {
     const codeChallenge = this.crypter.base64URLEncode(this.crypter.sha256Hash(codeVerifier))
 
-    const matchingCodeChallengeWasPresentAndRemoved = await this.pkceRepository.removeCodeChallenge(codeChallenge)
+    const matchingCodeChallengeWasPresentAndRemoved = await this.pkceRepository.removeCodeChallenge(
+      codeChallenge,
+      userUuid,
+    )
 
     return matchingCodeChallengeWasPresentAndRemoved
   }
