@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.41.6](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.41.5...@standardnotes/domain-core@1.41.6) (2026-09-08)
+
+### Bug Fixes
+
+* document native crypto usage in UniqueEntityId ([2c401cf](https://github.com/standardnotes/server/commit/2c401cfc521ad89b2da714ed879276961b1aea13))
+
 ## [1.41.5](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.41.4...@standardnotes/domain-core@1.41.5) (2026-09-08)
 
 ### Bug Fixes
