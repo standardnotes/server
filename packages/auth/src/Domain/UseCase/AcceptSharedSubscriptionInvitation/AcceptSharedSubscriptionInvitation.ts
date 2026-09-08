@@ -74,6 +74,13 @@ export class AcceptSharedSubscriptionInvitation implements UseCaseInterface {
     }
     const inviterUserSubscription = activeUserSubscriptions[0]
 
+    if (invitee.uuid === inviterUserSubscription.userUuid) {
+      return {
+        success: false,
+        message: 'You cannot accept a subscription invitation sent to yourself.',
+      }
+    }
+
     sharedSubscriptionInvitation.status = InvitationStatus.Accepted
     sharedSubscriptionInvitation.updatedAt = this.timer.getTimestampInMicroseconds()
 

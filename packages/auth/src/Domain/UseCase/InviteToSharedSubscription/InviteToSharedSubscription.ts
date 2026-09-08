@@ -45,6 +45,16 @@ export class InviteToSharedSubscription implements UseCaseInterface {
       }
     }
 
+    const inviteeIdentifierType = this.isInviteeIdentifierPotentiallyAPrivateUsernameAccount(dto.inviteeIdentifier)
+      ? InviteeIdentifierType.Hash
+      : InviteeIdentifierType.Email
+
+    if (this.isSelfInvite(dto.inviteeIdentifier, dto.inviterEmail, inviteeIdentifierType)) {
+      return {
+        success: false,
+      }
+    }
+
     const numberOfUsedInvites = await this.sharedSubscriptionInvitationRepository.countByInviterEmailAndStatus(
       dto.inviterEmail,
       [InvitationStatus.Sent, InvitationStatus.Accepted],
@@ -69,11 +79,7 @@ export class InviteToSharedSubscription implements UseCaseInterface {
     sharedSubscriptionInvition.inviterIdentifier = dto.inviterEmail
     sharedSubscriptionInvition.inviterIdentifierType = InviterIdentifierType.Email
     sharedSubscriptionInvition.inviteeIdentifier = dto.inviteeIdentifier
-    sharedSubscriptionInvition.inviteeIdentifierType = this.isInviteeIdentifierPotentiallyAPrivateUsernameAccount(
-      dto.inviteeIdentifier,
-    )
-      ? InviteeIdentifierType.Hash
-      : InviteeIdentifierType.Email
+    sharedSubscriptionInvition.inviteeIdentifierType = inviteeIdentifierType
     sharedSubscriptionInvition.status = InvitationStatus.Sent
     sharedSubscriptionInvition.subscriptionId = inviterUserSubscription.subscriptionId as number
     sharedSubscriptionInvition.createdAt = this.timer.getTimestampInMicroseconds()
@@ -109,5 +115,17 @@ export class InviteToSharedSubscription implements UseCaseInterface {
 
   private isInviteeIdentifierPotentiallyAPrivateUsernameAccount(identifier: string): boolean {
     return identifier.length === 64 && !identifier.includes('@')
+  }
+
+  private isSelfInvite(
+    inviteeIdentifier: string,
+    inviterEmail: string,
+    inviteeIdentifierType: InviteeIdentifierType,
+  ): boolean {
+    if (inviteeIdentifierType !== InviteeIdentifierType.Email) {
+      return false
+    }
+
+    return inviteeIdentifier.trim().toLowerCase() === inviterEmail.trim().toLowerCase()
   }
 }
