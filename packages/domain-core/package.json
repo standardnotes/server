@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/domain-core",
-  "version": "1.41.4",
+  "version": "1.41.5",
   "engines": {
     "node": ">=18.0.0 <21.0.0"
   },

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.41.5](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.41.4...@standardnotes/domain-core@1.41.5) (2026-09-08)
+
+### Bug Fixes
+
+* remove uuid dependency in favor of native node crypto.randomUUID ([7f179f6](https://github.com/standardnotes/server/commit/7f179f63f2167a072f2d3f8fa223b45a7ce4cd86))
+
 ## [1.41.4](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.41.3...@standardnotes/domain-core@1.41.4) (2026-04-11)
 
 **Note:** Version bump only for package @standardnotes/domain-core

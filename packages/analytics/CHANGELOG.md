@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.34.20](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.34.19...@standardnotes/analytics@2.34.20) (2026-09-08)
+
+**Note:** Version bump only for package @standardnotes/analytics
+
 ## [2.34.19](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.34.18...@standardnotes/analytics@2.34.19) (2026-04-11)
 
 **Note:** Version bump only for package @standardnotes/analytics
