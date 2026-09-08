@@ -6557,11 +6557,9 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@types/jest", "npm:29.5.2"],\
           ["@types/node", "npm:20.5.7"],\
-          ["@types/uuid", "npm:9.0.3"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.0"],\
-          ["typescript", "patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"],\
-          ["uuid", "npm:9.0.0"]\
+          ["typescript", "patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"]\
         ],\
         "linkType": "SOFT"\
       }]\
