@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.41.7](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.41.6...@standardnotes/domain-core@1.41.7) (2026-09-09)
+
+### Bug Fixes
+
+* remove redundant comment in UniqueEntityId ([da21263](https://github.com/standardnotes/server/commit/da212634afb88750203fa0a6dfcce6dce744ccfd))
+
 ## [1.41.6](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.41.5...@standardnotes/domain-core@1.41.6) (2026-09-08)
 
 ### Bug Fixes
