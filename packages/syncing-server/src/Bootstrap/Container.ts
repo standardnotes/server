@@ -580,10 +580,10 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new ItemSaveValidator([
           container.get(TYPES.Sync_OwnershipFilter),
+          container.get(TYPES.Sync_SharedVaultFilter),
           container.get(TYPES.Sync_TimeDifferenceFilter),
           container.get(TYPES.Sync_ContentTypeFilter),
           container.get(TYPES.Sync_ContentFilter),
-          container.get(TYPES.Sync_SharedVaultFilter),
           container.get(TYPES.Sync_SharedVaultSnjsFilter),
         ]),
       )

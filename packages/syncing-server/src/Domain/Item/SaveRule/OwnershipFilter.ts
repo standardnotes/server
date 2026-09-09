@@ -6,8 +6,7 @@ import { Uuid } from '@standardnotes/domain-core'
 
 export class OwnershipFilter implements ItemSaveRuleInterface {
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
-    const deferToSharedVaultFilter =
-      dto.existingItem?.isAssociatedWithASharedVault() || dto.itemHash.representsASharedVaultItem()
+    const deferToSharedVaultFilter = dto.existingItem?.isAssociatedWithASharedVault() === true
     if (deferToSharedVaultFilter) {
       return {
         passed: true,
