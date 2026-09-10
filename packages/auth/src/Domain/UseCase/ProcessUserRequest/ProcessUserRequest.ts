@@ -4,17 +4,16 @@ import { UserRequestType } from '@standardnotes/common'
 
 import TYPES from '../../../Bootstrap/Types'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
-import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
-
 import { UseCaseInterface } from '../UseCaseInterface'
+import { SelectValidUserSubscription } from '../SelectValidUserSubscription/SelectValidUserSubscription'
 import { ProcessUserRequestDTO } from './ProcessUserRequestDTO'
 import { ProcessUserRequestResponse } from './ProcessUserRequestResponse'
 
 @injectable()
 export class ProcessUserRequest implements UseCaseInterface {
   constructor(
-    @inject(TYPES.Auth_UserSubscriptionRepository)
-    private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_SelectValidUserSubscription)
+    private selectValidUserSubscription: SelectValidUserSubscription,
     @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
     @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
   ) {}
@@ -26,7 +25,7 @@ export class ProcessUserRequest implements UseCaseInterface {
       }
     }
 
-    const subscription = await this.userSubscriptionRepository.findOneByUserUuid(dto.userUuid)
+    const subscription = await this.selectValidUserSubscription.execute({ userUuid: dto.userUuid })
     if (subscription === null || !subscription.cancelled) {
       return {
         success: false,

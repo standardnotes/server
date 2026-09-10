@@ -18,8 +18,8 @@ import { EphemeralSession } from './EphemeralSession'
 import { RevokedSession } from './RevokedSession'
 import { RevokedSessionRepositoryInterface } from './RevokedSessionRepositoryInterface'
 import { TraceSession } from '../UseCase/TraceSession/TraceSession'
-import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 import { GetSetting } from '../UseCase/GetSetting/GetSetting'
+import { SelectValidUserSubscription } from '../UseCase/SelectValidUserSubscription/SelectValidUserSubscription'
 import { SessionCreationResult } from './SessionCreationResult'
 import { ApiVersion } from '../Api/ApiVersion'
 
@@ -40,7 +40,7 @@ export class SessionService implements SessionServiceInterface {
     private refreshTokenAge: number,
     private cryptoNode: CryptoNode,
     private traceSession: TraceSession,
-    private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    private selectValidUserSubscription: SelectValidUserSubscription,
     private readonlyUsers: string[],
     private getSetting: GetSetting,
     private forceLegacySessions: boolean,
@@ -64,7 +64,7 @@ export class SessionService implements SessionServiceInterface {
     await this.sessionRepository.insert(session)
 
     try {
-      const userSubscription = await this.userSubscriptionRepository.findOneByUserUuid(dto.user.uuid)
+      const userSubscription = await this.selectValidUserSubscription.execute({ userUuid: dto.user.uuid })
       const traceSessionResult = await this.traceSession.execute({
         userUuid: dto.user.uuid,
         username: dto.user.email,

@@ -5,7 +5,7 @@ import { PredicateName, PredicateVerificationResult, PredicateAuthority } from '
 import { Setting } from '../../Setting/Setting'
 import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'
 import { UserSubscription } from '../../Subscription/UserSubscription'
-import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
+import { SelectValidUserSubscription } from '../SelectValidUserSubscription/SelectValidUserSubscription'
 
 import { VerifyPredicate } from './VerifyPredicate'
 import { EmailBackupFrequency } from '@standardnotes/settings'
@@ -13,11 +13,11 @@ import { Uuid, Timestamps, SettingName } from '@standardnotes/domain-core'
 
 describe('VerifyPredicate', () => {
   let settingRepository: SettingRepositoryInterface
-  let userSubscriptionRepository: UserSubscriptionRepositoryInterface
+  let selectValidUserSubscription: SelectValidUserSubscription
   let subscription: UserSubscription
   let setting: Setting
 
-  const createUseCase = () => new VerifyPredicate(settingRepository, userSubscriptionRepository)
+  const createUseCase = () => new VerifyPredicate(settingRepository, selectValidUserSubscription)
 
   beforeEach(() => {
     setting = {} as jest.Mocked<Setting>
@@ -26,8 +26,8 @@ describe('VerifyPredicate', () => {
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(setting)
 
     subscription = {} as jest.Mocked<UserSubscription>
-    userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
-    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue(subscription)
+    selectValidUserSubscription = {} as jest.Mocked<SelectValidUserSubscription>
+    selectValidUserSubscription.execute = jest.fn().mockReturnValue(subscription)
   })
 
   it('should tell that a user has enabled email backups', async () => {
@@ -97,7 +97,7 @@ describe('VerifyPredicate', () => {
   })
 
   it('should tell that a user has no subscription', async () => {
-    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue(null)
+    selectValidUserSubscription.execute = jest.fn().mockReturnValue(null)
 
     expect(
       await createUseCase().execute({

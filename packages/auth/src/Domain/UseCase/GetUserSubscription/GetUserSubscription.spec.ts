@@ -2,17 +2,17 @@ import 'reflect-metadata'
 import { GetUserSubscription } from './GetUserSubscription'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { User } from '../../User/User'
-import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
-import { UserSubscription } from '../../Subscription/UserSubscription'
 import { SubscriptionName } from '@standardnotes/common'
+import { SelectValidUserSubscription } from '../SelectValidUserSubscription/SelectValidUserSubscription'
+import { UserSubscription } from '../../Subscription/UserSubscription'
 
 describe('GetUserSubscription', () => {
   let user: User
   let userSubscription: UserSubscription
   let userRepository: UserRepositoryInterface
-  let userSubscriptionRepository: UserSubscriptionRepositoryInterface
+  let selectValidUserSubscription: SelectValidUserSubscription
 
-  const createUseCase = () => new GetUserSubscription(userRepository, userSubscriptionRepository)
+  const createUseCase = () => new GetUserSubscription(userRepository, selectValidUserSubscription)
 
   beforeEach(() => {
     user = {
@@ -25,8 +25,8 @@ describe('GetUserSubscription', () => {
     userSubscription = {
       planName: SubscriptionName.ProPlan,
     } as jest.Mocked<UserSubscription>
-    userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
-    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue(userSubscription)
+    selectValidUserSubscription = {} as jest.Mocked<SelectValidUserSubscription>
+    selectValidUserSubscription.execute = jest.fn().mockReturnValue(userSubscription)
   })
 
   it('should fail if a user is not found', async () => {

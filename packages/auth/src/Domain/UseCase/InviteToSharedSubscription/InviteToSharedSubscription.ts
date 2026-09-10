@@ -11,9 +11,9 @@ import { InviteeIdentifierType } from '../../SharedSubscription/InviteeIdentifie
 import { InviterIdentifierType } from '../../SharedSubscription/InviterIdentifierType'
 import { SharedSubscriptionInvitation } from '../../SharedSubscription/SharedSubscriptionInvitation'
 import { SharedSubscriptionInvitationRepositoryInterface } from '../../SharedSubscription/SharedSubscriptionInvitationRepositoryInterface'
-import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
 import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
 import { UseCaseInterface } from '../UseCaseInterface'
+import { SelectValidUserSubscription } from '../SelectValidUserSubscription/SelectValidUserSubscription'
 
 import { InviteToSharedSubscriptionDTO } from './InviteToSharedSubscriptionDTO'
 import { InviteToSharedSubscriptionResult } from './InviteToSharedSubscriptionResult'
@@ -22,8 +22,8 @@ import { InviteToSharedSubscriptionResult } from './InviteToSharedSubscriptionRe
 export class InviteToSharedSubscription implements UseCaseInterface {
   private readonly MAX_NUMBER_OF_INVITES = 5
   constructor(
-    @inject(TYPES.Auth_UserSubscriptionRepository)
-    private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_SelectValidUserSubscription)
+    private selectValidUserSubscription: SelectValidUserSubscription,
     @inject(TYPES.Auth_Timer) private timer: TimerInterface,
     @inject(TYPES.Auth_SharedSubscriptionInvitationRepository)
     private sharedSubscriptionInvitationRepository: SharedSubscriptionInvitationRepositoryInterface,
@@ -38,7 +38,7 @@ export class InviteToSharedSubscription implements UseCaseInterface {
       }
     }
 
-    const inviterUserSubscription = await this.userSubscriptionRepository.findOneByUserUuid(dto.inviterUuid)
+    const inviterUserSubscription = await this.selectValidUserSubscription.execute({ userUuid: dto.inviterUuid })
     if (inviterUserSubscription === null || inviterUserSubscription.subscriptionType === UserSubscriptionType.Shared) {
       return {
         success: false,

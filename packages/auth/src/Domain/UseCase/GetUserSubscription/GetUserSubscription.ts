@@ -4,15 +4,15 @@ import TYPES from '../../../Bootstrap/Types'
 import { GetUserSubscriptionDto } from './GetUserSubscriptionDto'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { GetUserSubscriptionResponse } from './GetUserSubscriptionResponse'
-import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
 import { Uuid } from '@standardnotes/domain-core'
+import { SelectValidUserSubscription } from '../SelectValidUserSubscription/SelectValidUserSubscription'
 
 @injectable()
 export class GetUserSubscription implements UseCaseInterface {
   constructor(
     @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_UserSubscriptionRepository)
-    private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_SelectValidUserSubscription)
+    private selectValidUserSubscription: SelectValidUserSubscription,
   ) {}
 
   async execute(dto: GetUserSubscriptionDto): Promise<GetUserSubscriptionResponse> {
@@ -38,7 +38,7 @@ export class GetUserSubscription implements UseCaseInterface {
       }
     }
 
-    const userSubscription = await this.userSubscriptionRepository.findOneByUserUuid(userUuid.value)
+    const userSubscription = await this.selectValidUserSubscription.execute({ userUuid: userUuid.value })
 
     return {
       success: true,

@@ -4,8 +4,8 @@ import { inject, injectable } from 'inversify'
 
 import TYPES from '../../../Bootstrap/Types'
 import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'
-import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
 import { UseCaseInterface } from '../UseCaseInterface'
+import { SelectValidUserSubscription } from '../SelectValidUserSubscription/SelectValidUserSubscription'
 
 import { VerifyPredicateDTO } from './VerifyPredicateDTO'
 import { VerifyPredicateResponse } from './VerifyPredicateResponse'
@@ -15,8 +15,8 @@ import { SettingName } from '@standardnotes/domain-core'
 export class VerifyPredicate implements UseCaseInterface {
   constructor(
     @inject(TYPES.Auth_SettingRepository) private settingRepository: SettingRepositoryInterface,
-    @inject(TYPES.Auth_UserSubscriptionRepository)
-    private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_SelectValidUserSubscription)
+    private selectValidUserSubscription: SelectValidUserSubscription,
   ) {}
 
   async execute(dto: VerifyPredicateDTO): Promise<VerifyPredicateResponse> {
@@ -35,7 +35,7 @@ export class VerifyPredicate implements UseCaseInterface {
   }
 
   private async hasUserBoughtASubscription(userUuid: string): Promise<boolean> {
-    const subscription = await this.userSubscriptionRepository.findOneByUserUuid(userUuid)
+    const subscription = await this.selectValidUserSubscription.execute({ userUuid })
 
     return subscription !== null
   }

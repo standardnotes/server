@@ -14,11 +14,11 @@ import { RevokedSession } from './RevokedSession'
 import { LogSessionUserAgentOption } from '@standardnotes/settings'
 import { Setting } from '../Setting/Setting'
 import { CryptoNode } from '@standardnotes/sncrypto-node'
-import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 import { TraceSession } from '../UseCase/TraceSession/TraceSession'
 import { UserSubscription } from '../Subscription/UserSubscription'
 import { Result } from '@standardnotes/domain-core'
 import { GetSetting } from '../UseCase/GetSetting/GetSetting'
+import { SelectValidUserSubscription } from '../UseCase/SelectValidUserSubscription/SelectValidUserSubscription'
 
 describe('SessionService', () => {
   let sessionRepository: SessionRepositoryInterface
@@ -33,7 +33,7 @@ describe('SessionService', () => {
   let logger: winston.Logger
   let cryptoNode: CryptoNode
   let traceSession: TraceSession
-  let userSubscriptionRepository: UserSubscriptionRepositoryInterface
+  let selectValidUserSubscription: SelectValidUserSubscription
   const readonlyUsers = ['demo@standardnotes.com']
 
   const createService = (forceLegacySessions = false) =>
@@ -48,7 +48,7 @@ describe('SessionService', () => {
       234,
       cryptoNode,
       traceSession,
-      userSubscriptionRepository,
+      selectValidUserSubscription,
       readonlyUsers,
       getSetting,
       forceLegacySessions,
@@ -127,8 +127,8 @@ describe('SessionService', () => {
     traceSession = {} as jest.Mocked<TraceSession>
     traceSession.execute = jest.fn()
 
-    userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
-    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue({
+    selectValidUserSubscription = {} as jest.Mocked<SelectValidUserSubscription>
+    selectValidUserSubscription.execute = jest.fn().mockReturnValue({
       planName: 'PRO_PLAN',
     } as jest.Mocked<UserSubscription>)
   })
@@ -496,7 +496,7 @@ describe('SessionService', () => {
   })
 
   it('should trace a session without a subscription', async () => {
-    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue(null)
+    selectValidUserSubscription.execute = jest.fn().mockReturnValue(null)
     const user = {} as jest.Mocked<User>
     user.uuid = '123'
     user.email = 'test@test.te'
@@ -517,7 +517,7 @@ describe('SessionService', () => {
 
   it('should create a session if tracing session throws an error', async () => {
     traceSession.execute = jest.fn().mockRejectedValue(new Error('foo bar'))
-    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue(null)
+    selectValidUserSubscription.execute = jest.fn().mockReturnValue(null)
     const user = {} as jest.Mocked<User>
     user.uuid = '123'
     user.email = 'test@test.te'
@@ -545,7 +545,7 @@ describe('SessionService', () => {
 
   it('should create a session if tracing session throws an error', async () => {
     traceSession.execute = jest.fn().mockRejectedValue(new Error('foo bar'))
-    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue(null)
+    selectValidUserSubscription.execute = jest.fn().mockReturnValue(null)
     const user = {} as jest.Mocked<User>
     user.uuid = '123'
     user.email = 'test@test.te'
@@ -573,7 +573,7 @@ describe('SessionService', () => {
 
   it('should create a session if tracing session fails', async () => {
     traceSession.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
-    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue(null)
+    selectValidUserSubscription.execute = jest.fn().mockReturnValue(null)
     const user = {} as jest.Mocked<User>
     user.uuid = '123'
     user.email = 'test@test.te'

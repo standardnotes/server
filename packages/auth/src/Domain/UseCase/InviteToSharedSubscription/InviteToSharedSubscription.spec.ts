@@ -10,15 +10,15 @@ import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInter
 import { SharedSubscriptionInvitationRepositoryInterface } from '../../SharedSubscription/SharedSubscriptionInvitationRepositoryInterface'
 
 import { InviteToSharedSubscription } from './InviteToSharedSubscription'
-import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
 import { UserSubscription } from '../../Subscription/UserSubscription'
 import { RoleName } from '@standardnotes/domain-core'
 import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
 import { SharedSubscriptionInvitation } from '../../SharedSubscription/SharedSubscriptionInvitation'
 import { InvitationStatus } from '../../SharedSubscription/InvitationStatus'
+import { SelectValidUserSubscription } from '../SelectValidUserSubscription/SelectValidUserSubscription'
 
 describe('InviteToSharedSubscription', () => {
-  let userSubscriptionRepository: UserSubscriptionRepositoryInterface
+  let selectValidUserSubscription: SelectValidUserSubscription
   let timer: TimerInterface
   let sharedSubscriptionInvitationRepository: SharedSubscriptionInvitationRepositoryInterface
   let domainEventPublisher: DomainEventPublisherInterface
@@ -26,7 +26,7 @@ describe('InviteToSharedSubscription', () => {
 
   const createUseCase = () =>
     new InviteToSharedSubscription(
-      userSubscriptionRepository,
+      selectValidUserSubscription,
       timer,
       sharedSubscriptionInvitationRepository,
       domainEventPublisher,
@@ -34,8 +34,8 @@ describe('InviteToSharedSubscription', () => {
     )
 
   beforeEach(() => {
-    userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
-    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue({
+    selectValidUserSubscription = {} as jest.Mocked<SelectValidUserSubscription>
+    selectValidUserSubscription.execute = jest.fn().mockReturnValue({
       subscriptionId: 2,
       subscriptionType: UserSubscriptionType.Regular,
     } as jest.Mocked<UserSubscription>)
@@ -91,7 +91,7 @@ describe('InviteToSharedSubscription', () => {
   })
 
   it('should not create an inivitation for sharing the subscription if inviter has no subscription', async () => {
-    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue(null)
+    selectValidUserSubscription.execute = jest.fn().mockReturnValue(null)
 
     await createUseCase().execute({
       inviteeIdentifier: 'invitee@test.te',
@@ -203,7 +203,7 @@ describe('InviteToSharedSubscription', () => {
   })
 
   it('should not create an inivitation for sharing the subscription if the inviter is on a shared subscription', async () => {
-    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue({
+    selectValidUserSubscription.execute = jest.fn().mockReturnValue({
       subscriptionId: 2,
       subscriptionType: UserSubscriptionType.Shared,
     } as jest.Mocked<UserSubscription>)

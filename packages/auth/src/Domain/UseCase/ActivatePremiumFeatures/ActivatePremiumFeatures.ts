@@ -8,11 +8,13 @@ import { UserSubscription } from '../../Subscription/UserSubscription'
 import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
 import { ActivatePremiumFeaturesDTO } from './ActivatePremiumFeaturesDTO'
 import { ApplyDefaultSubscriptionSettings } from '../ApplyDefaultSubscriptionSettings/ApplyDefaultSubscriptionSettings'
+import { SelectValidUserSubscription } from '../SelectValidUserSubscription/SelectValidUserSubscription'
 
 export class ActivatePremiumFeatures implements UseCaseInterface<string> {
   constructor(
     private userRepository: UserRepositoryInterface,
     private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    private selectValidUserSubscription: SelectValidUserSubscription,
     private applyDefaultSubscriptionSettings: ApplyDefaultSubscriptionSettings,
     private roleService: RoleServiceInterface,
     private timer: TimerInterface,
@@ -31,7 +33,7 @@ export class ActivatePremiumFeatures implements UseCaseInterface<string> {
     }
 
     if (dto.cancelPreviousSubscription) {
-      const previousSubscription = await this.userSubscriptionRepository.findOneByUserUuid(user.uuid)
+      const previousSubscription = await this.selectValidUserSubscription.execute({ userUuid: user.uuid })
       if (previousSubscription) {
         previousSubscription.cancelled = true
         previousSubscription.updatedAt = this.timer.getTimestampInMicroseconds()

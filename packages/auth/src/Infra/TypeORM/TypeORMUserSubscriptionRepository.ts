@@ -64,6 +64,19 @@ export class TypeORMUserSubscriptionRepository implements UserSubscriptionReposi
       .getMany()
   }
 
+  async findByUserUuidAndType(userUuid: string, type: UserSubscriptionType): Promise<UserSubscription[]> {
+    return await this.ormRepository
+      .createQueryBuilder()
+      .where('user_uuid = :user_uuid', {
+        user_uuid: userUuid,
+      })
+      .andWhere('subscription_type = :type', {
+        type,
+      })
+      .orderBy('ends_at', 'DESC')
+      .getMany()
+  }
+
   async countByUserUuid(userUuid: string): Promise<number> {
     return await this.ormRepository
       .createQueryBuilder()
@@ -118,33 +131,6 @@ export class TypeORMUserSubscriptionRepository implements UserSubscriptionReposi
       .getOne()
   }
 
-  async findOneByUserUuid(userUuid: string): Promise<UserSubscription | null> {
-    const subscriptions = await this.ormRepository
-      .createQueryBuilder()
-      .where('user_uuid = :user_uuid', {
-        user_uuid: userUuid,
-      })
-      .orderBy('ends_at', 'DESC')
-      .getMany()
-
-    return this.firstUncancelled(subscriptions)
-  }
-
-  async findOneByUserUuidAndType(userUuid: string, type: UserSubscriptionType): Promise<UserSubscription | null> {
-    const subscriptions = await this.ormRepository
-      .createQueryBuilder()
-      .where('user_uuid = :user_uuid', {
-        user_uuid: userUuid,
-      })
-      .andWhere('subscription_type = :type', {
-        type,
-      })
-      .orderBy('ends_at', 'DESC')
-      .getMany()
-
-    return this.firstUncancelled(subscriptions)
-  }
-
   async updateEndsAt(subscriptionId: number, endsAt: number, timestamp: number): Promise<void> {
     await this.ormRepository
       .createQueryBuilder()
@@ -174,16 +160,4 @@ export class TypeORMUserSubscriptionRepository implements UserSubscriptionReposi
       .execute()
   }
 
-  private firstUncancelled(subscriptions: UserSubscription[]): UserSubscription | null {
-    const uncanceled = subscriptions.find((subscription) => !subscription.cancelled)
-    if (uncanceled !== undefined) {
-      return uncanceled
-    }
-
-    if (subscriptions.length !== 0) {
-      return subscriptions[0]
-    }
-
-    return null
-  }
 }

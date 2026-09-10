@@ -125,6 +125,7 @@ const TYPES = {
   Auth_GetSettings: Symbol.for('Auth_GetSettings'),
   Auth_GetSubscriptionSettings: Symbol.for('Auth_GetSubscriptionSettings'),
   Auth_GetRegularSubscriptionForUser: Symbol.for('Auth_GetRegularSubscriptionForUser'),
+  Auth_SelectValidUserSubscription: Symbol.for('Auth_SelectValidUserSubscription'),
   Auth_GetSharedSubscriptionForUser: Symbol.for('Auth_GetSharedSubscriptionForUser'),
   Auth_GetAllSettingsForUser: Symbol.for('Auth_GetAllSettingsForUser'),
   Auth_GetSetting: Symbol.for('Auth_GetSetting'),

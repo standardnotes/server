@@ -5,21 +5,21 @@ import { UserRequestType } from '@standardnotes/common'
 
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { UserSubscription } from '../../Subscription/UserSubscription'
-import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
+import { SelectValidUserSubscription } from '../SelectValidUserSubscription/SelectValidUserSubscription'
 
 import { ProcessUserRequest } from './ProcessUserRequest'
 
 describe('ProcessUserRequest', () => {
-  let userSubscriptionRepository: UserSubscriptionRepositoryInterface
+  let selectValidUserSubscription: SelectValidUserSubscription
   let domainEventFactory: DomainEventFactoryInterface
   let domainEventPublisher: DomainEventPublisherInterface
 
   const createUseCase = () =>
-    new ProcessUserRequest(userSubscriptionRepository, domainEventFactory, domainEventPublisher)
+    new ProcessUserRequest(selectValidUserSubscription, domainEventFactory, domainEventPublisher)
 
   beforeEach(() => {
-    userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
-    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue({
+    selectValidUserSubscription = {} as jest.Mocked<SelectValidUserSubscription>
+    selectValidUserSubscription.execute = jest.fn().mockReturnValue({
       cancelled: true,
     } as jest.Mocked<UserSubscription>)
 
@@ -47,7 +47,7 @@ describe('ProcessUserRequest', () => {
   })
 
   it('should not process uncancelled subscriptions', async () => {
-    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue({} as jest.Mocked<UserSubscription>)
+    selectValidUserSubscription.execute = jest.fn().mockReturnValue({} as jest.Mocked<UserSubscription>)
 
     expect(
       await createUseCase().execute({
@@ -63,7 +63,7 @@ describe('ProcessUserRequest', () => {
   })
 
   it('should not process non existing subscriptions', async () => {
-    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue(null)
+    selectValidUserSubscription.execute = jest.fn().mockReturnValue(null)
 
     expect(
       await createUseCase().execute({

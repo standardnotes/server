@@ -4,9 +4,13 @@ import { UserSubscription } from '../../Subscription/UserSubscription'
 import { GetRegularSubscriptionForUserDTO } from './GetRegularSubscriptionForUserDTO'
 import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
 import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
+import { SelectValidUserSubscription } from '../SelectValidUserSubscription/SelectValidUserSubscription'
 
 export class GetRegularSubscriptionForUser implements UseCaseInterface<UserSubscription> {
-  constructor(private userSubscriptionRepository: UserSubscriptionRepositoryInterface) {}
+  constructor(
+    private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    private selectValidUserSubscription: SelectValidUserSubscription,
+  ) {}
 
   async execute(dto: GetRegularSubscriptionForUserDTO): Promise<Result<UserSubscription>> {
     if (dto.userUuid !== undefined) {
@@ -26,10 +30,10 @@ export class GetRegularSubscriptionForUser implements UseCaseInterface<UserSubsc
     }
     const userUuid = userUuidOrError.getValue()
 
-    const userSubscription = await this.userSubscriptionRepository.findOneByUserUuidAndType(
-      userUuid.value,
-      UserSubscriptionType.Regular,
-    )
+    const userSubscription = await this.selectValidUserSubscription.execute({
+      userUuid: userUuid.value,
+      subscriptionType: UserSubscriptionType.Regular,
+    })
     if (userSubscription === null) {
       return Result.fail(`User subscription for user ${userUuid.value} not found.`)
     }

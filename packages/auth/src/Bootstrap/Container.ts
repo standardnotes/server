@@ -263,6 +263,7 @@ import { GetSettings } from '../Domain/UseCase/GetSettings/GetSettings'
 import { GetSubscriptionSettings } from '../Domain/UseCase/GetSubscriptionSettings/GetSubscriptionSettings'
 import { GetAllSettingsForUser } from '../Domain/UseCase/GetAllSettingsForUser/GetAllSettingsForUser'
 import { GetRegularSubscriptionForUser } from '../Domain/UseCase/GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
+import { SelectValidUserSubscription } from '../Domain/UseCase/SelectValidUserSubscription/SelectValidUserSubscription'
 import { GetSharedSubscriptionForUser } from '../Domain/UseCase/GetSharedSubscriptionForUser/GetSharedSubscriptionForUser'
 import { GetSharedOrRegularSubscriptionForUser } from '../Domain/UseCase/GetSharedOrRegularSubscriptionForUser/GetSharedOrRegularSubscriptionForUser'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
@@ -808,6 +809,14 @@ export class ContainerConfigLoader {
         ),
       )
     container
+      .bind<SelectValidUserSubscription>(TYPES.Auth_SelectValidUserSubscription)
+      .toConstantValue(
+        new SelectValidUserSubscription(
+          container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
+          container.get<TimerInterface>(TYPES.Auth_Timer),
+        ),
+      )
+    container
       .bind<SessionService>(TYPES.Auth_SessionService)
       .toConstantValue(
         new SessionService(
@@ -821,7 +830,7 @@ export class ContainerConfigLoader {
           container.get<number>(TYPES.Auth_REFRESH_TOKEN_AGE),
           container.get<CryptoNode>(TYPES.Auth_CryptoNode),
           container.get<TraceSession>(TYPES.Auth_TraceSession),
-          container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
+          container.get<SelectValidUserSubscription>(TYPES.Auth_SelectValidUserSubscription),
           container.get<string[]>(TYPES.Auth_READONLY_USERS),
           container.get<GetSetting>(TYPES.Auth_GetSetting),
           container.get<boolean>(TYPES.Auth_FORCE_LEGACY_SESSIONS),
@@ -1143,6 +1152,7 @@ export class ContainerConfigLoader {
         new ActivatePremiumFeatures(
           container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
           container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
+          container.get<SelectValidUserSubscription>(TYPES.Auth_SelectValidUserSubscription),
           container.get<ApplyDefaultSubscriptionSettings>(TYPES.Auth_ApplyDefaultSubscriptionSettings),
           container.get<RoleServiceInterface>(TYPES.Auth_RoleService),
           container.get<TimerInterface>(TYPES.Auth_Timer),
@@ -1300,13 +1310,14 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new GetRegularSubscriptionForUser(
           container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
+          container.get<SelectValidUserSubscription>(TYPES.Auth_SelectValidUserSubscription),
         ),
       )
     container
       .bind<GetSharedSubscriptionForUser>(TYPES.Auth_GetSharedSubscriptionForUser)
       .toConstantValue(
         new GetSharedSubscriptionForUser(
-          container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
+          container.get<SelectValidUserSubscription>(TYPES.Auth_SelectValidUserSubscription),
         ),
       )
     container

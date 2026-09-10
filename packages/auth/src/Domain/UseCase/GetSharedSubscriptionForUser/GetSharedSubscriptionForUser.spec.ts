@@ -1,16 +1,16 @@
 import { UserSubscription } from '../../Subscription/UserSubscription'
-import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
 import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
+import { SelectValidUserSubscription } from '../SelectValidUserSubscription/SelectValidUserSubscription'
 import { GetSharedSubscriptionForUser } from './GetSharedSubscriptionForUser'
 
 describe('GetSharedSubscriptionForUser', () => {
-  let userSubscriptionRepository: UserSubscriptionRepositoryInterface
+  let selectValidUserSubscription: SelectValidUserSubscription
 
-  const createUseCase = () => new GetSharedSubscriptionForUser(userSubscriptionRepository)
+  const createUseCase = () => new GetSharedSubscriptionForUser(selectValidUserSubscription)
 
   beforeEach(() => {
-    userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
-    userSubscriptionRepository.findOneByUserUuidAndType = jest.fn().mockReturnValue({
+    selectValidUserSubscription = {} as jest.Mocked<SelectValidUserSubscription>
+    selectValidUserSubscription.execute = jest.fn().mockReturnValue({
       subscriptionType: UserSubscriptionType.Shared,
     } as jest.Mocked<UserSubscription>)
   })
@@ -25,7 +25,7 @@ describe('GetSharedSubscriptionForUser', () => {
   })
 
   it('should return error if user subscription is not found', async () => {
-    userSubscriptionRepository.findOneByUserUuidAndType = jest.fn().mockReturnValue(null)
+    selectValidUserSubscription.execute = jest.fn().mockReturnValue(null)
 
     const result = await createUseCase().execute({
       userUuid: '00000000-0000-0000-0000-000000000000',

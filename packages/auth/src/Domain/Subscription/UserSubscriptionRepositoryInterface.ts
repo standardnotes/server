@@ -5,9 +5,8 @@ import { UserSubscriptionType } from './UserSubscriptionType'
 export interface UserSubscriptionRepositoryInterface {
   findOneByUuid(uuid: string): Promise<UserSubscription | null>
   countByUserUuid(userUuid: string): Promise<number>
-  findOneByUserUuid(userUuid: string): Promise<UserSubscription | null>
-  findOneByUserUuidAndType(userUuid: string, type: UserSubscriptionType): Promise<UserSubscription | null>
   findByUserUuid(userUuid: string): Promise<UserSubscription[]>
+  findByUserUuidAndType(userUuid: string, type: UserSubscriptionType): Promise<UserSubscription[]>
   countByPlanName(planNames: SubscriptionPlanName[]): Promise<number>
   findByPlanName(planNames: SubscriptionPlanName[], offset: number, limit: number): Promise<UserSubscription[]>
   findActiveByType(type: UserSubscriptionType): Promise<UserSubscription[]>

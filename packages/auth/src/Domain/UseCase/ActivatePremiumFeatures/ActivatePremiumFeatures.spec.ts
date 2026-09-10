@@ -8,10 +8,12 @@ import { User } from '../../User/User'
 import { UserSubscription } from '../../Subscription/UserSubscription'
 import { ApplyDefaultSubscriptionSettings } from '../ApplyDefaultSubscriptionSettings/ApplyDefaultSubscriptionSettings'
 import { Result } from '@standardnotes/domain-core'
+import { SelectValidUserSubscription } from '../SelectValidUserSubscription/SelectValidUserSubscription'
 
 describe('ActivatePremiumFeatures', () => {
   let userRepository: UserRepositoryInterface
   let userSubscriptionRepository: UserSubscriptionRepositoryInterface
+  let selectValidUserSubscription: SelectValidUserSubscription
   let applyDefaultSubscriptionSettings: ApplyDefaultSubscriptionSettings
   let roleService: RoleServiceInterface
   let timer: TimerInterface
@@ -21,6 +23,7 @@ describe('ActivatePremiumFeatures', () => {
     new ActivatePremiumFeatures(
       userRepository,
       userSubscriptionRepository,
+      selectValidUserSubscription,
       applyDefaultSubscriptionSettings,
       roleService,
       timer,
@@ -33,8 +36,10 @@ describe('ActivatePremiumFeatures', () => {
     userRepository.findOneByUsernameOrEmail = jest.fn().mockResolvedValue(user)
 
     userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
-    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockResolvedValue(null)
     userSubscriptionRepository.save = jest.fn()
+
+    selectValidUserSubscription = {} as jest.Mocked<SelectValidUserSubscription>
+    selectValidUserSubscription.execute = jest.fn().mockResolvedValue(null)
 
     roleService = {} as jest.Mocked<RoleServiceInterface>
     roleService.addUserRoleBasedOnSubscription = jest.fn()
@@ -80,7 +85,7 @@ describe('ActivatePremiumFeatures', () => {
   })
 
   it('should cancel previous subscription if cancelPreviousSubscription is true', async () => {
-    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockResolvedValue({} as jest.Mocked<UserSubscription>)
+    selectValidUserSubscription.execute = jest.fn().mockResolvedValue({} as jest.Mocked<UserSubscription>)
 
     const useCase = createUseCase()
 
