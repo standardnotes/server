@@ -2,13 +2,17 @@ import { TimerInterface } from '@standardnotes/time'
 import { MessageRepositoryInterface } from '../../../Message/MessageRepositoryInterface'
 import { SendMessageToUser } from './SendMessageToUser'
 import { Message } from '../../../Message/Message'
-import { Result } from '@standardnotes/domain-core'
+import { Result, Timestamps, Uuid } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { SendEventToClient } from '../../Syncing/SendEventToClient/SendEventToClient'
 import { MessageSentToUserEvent } from '@standardnotes/domain-events'
 
 describe('SendMessageToUser', () => {
+  const recipientUuid = '00000000-0000-0000-0000-000000000001'
+  const senderUuid = '00000000-0000-0000-0000-000000000002'
+  const otherSenderUuid = '00000000-0000-0000-0000-000000000003'
+
   let messageRepository: MessageRepositoryInterface
   let timer: TimerInterface
   let existingMessage: Message
@@ -16,14 +20,23 @@ describe('SendMessageToUser', () => {
   let sendEventToClientUseCase: SendEventToClient
   let logger: Logger
 
+  const createMessage = (messageSenderUuid: string) =>
+    Message.create({
+      recipientUuid: Uuid.create(recipientUuid).getValue(),
+      senderUuid: Uuid.create(messageSenderUuid).getValue(),
+      encryptedMessage: 'existing-encrypted-message',
+      replaceabilityIdentifier: 'replaceability-identifier',
+      timestamps: Timestamps.create(123456789, 123456789).getValue(),
+    }).getValue()
+
   const createUseCase = () =>
     new SendMessageToUser(messageRepository, timer, domainEventFactory, sendEventToClientUseCase, logger)
 
   beforeEach(() => {
-    existingMessage = {} as jest.Mocked<Message>
+    existingMessage = createMessage(senderUuid)
 
     messageRepository = {} as jest.Mocked<MessageRepositoryInterface>
-    messageRepository.findByRecipientUuidAndReplaceabilityIdentifier = jest.fn().mockReturnValue(null)
+    messageRepository.findByRecipientUuidSenderUuidAndReplaceabilityIdentifier = jest.fn().mockReturnValue(null)
     messageRepository.remove = jest.fn()
     messageRepository.save = jest.fn()
 
@@ -46,27 +59,54 @@ describe('SendMessageToUser', () => {
     const useCase = createUseCase()
 
     const result = await useCase.execute({
-      recipientUuid: '00000000-0000-0000-0000-000000000000',
-      senderUuid: '00000000-0000-0000-0000-000000000000',
+      recipientUuid,
+      senderUuid,
       encryptedMessage: 'encrypted-message',
     })
 
     expect(result.isFailed()).toBeFalsy()
   })
 
-  it('removes existing message with the same replaceability identifier', async () => {
-    messageRepository.findByRecipientUuidAndReplaceabilityIdentifier = jest.fn().mockReturnValue(existingMessage)
+  it('removes existing message with the same replaceability identifier from the same sender', async () => {
+    messageRepository.findByRecipientUuidSenderUuidAndReplaceabilityIdentifier = jest
+      .fn()
+      .mockReturnValue(existingMessage)
     const useCase = createUseCase()
 
     const result = await useCase.execute({
-      recipientUuid: '00000000-0000-0000-0000-000000000000',
-      senderUuid: '00000000-0000-0000-0000-000000000000',
+      recipientUuid,
+      senderUuid,
       encryptedMessage: 'encrypted-message',
       replaceabilityIdentifier: 'replaceability-identifier',
     })
 
     expect(result.isFailed()).toBeFalsy()
+    expect(messageRepository.findByRecipientUuidSenderUuidAndReplaceabilityIdentifier).toHaveBeenCalledWith({
+      recipientUuid: Uuid.create(recipientUuid).getValue(),
+      senderUuid: Uuid.create(senderUuid).getValue(),
+      replaceabilityIdentifier: 'replaceability-identifier',
+    })
     expect(messageRepository.remove).toHaveBeenCalledWith(existingMessage)
+  })
+
+  it('does not remove another sender message when reusing the same replaceability identifier', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      recipientUuid,
+      senderUuid: otherSenderUuid,
+      encryptedMessage: 'encrypted-message',
+      replaceabilityIdentifier: 'replaceability-identifier',
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(messageRepository.findByRecipientUuidSenderUuidAndReplaceabilityIdentifier).toHaveBeenCalledWith({
+      recipientUuid: Uuid.create(recipientUuid).getValue(),
+      senderUuid: Uuid.create(otherSenderUuid).getValue(),
+      replaceabilityIdentifier: 'replaceability-identifier',
+    })
+    expect(messageRepository.remove).not.toHaveBeenCalled()
+    expect(messageRepository.save).toHaveBeenCalled()
   })
 
   it('returns error when recipient uuid is invalid', async () => {
@@ -74,7 +114,7 @@ describe('SendMessageToUser', () => {
 
     const result = await useCase.execute({
       recipientUuid: 'invalid-uuid',
-      senderUuid: '00000000-0000-0000-0000-000000000000',
+      senderUuid,
       encryptedMessage: 'encrypted-message',
     })
 
@@ -85,7 +125,7 @@ describe('SendMessageToUser', () => {
     const useCase = createUseCase()
 
     const result = await useCase.execute({
-      recipientUuid: '00000000-0000-0000-0000-000000000000',
+      recipientUuid,
       senderUuid: 'invalid-uuid',
       encryptedMessage: 'encrypted-message',
     })
@@ -97,8 +137,8 @@ describe('SendMessageToUser', () => {
     const useCase = createUseCase()
 
     const result = await useCase.execute({
-      recipientUuid: '00000000-0000-0000-0000-000000000000',
-      senderUuid: '00000000-0000-0000-0000-000000000000',
+      recipientUuid,
+      senderUuid,
       encryptedMessage: '',
     })
 
@@ -114,8 +154,8 @@ describe('SendMessageToUser', () => {
     const useCase = createUseCase()
 
     const result = await useCase.execute({
-      recipientUuid: '00000000-0000-0000-0000-000000000000',
-      senderUuid: '00000000-0000-0000-0000-000000000000',
+      recipientUuid,
+      senderUuid,
       encryptedMessage: 'encrypted-message',
     })
 
@@ -130,8 +170,8 @@ describe('SendMessageToUser', () => {
     const useCase = createUseCase()
 
     const result = await useCase.execute({
-      recipientUuid: '00000000-0000-0000-0000-000000000000',
-      senderUuid: '00000000-0000-0000-0000-000000000000',
+      recipientUuid,
+      senderUuid,
       encryptedMessage: 'encrypted-message',
     })
 

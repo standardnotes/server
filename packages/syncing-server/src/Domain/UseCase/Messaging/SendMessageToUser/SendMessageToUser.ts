@@ -36,10 +36,12 @@ export class SendMessageToUser implements UseCaseInterface<Message> {
     }
 
     if (dto.replaceabilityIdentifier) {
-      const existingMessage = await this.messageRepository.findByRecipientUuidAndReplaceabilityIdentifier({
-        recipientUuid,
-        replaceabilityIdentifier: dto.replaceabilityIdentifier,
-      })
+      const existingMessage =
+        await this.messageRepository.findByRecipientUuidSenderUuidAndReplaceabilityIdentifier({
+          recipientUuid,
+          senderUuid,
+          replaceabilityIdentifier: dto.replaceabilityIdentifier,
+        })
 
       if (existingMessage) {
         await this.messageRepository.remove(existingMessage)

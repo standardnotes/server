@@ -47,16 +47,20 @@ export class TypeORMMessageRepository implements MessageRepositoryInterface {
     return persistence.map((p) => this.mapper.toDomain(p))
   }
 
-  async findByRecipientUuidAndReplaceabilityIdentifier(dto: {
+  async findByRecipientUuidSenderUuidAndReplaceabilityIdentifier(dto: {
     recipientUuid: Uuid
+    senderUuid: Uuid
     replaceabilityIdentifier: string
   }): Promise<Message | null> {
     const persistence = await this.ormRepository
       .createQueryBuilder('message')
-      .where('message.recipientUuid = :recipientUuid', {
+      .where('message.recipient_uuid = :recipientUuid', {
         recipientUuid: dto.recipientUuid.value,
       })
-      .andWhere('message.replaceabilityIdentifier = :replaceabilityIdentifier', {
+      .andWhere('message.sender_uuid = :senderUuid', {
+        senderUuid: dto.senderUuid.value,
+      })
+      .andWhere('message.replaceability_identifier = :replaceabilityIdentifier', {
         replaceabilityIdentifier: dto.replaceabilityIdentifier,
       })
       .getOne()

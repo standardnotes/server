@@ -7,8 +7,9 @@ export interface MessageRepositoryInterface {
   findByRecipientUuid: (uuid: Uuid) => Promise<Message[]>
   findByRecipientUuidUpdatedAfter: (uuid: Uuid, updatedAtTimestamp: number) => Promise<Message[]>
   findBySenderUuid: (uuid: Uuid) => Promise<Message[]>
-  findByRecipientUuidAndReplaceabilityIdentifier: (dto: {
+  findByRecipientUuidSenderUuidAndReplaceabilityIdentifier: (dto: {
     recipientUuid: Uuid
+    senderUuid: Uuid
     replaceabilityIdentifier: string
   }) => Promise<Message | null>
   save(message: Message): Promise<void>
