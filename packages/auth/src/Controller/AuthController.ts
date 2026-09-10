@@ -34,7 +34,6 @@ export class AuthController {
     const result = await this.doGenerateRecoveryCodes.execute({
       userUuid: params.userUuid,
       serverPassword: params.serverPassword,
-      authTokenVersion: params.authTokenVersion,
       shouldVerifyUserServerPassword: true,
     })
 

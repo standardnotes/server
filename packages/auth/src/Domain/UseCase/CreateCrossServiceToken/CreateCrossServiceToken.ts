@@ -174,7 +174,6 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
     return roles.map((role) => <{ uuid: string; name: string }>this.roleProjector.projectSimple(role))
   }
 
-  // TODO: Eventually roll out all clients to use version 3
   private determineTokenVersion(
     applicationVersionThresholds: Record<number, string | undefined>,
     applicationVersion?: string,

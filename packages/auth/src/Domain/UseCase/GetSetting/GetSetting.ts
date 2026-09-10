@@ -33,7 +33,6 @@ export class GetSetting implements UseCaseInterface<{ setting: Setting; decrypte
       const verifyUserServerPasswordResult = await this.verifyUserServerPassword.execute({
         userUuid: dto.userUuid,
         serverPassword: dto.serverPassword,
-        authTokenVersion: dto.authTokenVersion,
       })
 
       if (verifyUserServerPasswordResult.isFailed()) {

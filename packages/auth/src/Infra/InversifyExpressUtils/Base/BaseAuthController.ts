@@ -189,7 +189,6 @@ export class BaseAuthController extends BaseHttpController {
     const result = await this.authController.generateRecoveryCodes({
       userUuid: locals.user.uuid,
       serverPassword: request.headers['x-server-password'] as string | undefined,
-      authTokenVersion: locals.authTokenVersion,
     })
 
     return this.json(result.data, result.status)

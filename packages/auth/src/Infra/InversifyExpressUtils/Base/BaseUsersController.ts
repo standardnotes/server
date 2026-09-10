@@ -59,7 +59,6 @@ export class BaseUsersController extends BaseHttpController {
     const result = await this.doDeleteAccount.execute({
       userUuid: request.params.userUuid,
       serverPassword: request.headers['x-server-password'] as string | undefined,
-      authTokenVersion: locals.authTokenVersion,
       shouldVerifyUserServerPassword: true,
     })
 

@@ -115,7 +115,6 @@ export class BaseSettingsController extends BaseHttpController {
       decrypted: true,
       settingName: settingName.toUpperCase(),
       serverPassword,
-      authTokenVersion: locals.authTokenVersion,
       shouldVerifyUserServerPassword: true,
     })
     if (resultOrError.isFailed()) {
@@ -180,7 +179,6 @@ export class BaseSettingsController extends BaseHttpController {
       const validationResult = await this.validateMfaToken.execute({
         userUuid: locals.user.uuid,
         totpToken,
-        authTokenVersion: locals.authTokenVersion,
       })
 
       if (validationResult.isFailed()) {
@@ -263,7 +261,6 @@ export class BaseSettingsController extends BaseHttpController {
       userUuid,
       settingName,
       serverPassword,
-      authTokenVersion: locals.authTokenVersion,
       shouldVerifyUserServerPassword: true,
       checkUserPermissions: true,
     })

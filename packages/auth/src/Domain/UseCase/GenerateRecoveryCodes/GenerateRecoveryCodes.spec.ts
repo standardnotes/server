@@ -60,7 +60,6 @@ describe('GenerateRecoveryCodes', () => {
     expect(verifyUserServerPassword.execute).toHaveBeenCalledWith({
       user,
       serverPassword: 'correct-password',
-      authTokenVersion: undefined,
     })
     expect(setSettingValue.execute).toHaveBeenCalled()
     expect(result.isFailed()).toBeFalsy()
@@ -96,7 +95,6 @@ describe('GenerateRecoveryCodes', () => {
     expect(verifyUserServerPassword.execute).toHaveBeenCalledWith({
       user,
       serverPassword: 'wrong-password',
-      authTokenVersion: undefined,
     })
     expect(result.isFailed()).toBeTruthy()
     expect(result.getError()).toEqual('The password you entered is incorrect. Please try again.')

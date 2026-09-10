@@ -5,5 +5,4 @@ export type GetSettingDto = {
   decrypted: boolean
   serverPassword?: string
   shouldVerifyUserServerPassword?: boolean
-  authTokenVersion?: number
 }

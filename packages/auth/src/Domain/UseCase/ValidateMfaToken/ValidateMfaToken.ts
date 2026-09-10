@@ -14,12 +14,8 @@ export class ValidateMfaToken implements UseCaseInterface<void> {
   ) {}
 
   async execute(dto: ValidateMfaTokenDTO): Promise<Result<void>> {
-    const { userUuid, totpToken, authTokenVersion } = dto
+    const { userUuid, totpToken } = dto
     try {
-      if (authTokenVersion && authTokenVersion < 3) {
-        return Result.ok()
-      }
-
       if (!totpToken) {
         return Result.fail('No TOTP token provided.')
       }

@@ -53,7 +53,6 @@ export class DeleteAccount implements UseCaseInterface<string> {
       const verifyUserServerPasswordResult = await this.verifyUserServerPassword.execute({
         user,
         serverPassword: dto.serverPassword,
-        authTokenVersion: dto.authTokenVersion,
       })
 
       if (verifyUserServerPasswordResult.isFailed()) {

@@ -3,5 +3,4 @@ export type DeleteAccountDTO = {
   username?: string
   serverPassword?: string
   shouldVerifyUserServerPassword?: boolean
-  authTokenVersion?: number
 }

@@ -5,7 +5,6 @@ export type DeleteSettingDto = {
   timestamp?: number
   softDelete?: boolean
   serverPassword?: string
-  authTokenVersion?: number
   shouldVerifyUserServerPassword?: boolean
   checkUserPermissions?: boolean
 }

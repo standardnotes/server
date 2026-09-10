@@ -34,13 +34,12 @@ describe('VerifyUserServerPassword', () => {
   })
 
   describe('with user object provided', () => {
-    it('should succeed with correct server password and version 2', async () => {
+    it('should succeed with correct server password', async () => {
       mockBcryptCompare.mockResolvedValue(true)
 
       const result = await createUseCase().execute({
         user,
         serverPassword: 'correct-password',
-        authTokenVersion: 2,
       })
 
       expect(result.isFailed()).toBeFalsy()
@@ -48,63 +47,10 @@ describe('VerifyUserServerPassword', () => {
       expect(userRepository.findOneByUuid).not.toHaveBeenCalled()
     })
 
-    it('should succeed without checking password if version is less than 2', async () => {
-      const result = await createUseCase().execute({
-        user,
-        serverPassword: 'any-password',
-        authTokenVersion: 1,
-      })
-
-      expect(result.isFailed()).toBeFalsy()
-      expect(mockBcryptCompare).not.toHaveBeenCalled()
-      expect(userRepository.findOneByUuid).not.toHaveBeenCalled()
-    })
-
-    it('should succeed with correct password if version is 3', async () => {
-      mockBcryptCompare.mockResolvedValue(true)
-
-      const result = await createUseCase().execute({
-        user,
-        serverPassword: 'correct-password',
-        authTokenVersion: 3,
-      })
-
-      expect(result.isFailed()).toBeFalsy()
-      expect(mockBcryptCompare).toHaveBeenCalledWith('correct-password', 'hashed-password')
-      expect(userRepository.findOneByUuid).not.toHaveBeenCalled()
-    })
-
-    it('should succeed without checking password if version is undefined', async () => {
-      const result = await createUseCase().execute({
-        user,
-        serverPassword: 'any-password',
-      })
-
-      expect(result.isFailed()).toBeFalsy()
-      expect(mockBcryptCompare).not.toHaveBeenCalled()
-      expect(userRepository.findOneByUuid).not.toHaveBeenCalled()
-    })
-
-    it('should fail with incorrect server password and version 2', async () => {
-      mockBcryptCompare.mockResolvedValue(false)
-
-      const result = await createUseCase().execute({
-        user,
-        serverPassword: 'wrong-password',
-        authTokenVersion: 2,
-      })
-
-      expect(result.isFailed()).toBeTruthy()
-      expect(result.getError()).toEqual('The password you entered is incorrect. Please try again.')
-      expect(mockBcryptCompare).toHaveBeenCalledWith('wrong-password', 'hashed-password')
-      expect(userRepository.findOneByUuid).not.toHaveBeenCalled()
-    })
-
-    it('should fail when server password is not provided and version is 2', async () => {
+    it('should fail when server password is not provided', async () => {
       const result = await createUseCase().execute({
         user,
         serverPassword: undefined,
-        authTokenVersion: 2,
       })
 
       expect(result.isFailed()).toBeTruthy()
@@ -113,11 +59,24 @@ describe('VerifyUserServerPassword', () => {
       expect(userRepository.findOneByUuid).not.toHaveBeenCalled()
     })
 
-    it('should fail when server password is empty string and version is 2', async () => {
+    it('should fail with incorrect server password', async () => {
+      mockBcryptCompare.mockResolvedValue(false)
+
+      const result = await createUseCase().execute({
+        user,
+        serverPassword: 'wrong-password',
+      })
+
+      expect(result.isFailed()).toBeTruthy()
+      expect(result.getError()).toEqual('The password you entered is incorrect. Please try again.')
+      expect(mockBcryptCompare).toHaveBeenCalledWith('wrong-password', 'hashed-password')
+      expect(userRepository.findOneByUuid).not.toHaveBeenCalled()
+    })
+
+    it('should fail when server password is empty string', async () => {
       const result = await createUseCase().execute({
         user,
         serverPassword: '',
-        authTokenVersion: 2,
       })
 
       expect(result.isFailed()).toBeTruthy()
@@ -128,13 +87,12 @@ describe('VerifyUserServerPassword', () => {
   })
 
   describe('with userUuid provided', () => {
-    it('should succeed with correct server password and valid userUuid and version 2', async () => {
+    it('should succeed with correct server password and valid userUuid', async () => {
       mockBcryptCompare.mockResolvedValue(true)
 
       const result = await createUseCase().execute({
         userUuid: '00000000-0000-0000-0000-000000000000',
         serverPassword: 'correct-password',
-        authTokenVersion: 2,
       })
 
       expect(result.isFailed()).toBeFalsy()
@@ -144,41 +102,12 @@ describe('VerifyUserServerPassword', () => {
       )
     })
 
-    it('should succeed without checking password if version is less than 2', async () => {
-      const result = await createUseCase().execute({
-        userUuid: '00000000-0000-0000-0000-000000000000',
-        serverPassword: 'any-password',
-        authTokenVersion: 1,
-      })
-
-      expect(result.isFailed()).toBeFalsy()
-      expect(mockBcryptCompare).not.toHaveBeenCalled()
-      expect(userRepository.findOneByUuid).not.toHaveBeenCalled()
-    })
-
-    it('should succeed with correct password and valid userUuid and version 3', async () => {
-      mockBcryptCompare.mockResolvedValue(true)
-
-      const result = await createUseCase().execute({
-        userUuid: '00000000-0000-0000-0000-000000000000',
-        serverPassword: 'correct-password',
-        authTokenVersion: 3,
-      })
-
-      expect(result.isFailed()).toBeFalsy()
-      expect(mockBcryptCompare).toHaveBeenCalledWith('correct-password', 'hashed-password')
-      expect(userRepository.findOneByUuid).toHaveBeenCalledWith(
-        Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
-      )
-    })
-
-    it('should fail with incorrect server password and valid userUuid and version 2', async () => {
+    it('should fail with incorrect server password and valid userUuid', async () => {
       mockBcryptCompare.mockResolvedValue(false)
 
       const result = await createUseCase().execute({
         userUuid: '00000000-0000-0000-0000-000000000000',
         serverPassword: 'wrong-password',
-        authTokenVersion: 2,
       })
 
       expect(result.isFailed()).toBeTruthy()
@@ -189,11 +118,10 @@ describe('VerifyUserServerPassword', () => {
       )
     })
 
-    it('should fail with invalid userUuid and version 2', async () => {
+    it('should fail with invalid userUuid', async () => {
       const result = await createUseCase().execute({
         userUuid: 'invalid-uuid',
         serverPassword: 'some-password',
-        authTokenVersion: 2,
       })
 
       expect(result.isFailed()).toBeTruthy()
@@ -202,13 +130,12 @@ describe('VerifyUserServerPassword', () => {
       expect(userRepository.findOneByUuid).not.toHaveBeenCalled()
     })
 
-    it('should fail when user is not found and version is 2', async () => {
+    it('should fail when user is not found', async () => {
       userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
 
       const result = await createUseCase().execute({
         userUuid: '00000000-0000-0000-0000-000000000000',
         serverPassword: 'some-password',
-        authTokenVersion: 2,
       })
 
       expect(result.isFailed()).toBeTruthy()
@@ -219,11 +146,10 @@ describe('VerifyUserServerPassword', () => {
       )
     })
 
-    it('should fail when server password is not provided with userUuid and version is 2', async () => {
+    it('should fail when server password is not provided with userUuid', async () => {
       const result = await createUseCase().execute({
         userUuid: '00000000-0000-0000-0000-000000000000',
         serverPassword: undefined,
-        authTokenVersion: 2,
       })
 
       expect(result.isFailed()).toBeTruthy()

@@ -60,7 +60,6 @@ export class DeleteSetting implements UseCaseInterface {
       const verifyUserServerPasswordResult = await this.verifyUserServerPassword.execute({
         userUuid,
         serverPassword,
-        authTokenVersion: dto.authTokenVersion,
       })
 
       if (verifyUserServerPasswordResult.isFailed()) {

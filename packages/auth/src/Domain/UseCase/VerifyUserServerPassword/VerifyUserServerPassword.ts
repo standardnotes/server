@@ -7,11 +7,6 @@ import { User } from '../../User/User'
 export class VerifyUserServerPassword implements UseCaseInterface<void> {
   constructor(private userRepository: UserRepositoryInterface) {}
   async execute(dto: VerifyUserServerPasswordDTO): Promise<Result<void>> {
-    // Only verify server password if the cross-service token version is 2 or higher
-    if (!dto.authTokenVersion || dto.authTokenVersion < 2) {
-      return Result.ok()
-    }
-
     if (!dto.serverPassword) {
       return Result.fail('Please update your application to the latest version.')
     }
