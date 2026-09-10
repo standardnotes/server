@@ -1,6 +1,5 @@
 import { Result } from '@standardnotes/domain-core'
 
-import { AuthResponse20200115 } from '../../Auth/AuthResponse20200115'
 import { AuthResponseFactory20200115 } from '../../Auth/AuthResponseFactory20200115'
 import { AuthenticatorRepositoryInterface } from '../../Authenticator/AuthenticatorRepositoryInterface'
 import { CrypterInterface } from '../../Encryption/CrypterInterface'
@@ -17,6 +16,7 @@ import { GetSetting } from '../GetSetting/GetSetting'
 import { ApiVersion } from '../../Api/ApiVersion'
 import { LockRepositoryInterface } from '../../User/LockRepositoryInterface'
 import { VerifyHumanInteraction } from '../VerifyHumanInteraction/VerifyHumanInteraction'
+import { Logger } from 'winston'
 
 describe('SignInWithRecoveryCodes', () => {
   let userRepository: UserRepositoryInterface
@@ -32,6 +32,7 @@ describe('SignInWithRecoveryCodes', () => {
   let maxNonCaptchaAttempts: number
   let lockRepository: LockRepositoryInterface
   let verifyHumanInteractionUseCase: VerifyHumanInteraction
+  let logger: Logger
 
   const createUseCase = () =>
     new SignInWithRecoveryCodes(
@@ -48,6 +49,7 @@ describe('SignInWithRecoveryCodes', () => {
       maxNonCaptchaAttempts,
       lockRepository,
       verifyHumanInteractionUseCase,
+      logger,
     )
 
   beforeEach(() => {
@@ -58,7 +60,7 @@ describe('SignInWithRecoveryCodes', () => {
     } as jest.Mocked<User>)
 
     authResponseFactory = {} as jest.Mocked<AuthResponseFactory20200115>
-    authResponseFactory.createResponse = jest.fn().mockReturnValue({} as jest.Mocked<AuthResponse20200115>)
+    authResponseFactory.createResponse = jest.fn().mockReturnValue({ response: { foo: 'bar' }, session: {} })
 
     pkceRepository = {} as jest.Mocked<PKCERepositoryInterface>
     pkceRepository.removeCodeChallenge = jest.fn().mockReturnValue(true)
@@ -76,7 +78,7 @@ describe('SignInWithRecoveryCodes', () => {
     generateRecoveryCodes.execute = jest.fn().mockReturnValue(Result.ok('1234 5678'))
 
     increaseLoginAttempts = {} as jest.Mocked<IncreaseLoginAttempts>
-    increaseLoginAttempts.execute = jest.fn()
+    increaseLoginAttempts.execute = jest.fn().mockReturnValue(Result.ok({ isNonCaptchaLimitReached: false }))
 
     clearLoginAttempts = {} as jest.Mocked<ClearLoginAttempts>
     clearLoginAttempts.execute = jest.fn()
@@ -91,7 +93,18 @@ describe('SignInWithRecoveryCodes', () => {
     lockRepository.getLockCounter = jest.fn().mockReturnValue(0)
 
     maxNonCaptchaAttempts = 6
+
+    verifyHumanInteractionUseCase = {} as jest.Mocked<VerifyHumanInteraction>
+    verifyHumanInteractionUseCase.execute = jest.fn().mockReturnValue(Result.ok())
+
+    logger = {} as jest.Mocked<Logger>
+    logger.debug = jest.fn()
   })
+
+  const requireHumanVerification = () => {
+    lockRepository.getLockCounter = jest.fn().mockReturnValueOnce(maxNonCaptchaAttempts).mockReturnValueOnce(0)
+    verifyHumanInteractionUseCase.execute = jest.fn()
+  }
 
   it('should return error if password is not provided', async () => {
     const result = await createUseCase().execute({
@@ -103,8 +116,11 @@ describe('SignInWithRecoveryCodes', () => {
       recoveryCodes: '1234 5678',
     })
 
-    expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Empty password')
+    expect(result).toEqual({
+      success: false,
+      errorMessage: 'Empty password',
+      isNonCaptchaLimitReached: false,
+    })
   })
 
   it('should return error if username is not provided', async () => {
@@ -117,8 +133,11 @@ describe('SignInWithRecoveryCodes', () => {
       recoveryCodes: '1234 5678',
     })
 
-    expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Could not sign in with recovery codes: Username cannot be empty')
+    expect(result).toEqual({
+      success: false,
+      errorMessage: 'Could not sign in with recovery codes: Username cannot be empty',
+      isNonCaptchaLimitReached: false,
+    })
   })
 
   it('should return error if code verifier is not provided', async () => {
@@ -131,8 +150,11 @@ describe('SignInWithRecoveryCodes', () => {
       recoveryCodes: '1234 5678',
     })
 
-    expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Invalid code verifier')
+    expect(result).toEqual({
+      success: false,
+      errorMessage: 'Invalid code verifier',
+      isNonCaptchaLimitReached: false,
+    })
   })
 
   it('should return error if recovery codes are not provided', async () => {
@@ -145,8 +167,11 @@ describe('SignInWithRecoveryCodes', () => {
       recoveryCodes: '',
     })
 
-    expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Empty recovery codes')
+    expect(result).toEqual({
+      success: false,
+      errorMessage: 'Empty recovery codes',
+      isNonCaptchaLimitReached: false,
+    })
   })
 
   it('should return error if code verifier is invalid', async () => {
@@ -161,8 +186,11 @@ describe('SignInWithRecoveryCodes', () => {
       recoveryCodes: '1234 5678',
     })
 
-    expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Invalid code verifier')
+    expect(result).toEqual({
+      success: false,
+      errorMessage: 'Invalid code verifier',
+      isNonCaptchaLimitReached: false,
+    })
   })
 
   it('should return error if user is not found', async () => {
@@ -177,8 +205,11 @@ describe('SignInWithRecoveryCodes', () => {
       recoveryCodes: '1234 5678',
     })
 
-    expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Could not find user')
+    expect(result).toEqual({
+      success: false,
+      errorMessage: 'Invalid code verifier',
+      isNonCaptchaLimitReached: false,
+    })
   })
 
   it('should return error if recovery codes are invalid', async () => {
@@ -191,8 +222,11 @@ describe('SignInWithRecoveryCodes', () => {
       recoveryCodes: '1234 5678',
     })
 
-    expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Invalid recovery codes')
+    expect(result).toEqual({
+      success: false,
+      errorMessage: 'Invalid recovery codes',
+      isNonCaptchaLimitReached: false,
+    })
   })
 
   it('should return error if api version is invalid', async () => {
@@ -205,7 +239,15 @@ describe('SignInWithRecoveryCodes', () => {
       recoveryCodes: '1234 5678',
     })
 
-    expect(result.isFailed()).toBe(true)
+    expect(result).toEqual({
+      success: false,
+      errorMessage: 'Invalid api version: invalid',
+      isNonCaptchaLimitReached: false,
+    })
+    expect(increaseLoginAttempts.execute).toHaveBeenCalledWith({
+      email: 'test@test.te',
+      skipUsernameValidation: true,
+    })
   })
 
   it('should return error if api version does not support recovery sign in', async () => {
@@ -218,7 +260,15 @@ describe('SignInWithRecoveryCodes', () => {
       recoveryCodes: '1234 5678',
     })
 
-    expect(result.isFailed()).toBe(true)
+    expect(result).toEqual({
+      success: false,
+      errorMessage: 'Unsupported api version',
+      isNonCaptchaLimitReached: false,
+    })
+    expect(increaseLoginAttempts.execute).toHaveBeenCalledWith({
+      email: 'test@test.te',
+      skipUsernameValidation: true,
+    })
   })
 
   it('should return error if password does not match', async () => {
@@ -231,8 +281,11 @@ describe('SignInWithRecoveryCodes', () => {
       recoveryCodes: '1234 5678',
     })
 
-    expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Invalid password')
+    expect(result).toEqual({
+      success: false,
+      errorMessage: 'Invalid password',
+      isNonCaptchaLimitReached: false,
+    })
   })
 
   it('should return error if recovery codes are not generated for user', async () => {
@@ -247,8 +300,11 @@ describe('SignInWithRecoveryCodes', () => {
       recoveryCodes: '1234 5678',
     })
 
-    expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('User does not have recovery codes generated')
+    expect(result).toEqual({
+      success: false,
+      errorMessage: 'User does not have recovery codes generated',
+      isNonCaptchaLimitReached: false,
+    })
   })
 
   it('should return error if generating new recovery codes fails', async () => {
@@ -263,8 +319,12 @@ describe('SignInWithRecoveryCodes', () => {
       recoveryCodes: 'foo',
     })
 
-    expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Could not sign in with recovery codes: Oops')
+    expect(result).toEqual({
+      success: false,
+      errorMessage: 'Could not sign in with recovery codes: Oops',
+      isNonCaptchaLimitReached: false,
+    })
+    expect(authResponseFactory.createResponse).not.toHaveBeenCalled()
   })
 
   it('should return error if user has an invalid uuid', async () => {
@@ -282,8 +342,11 @@ describe('SignInWithRecoveryCodes', () => {
       recoveryCodes: 'foo',
     })
 
-    expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Invalid user uuid')
+    expect(result).toEqual({
+      success: false,
+      errorMessage: 'Invalid user uuid',
+      isNonCaptchaLimitReached: false,
+    })
   })
 
   it('should return error if user requires human verification but no hvmtoken provided', async () => {
@@ -302,8 +365,100 @@ describe('SignInWithRecoveryCodes', () => {
       recoveryCodes: 'foo',
     })
 
-    expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Human verification step failed.')
+    expect(result).toEqual({
+      success: false,
+      errorMessage: 'Human verification step failed.',
+      isNonCaptchaLimitReached: true,
+    })
+  })
+
+  it('should return isNonCaptchaLimitReached when incrementing login attempts reaches the limit', async () => {
+    increaseLoginAttempts.execute = jest.fn().mockReturnValue(Result.ok({ isNonCaptchaLimitReached: true }))
+
+    const result = await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
+      userAgent: 'user-agent',
+      username: 'test@test.te',
+      password: 'asdasd123123',
+      codeVerifier: 'code-verifier',
+      recoveryCodes: '1234 5678',
+    })
+
+    expect(result).toEqual({
+      success: false,
+      errorMessage: 'Invalid password',
+      isNonCaptchaLimitReached: true,
+    })
+  })
+
+  it('should increment login attempts once on invalid password', async () => {
+    await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
+      userAgent: 'user-agent',
+      username: 'test@test.te',
+      password: 'asdasd123123',
+      codeVerifier: 'code-verifier',
+      recoveryCodes: '1234 5678',
+    })
+
+    expect(increaseLoginAttempts.execute).toHaveBeenCalledTimes(1)
+    expect(increaseLoginAttempts.execute).toHaveBeenCalledWith({
+      email: 'test@test.te',
+      skipUsernameValidation: true,
+    })
+  })
+
+  it('should not increment login attempts when human verification fails', async () => {
+    requireHumanVerification()
+    verifyHumanInteractionUseCase.execute = jest
+      .fn()
+      .mockReturnValueOnce(Result.fail('Human verification step failed.'))
+
+    await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
+      userAgent: 'user-agent',
+      username: 'test@test.te',
+      password: 'qweqwe123123',
+      codeVerifier: 'code-verifier',
+      recoveryCodes: 'foo',
+      hvmToken: 'bad-token',
+    })
+
+    expect(increaseLoginAttempts.execute).not.toHaveBeenCalled()
+  })
+
+  it('should not increment login attempts when human verification token is missing', async () => {
+    requireHumanVerification()
+    verifyHumanInteractionUseCase.execute = jest.fn().mockReturnValueOnce(Result.fail('No HVM token available.'))
+
+    await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
+      userAgent: 'user-agent',
+      username: 'test@test.te',
+      password: 'qweqwe123123',
+      codeVerifier: 'code-verifier',
+      recoveryCodes: 'foo',
+    })
+
+    expect(increaseLoginAttempts.execute).not.toHaveBeenCalled()
+  })
+
+  it('should not set isNonCaptchaLimitReached when increasing login attempts fails', async () => {
+    increaseLoginAttempts.execute = jest.fn().mockReturnValue(Result.fail('invalid email'))
+
+    const result = await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
+      userAgent: 'user-agent',
+      username: 'test@test.te',
+      password: 'asdasd123123',
+      codeVerifier: 'code-verifier',
+      recoveryCodes: '1234 5678',
+    })
+
+    expect(result).toEqual({
+      success: false,
+      errorMessage: 'Invalid password',
+    })
   })
 
   it('should return auth response with human verification required and passing', async () => {
@@ -326,7 +481,7 @@ describe('SignInWithRecoveryCodes', () => {
       userUuid: '00000000-0000-0000-0000-000000000000',
     })
     expect(authenticatorRepository.removeByUserUuid).toHaveBeenCalled()
-    expect(result.isFailed()).toBe(false)
+    expect(result.success).toBe(true)
   })
 
   it('should return auth response', async () => {
@@ -345,6 +500,6 @@ describe('SignInWithRecoveryCodes', () => {
       userUuid: '00000000-0000-0000-0000-000000000000',
     })
     expect(authenticatorRepository.removeByUserUuid).toHaveBeenCalled()
-    expect(result.isFailed()).toBe(false)
+    expect(result.success).toBe(true)
   })
 })

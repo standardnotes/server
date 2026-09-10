@@ -265,6 +265,7 @@ export class BaseSettingsController extends BaseHttpController {
       serverPassword,
       authTokenVersion: locals.authTokenVersion,
       shouldVerifyUserServerPassword: true,
+      checkUserPermissions: true,
     })
 
     if (result.success) {

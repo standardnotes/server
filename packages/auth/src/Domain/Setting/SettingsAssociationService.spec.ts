@@ -20,6 +20,9 @@ describe('SettingsAssociationService', () => {
     expect(
       createService().isSettingMutableByClient(SettingName.create(SettingName.NAMES.ListedAuthorSecrets).getValue()),
     ).toBeFalsy()
+    expect(
+      createService().isSettingMutableByClient(SettingName.create(SettingName.NAMES.RecoveryCodes).getValue()),
+    ).toBeFalsy()
   })
 
   it('should return default encryption version for a setting which enecryption version is not strictly defined', () => {

@@ -10,7 +10,6 @@ import TYPES from '../../Bootstrap/Types'
 import { SignIn } from '../../Domain/UseCase/SignIn'
 import { ClearLoginAttempts } from '../../Domain/UseCase/ClearLoginAttempts'
 import { VerifyMFA } from '../../Domain/UseCase/VerifyMFA'
-import { IncreaseLoginAttempts } from '../../Domain/UseCase/IncreaseLoginAttempts'
 import { Logger } from 'winston'
 import { GetUserKeyParams } from '../../Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
 import { AuthController } from '../../Controller/AuthController'
@@ -32,7 +31,6 @@ export class AnnotatedAuthController extends BaseAuthController {
     @inject(TYPES.Auth_SignIn) override signInUseCase: SignIn,
     @inject(TYPES.Auth_GetUserKeyParams) override getUserKeyParams: GetUserKeyParams,
     @inject(TYPES.Auth_ClearLoginAttempts) override clearLoginAttempts: ClearLoginAttempts,
-    @inject(TYPES.Auth_IncreaseLoginAttempts) override increaseLoginAttempts: IncreaseLoginAttempts,
     @inject(TYPES.Auth_Logger) override logger: Logger,
     @inject(TYPES.Auth_AuthController) override authController: AuthController,
     @inject(TYPES.Auth_Register) override registerUser: Register,
@@ -50,7 +48,6 @@ export class AnnotatedAuthController extends BaseAuthController {
       signInUseCase,
       getUserKeyParams,
       clearLoginAttempts,
-      increaseLoginAttempts,
       logger,
       authController,
       registerUser,

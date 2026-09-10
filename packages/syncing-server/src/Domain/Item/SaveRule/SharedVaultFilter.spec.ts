@@ -754,6 +754,51 @@ describe('SharedVaultFilter', () => {
 
       expect(result.passed).toBe(false)
     })
+
+    it('should return as not passed if existing item is key system items key and incoming content type is null', async () => {
+      sharedVaultUser = SharedVaultUser.create({
+        permission: SharedVaultUserPermission.create(SharedVaultUserPermission.PERMISSIONS.Write).getValue(),
+        sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        timestamps: Timestamps.create(123, 123).getValue(),
+        isDesignatedSurvivor: false,
+      }).getValue()
+
+      existingItem = Item.create({
+        ...existingItem.props,
+        contentType: ContentType.create(ContentType.TYPES.KeySystemItemsKey).getValue(),
+      }).getValue()
+
+      itemHash = ItemHash.create({
+        ...itemHash.props,
+        content_type: null,
+      }).getValue()
+
+      determineSharedVaultOperationOnItem.execute = jest.fn().mockReturnValue(
+        Result.ok(
+          SharedVaultOperationOnItem.create({
+            userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+            sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+            type: SharedVaultOperationOnItem.TYPES.SaveToSharedVault,
+            incomingItemHash: itemHash,
+            existingItem,
+          }).getValue(),
+        ),
+      )
+
+      sharedVaultUserRepository.findByUserUuidAndSharedVaultUuid = jest.fn().mockResolvedValue(sharedVaultUser)
+
+      const filter = createFilter()
+      const result = await filter.check({
+        apiVersion: '001',
+        existingItem: existingItem,
+        itemHash: itemHash,
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
+      })
+
+      expect(result.passed).toBe(false)
+    })
   })
 
   describe('when the shared vault operation on item is: create to shared vault', () => {

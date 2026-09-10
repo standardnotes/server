@@ -1,7 +1,7 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'subscription_settings' })
-@Index('index_settings_on_name_and_user_subscription_uuid', ['name', 'userSubscriptionUuid'])
+@Index('index_settings_on_name_and_user_subscription_uuid', ['name', 'userSubscriptionUuid'], { unique: true })
 export class TypeORMSubscriptionSetting {
   @PrimaryGeneratedColumn('uuid')
   declare uuid: string

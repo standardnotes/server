@@ -118,7 +118,7 @@ describe('SetSettingValue', () => {
     )
   })
 
-  it('should update an existing setting', async () => {
+  it('should return error when trying to overwrite an active MFA secret', async () => {
     const setting = Setting.create({
       name: SettingName.NAMES.MfaSecret,
       value: '1243359u42395834',
@@ -136,6 +136,55 @@ describe('SetSettingValue', () => {
       userUuid: '00000000-0000-0000-0000-000000000000',
       settingName: SettingName.NAMES.MfaSecret,
       value: 'value',
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toBe('Failed to set MFA secret.')
+    expect(settingRepository.update).not.toHaveBeenCalled()
+  })
+
+  it('should allow setting MFA secret when existing row has a null value', async () => {
+    const setting = Setting.create({
+      name: SettingName.NAMES.MfaSecret,
+      value: null,
+      serverEncryptionVersion: EncryptionVersion.Default,
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      sensitive: true,
+      timestamps: Timestamps.create(123, 123).getValue(),
+    }).getValue()
+
+    getSetting.execute = jest.fn().mockReturnValue(Result.ok({ setting }))
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      settingName: SettingName.NAMES.MfaSecret,
+      value: 'value',
+    })
+
+    expect(result.isFailed()).toBe(false)
+    expect(settingRepository.update).toHaveBeenCalled()
+  })
+
+  it('should update an existing setting', async () => {
+    const setting = Setting.create({
+      name: SettingName.NAMES.EmailBackupFrequency,
+      value: 'daily',
+      serverEncryptionVersion: EncryptionVersion.Unencrypted,
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      sensitive: false,
+      timestamps: Timestamps.create(123, 123).getValue(),
+    }).getValue()
+
+    getSetting.execute = jest.fn().mockReturnValue(Result.ok({ setting }))
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      settingName: SettingName.NAMES.EmailBackupFrequency,
+      value: 'weekly',
     })
 
     expect(result.isFailed()).toBe(false)

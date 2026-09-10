@@ -145,6 +145,11 @@ export class PaymentsController extends BaseHttpController {
     await this.httpService.callPaymentsServer(request, response, 'api/pro_users/stripe-setup-intent', request.body)
   }
 
+  @httpGet('/pro_users/get-bt-token', TYPES.ApiGateway_SubscriptionTokenAuthMiddleware)
+  async getBraintreeToken(request: Request, response: Response): Promise<void> {
+    await this.httpService.callPaymentsServer(request, response, 'api/pro_users/get-bt-token', request.body)
+  }
+
   @all('/pro_users(/*)?')
   async proUsers(request: Request, response: Response): Promise<void> {
     await this.httpService.callPaymentsServer(request, response, request.path.replace('v1', 'api'), request.body)

@@ -231,6 +231,9 @@ fi
 if [ -z "$AUTH_SERVER_U2F_REQUIRE_USER_VERIFICATION" ]; then
   export AUTH_SERVER_U2F_REQUIRE_USER_VERIFICATION=false
 fi
+if [ -z "$AUTH_SERVER_U2F_CHALLENGE_MAX_AGE_SECONDS" ]; then
+  export AUTH_SERVER_U2F_CHALLENGE_MAX_AGE_SECONDS=300
+fi
 
 printenv | grep AUTH_SERVER_ | sed 's/AUTH_SERVER_//g' > /opt/server/packages/auth/.env
 

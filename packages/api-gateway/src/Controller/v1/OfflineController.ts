@@ -44,4 +44,14 @@ export class OfflineController extends BaseHttpController {
       request.body,
     )
   }
+
+  @httpPost('/payments/checkout-session')
+  async createOfflineCheckoutSession(request: Request, response: Response): Promise<void> {
+    await this.httpService.callPaymentsServer(request, response, 'api/pro_users/checkout-session/offline', request.body)
+  }
+
+  @httpGet('/payments/get-bt-token')
+  async getOfflineBraintreeToken(request: Request, response: Response): Promise<void> {
+    await this.httpService.callPaymentsServer(request, response, 'api/pro_users/get-bt-token/offline', request.body)
+  }
 }

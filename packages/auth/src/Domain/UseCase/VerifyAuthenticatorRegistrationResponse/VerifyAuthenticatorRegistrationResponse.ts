@@ -18,6 +18,7 @@ export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface
     private requireUserVerification: boolean,
     private userRepository: UserRepositoryInterface,
     private featureService: FeatureServiceInterface,
+    private authenticatorChallengeMaxAgeSeconds: number,
   ) {}
 
   async execute(dto: VerifyAuthenticatorRegistrationResponseDTO): Promise<Result<UniqueEntityId>> {
@@ -46,11 +47,23 @@ export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface
       return Result.fail('Could not verify authenticator registration response: challenge not found')
     }
 
+    if (authenticatorChallenge.isExpired(this.authenticatorChallengeMaxAgeSeconds)) {
+      await this.authenticatorChallengeRepository.deleteByUserUuid(userUuid)
+
+      return Result.fail('Could not verify authenticator registration response: challenge expired')
+    }
+
+    const expectedChallenge = authenticatorChallenge.props.challenge.toString()
+    const deletedRows = await this.authenticatorChallengeRepository.deleteByUserUuid(userUuid)
+    if (deletedRows === 0) {
+      return Result.fail('Could not verify authenticator registration response: challenge already consumed')
+    }
+
     let verification: VerifiedRegistrationResponse
     try {
       verification = await verifyRegistrationResponse({
         response: dto.attestationResponse,
-        expectedChallenge: authenticatorChallenge.props.challenge.toString(),
+        expectedChallenge,
         expectedOrigin: this.expectedOrigin,
         expectedRPID: this.relyingPartyId,
         requireUserVerification: this.requireUserVerification,

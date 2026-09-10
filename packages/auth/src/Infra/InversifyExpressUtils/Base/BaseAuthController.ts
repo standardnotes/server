@@ -4,7 +4,6 @@ import { Logger } from 'winston'
 
 import { ClearLoginAttempts } from '../../../Domain/UseCase/ClearLoginAttempts'
 import { GetUserKeyParams } from '../../../Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
-import { IncreaseLoginAttempts } from '../../../Domain/UseCase/IncreaseLoginAttempts'
 import { SignIn } from '../../../Domain/UseCase/SignIn'
 import { VerifyMFA } from '../../../Domain/UseCase/VerifyMFA'
 import { AuthController } from '../../../Controller/AuthController'
@@ -29,7 +28,6 @@ export class BaseAuthController extends BaseHttpController {
     protected signInUseCase: SignIn,
     protected getUserKeyParams: GetUserKeyParams,
     protected clearLoginAttempts: ClearLoginAttempts,
-    protected increaseLoginAttempts: IncreaseLoginAttempts,
     protected logger: Logger,
     protected authController: AuthController,
     protected registerUser: Register,
@@ -147,16 +145,8 @@ export class BaseAuthController extends BaseHttpController {
     })
 
     if (!signInResult.success) {
-      const resultOrError = await this.increaseLoginAttempts.execute({ email: request.body.email, skipUsernameValidation: true })
-      if (resultOrError.isFailed()) {
-        this.logger.error(`Failed to increase login attempts: ${resultOrError.getError()}`, {
-          application: request.headers['x-application-version'] as string,
-        })
-      } else {
-        const result = resultOrError.getValue()
-        if (result.isNonCaptchaLimitReached) {
-          response.setHeader('x-captcha-required', this.captchaUIUrl)
-        }
+      if (signInResult.isNonCaptchaLimitReached) {
+        response.setHeader('x-captcha-required', this.captchaUIUrl)
       }
 
       return this.json(
@@ -168,8 +158,6 @@ export class BaseAuthController extends BaseHttpController {
         401,
       )
     }
-
-    await this.clearLoginAttempts.execute({ email: request.body.email })
 
     if (signInResult.result.response !== undefined) {
       const session = signInResult.result.session as Session
@@ -208,7 +196,7 @@ export class BaseAuthController extends BaseHttpController {
   }
 
   async recoveryLogin(request: Request, response: Response): Promise<results.JsonResult> {
-    const result = await this.signInWithRecoveryCodes.execute({
+    const signInResponse = await this.signInWithRecoveryCodes.execute({
       apiVersion: request.body.api_version,
       userAgent: <string>request.headers['user-agent'],
       codeVerifier: request.body.code_verifier,
@@ -220,24 +208,11 @@ export class BaseAuthController extends BaseHttpController {
       application: request.headers['x-application-version'] as string,
     })
 
-    if (result.isFailed()) {
-      this.logger.debug(`Failed to sign in with recovery codes: ${result.getError()}`)
+    if (!signInResponse.success) {
+      this.logger.debug(`Failed to sign in with recovery codes: ${signInResponse.errorMessage}`)
 
-      const increasLoginAttemtpsResultOrError = await this.increaseLoginAttempts.execute({
-        email: request.body.username,
-      })
-      if (increasLoginAttemtpsResultOrError.isFailed()) {
-        this.logger.error(
-          `Failed to increase login attempts on recovery login: ${increasLoginAttemtpsResultOrError.getError()}`,
-          {
-            application: request.headers['x-application-version'] as string,
-          },
-        )
-      } else {
-        const increasLoginAttemtpsResult = increasLoginAttemtpsResultOrError.getValue()
-        if (increasLoginAttemtpsResult.isNonCaptchaLimitReached) {
-          response.setHeader('x-captcha-required', this.captchaUIUrl)
-        }
+      if (signInResponse.isNonCaptchaLimitReached) {
+        response.setHeader('x-captcha-required', this.captchaUIUrl)
       }
 
       return this.json(
@@ -250,14 +225,23 @@ export class BaseAuthController extends BaseHttpController {
       )
     }
 
-    await this.clearLoginAttempts.execute({ email: request.body.username })
+    const authResponse = signInResponse.result.response
 
-    const signInWithRecoveryCodesResult = result.getValue()
+    if (authResponse === undefined) {
+      return this.json(
+        {
+          error: {
+            message: 'Invalid login credentials.',
+          },
+        },
+        HttpStatusCode.Unauthorized,
+      )
+    }
 
     return this.json({
-      session: signInWithRecoveryCodesResult.sessionBody,
-      key_params: signInWithRecoveryCodesResult.keyParams,
-      user: signInWithRecoveryCodesResult.user,
+      session: authResponse.sessionBody,
+      key_params: authResponse.keyParams,
+      user: authResponse.user,
     })
   }
 

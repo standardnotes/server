@@ -35,6 +35,14 @@ export class OfflineSettingService implements OfflineSettingServiceInterface {
 
     offlineSetting = await this.offlineSettingRepository.save(offlineSetting)
 
+    if (dto.name === OfflineSettingName.FeaturesToken) {
+      await this.offlineSettingRepository.deleteByNameAndValueExcludingEmail(
+        dto.name,
+        dto.value,
+        dto.email,
+      )
+    }
+
     return {
       success: true,
       offlineSetting,

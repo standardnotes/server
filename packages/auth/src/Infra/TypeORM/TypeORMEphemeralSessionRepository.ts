@@ -27,8 +27,14 @@ export class TypeORMEphemeralSessionRepository implements EphemeralSessionReposi
   }
 
   async deleteOne(uuid: string, userUuid: string): Promise<void> {
+    const session = await this.findOneByUuidAndUserUuid(uuid, userUuid)
+
     await this.cacheEntryRepository.removeByKey(`${this.PREFIX}:${uuid}`)
     await this.cacheEntryRepository.removeByKey(`${this.PREFIX}:${uuid}:${userUuid}`)
+
+    if (session?.privateIdentifier) {
+      await this.cacheEntryRepository.removeByKey(`${this.PREFIX_PRIVATE_ID}:${session.privateIdentifier}`)
+    }
 
     const userSessionsJSON = await this.cacheEntryRepository.findUnexpiredOneByKey(
       `${this.USER_SESSIONS_PREFIX}:${userUuid}`,

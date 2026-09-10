@@ -48,6 +48,14 @@ export class SetSettingValue implements UseCaseInterface<Setting> {
       decrypted: false,
     })
 
+    if (
+      settingName.value === SettingName.NAMES.MfaSecret &&
+      !settingExists.isFailed() &&
+      settingExists.getValue().setting.props.value !== null
+    ) {
+      return Result.fail('Failed to set MFA secret.')
+    }
+
     const sensitive = this.settingsAssociationService.getSensitivityForSetting(settingName)
 
     const encryptionVersion = this.settingsAssociationService.getEncryptionVersionForSetting(settingName)

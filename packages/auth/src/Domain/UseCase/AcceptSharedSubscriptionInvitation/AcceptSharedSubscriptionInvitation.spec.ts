@@ -65,7 +65,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
 
     inviteeSubscription = { endsAt: 3, planName: SubscriptionName.PlusPlan } as jest.Mocked<UserSubscription>
 
-    inviterSubscription = { endsAt: 3, planName: SubscriptionName.PlusPlan } as jest.Mocked<UserSubscription>
+    inviterSubscription = { endsAt: 3, planName: SubscriptionName.PlusPlan, userUuid: '456' } as jest.Mocked<UserSubscription>
 
     userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
     userSubscriptionRepository.findBySubscriptionIdAndType = jest.fn().mockReturnValue([inviterSubscription])
@@ -114,8 +114,8 @@ describe('AcceptSharedSubscriptionInvitation', () => {
   })
 
   it('should create a shared subscription upon accepting the invitation if inviter has a second subscription', async () => {
-    const inviterSubscription1 = { endsAt: 1, planName: SubscriptionName.PlusPlan } as jest.Mocked<UserSubscription>
-    const inviterSubscription2 = { endsAt: 5, planName: SubscriptionName.PlusPlan } as jest.Mocked<UserSubscription>
+    const inviterSubscription1 = { endsAt: 1, planName: SubscriptionName.PlusPlan, userUuid: '456' } as jest.Mocked<UserSubscription>
+    const inviterSubscription2 = { endsAt: 5, planName: SubscriptionName.PlusPlan, userUuid: '456' } as jest.Mocked<UserSubscription>
 
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(3)
 
@@ -208,6 +208,25 @@ describe('AcceptSharedSubscriptionInvitation', () => {
     expect(applyDefaultSubscriptionSettings.execute).not.toHaveBeenCalled()
   })
 
+  it('should not create a shared subscription if invitee is the inviter', async () => {
+    inviterSubscription = { endsAt: 3, planName: SubscriptionName.PlusPlan, userUuid: '123' } as jest.Mocked<UserSubscription>
+    userSubscriptionRepository.findBySubscriptionIdAndType = jest.fn().mockReturnValue([inviterSubscription])
+
+    expect(
+      await createUseCase().execute({
+        sharedSubscriptionInvitationUuid: '1-2-3',
+      }),
+    ).toEqual({
+      success: false,
+      message: 'You cannot accept a subscription invitation sent to yourself.',
+    })
+
+    expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
+    expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
+    expect(roleService.addUserRoleBasedOnSubscription).not.toHaveBeenCalled()
+    expect(applyDefaultSubscriptionSettings.execute).not.toHaveBeenCalled()
+  })
+
   it('should not create a shared subscription if inviter subscription is not found', async () => {
     userSubscriptionRepository.findBySubscriptionIdAndType = jest.fn().mockReturnValue([])
     expect(
@@ -226,8 +245,8 @@ describe('AcceptSharedSubscriptionInvitation', () => {
   })
 
   it('should not create a shared subscription if inviter subscriptions are not active', async () => {
-    const inviterSubscription1 = { endsAt: 1, planName: SubscriptionName.PlusPlan } as jest.Mocked<UserSubscription>
-    const inviterSubscription2 = { endsAt: 2, planName: SubscriptionName.PlusPlan } as jest.Mocked<UserSubscription>
+    const inviterSubscription1 = { endsAt: 1, planName: SubscriptionName.PlusPlan, userUuid: '456' } as jest.Mocked<UserSubscription>
+    const inviterSubscription2 = { endsAt: 2, planName: SubscriptionName.PlusPlan, userUuid: '456' } as jest.Mocked<UserSubscription>
 
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(3)
 

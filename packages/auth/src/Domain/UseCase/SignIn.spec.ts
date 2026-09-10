@@ -17,6 +17,8 @@ import { Session } from '../Session/Session'
 import { LockRepositoryInterface } from '../User/LockRepositoryInterface'
 import { VerifyHumanInteraction } from './VerifyHumanInteraction/VerifyHumanInteraction'
 import { Result } from '@standardnotes/domain-core'
+import { IncreaseLoginAttempts } from './IncreaseLoginAttempts'
+import { ClearLoginAttempts } from './ClearLoginAttempts'
 
 describe('SignIn', () => {
   let user: User
@@ -33,7 +35,8 @@ describe('SignIn', () => {
   let maxNonCaptchaAttempts: number
   let lockRepository: LockRepositoryInterface
   let verifyHumanInteractionUseCase: VerifyHumanInteraction
-
+  let increaseLoginAttempts: IncreaseLoginAttempts
+  let clearLoginAttempts: ClearLoginAttempts
   const createUseCase = () =>
     new SignIn(
       userRepository,
@@ -47,6 +50,8 @@ describe('SignIn', () => {
       maxNonCaptchaAttempts,
       lockRepository,
       verifyHumanInteractionUseCase,
+      increaseLoginAttempts,
+      clearLoginAttempts,
     )
 
   beforeEach(() => {
@@ -92,7 +97,21 @@ describe('SignIn', () => {
     lockRepository.getLockCounter = jest.fn().mockReturnValue(0)
 
     maxNonCaptchaAttempts = 6
+
+    increaseLoginAttempts = {} as jest.Mocked<IncreaseLoginAttempts>
+    increaseLoginAttempts.execute = jest.fn().mockReturnValue(Result.ok({ isNonCaptchaLimitReached: false }))
+
+    clearLoginAttempts = {} as jest.Mocked<ClearLoginAttempts>
+    clearLoginAttempts.execute = jest.fn()
+
+    verifyHumanInteractionUseCase = {} as jest.Mocked<VerifyHumanInteraction>
+    verifyHumanInteractionUseCase.execute = jest.fn().mockReturnValue(Result.ok())
   })
+
+  const requireHumanVerification = () => {
+    lockRepository.getLockCounter = jest.fn().mockReturnValueOnce(maxNonCaptchaAttempts).mockReturnValueOnce(0)
+    verifyHumanInteractionUseCase.execute = jest.fn()
+  }
 
   it('should fail sign in a legacy user without code verifier', async () => {
     pkceRepository.removeCodeChallenge = jest.fn().mockReturnValue(false)
@@ -113,6 +132,7 @@ describe('SignIn', () => {
       success: false,
       errorCode: 410,
       errorMessage: 'Please update your client application.',
+      isNonCaptchaLimitReached: false,
     })
   })
 
@@ -132,6 +152,7 @@ describe('SignIn', () => {
       success: false,
       errorCode: 410,
       errorMessage: 'Please update your client application.',
+      isNonCaptchaLimitReached: false,
     })
   })
 
@@ -157,6 +178,7 @@ describe('SignIn', () => {
       success: false,
       errorCode: 410,
       errorMessage: 'Please update your client application.',
+      isNonCaptchaLimitReached: false,
     })
   })
 
@@ -173,6 +195,7 @@ describe('SignIn', () => {
     ).toEqual({
       success: false,
       errorMessage: 'Username cannot be empty',
+      isNonCaptchaLimitReached: false,
     })
 
     expect(domainEventFactory.createEmailRequestedEvent).not.toHaveBeenCalled()
@@ -192,6 +215,7 @@ describe('SignIn', () => {
     ).toEqual({
       success: false,
       errorMessage: 'Invalid api version: invalid',
+      isNonCaptchaLimitReached: false,
     })
 
     expect(domainEventFactory.createEmailRequestedEvent).not.toHaveBeenCalled()
@@ -218,6 +242,29 @@ describe('SignIn', () => {
 
     expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
     expect(domainEventPublisher.publish).toHaveBeenCalled()
+    expect(pkceRepository.removeCodeChallenge).toHaveBeenCalledWith('base64-url-encoded', '1-2-3')
+    expect(clearLoginAttempts.execute).toHaveBeenCalledWith({ email: 'test@test.te' })
+  })
+
+  it('should not sign in when pkce challenge was registered for a different user', async () => {
+    pkceRepository.removeCodeChallenge = jest.fn().mockReturnValue(false)
+
+    expect(
+      await createUseCase().execute({
+        email: 'test@test.te',
+        password: 'qweqwe123123',
+        userAgent: 'Google Chrome',
+        apiVersion: '20190520',
+        ephemeralSession: false,
+        codeVerifier: 'test',
+      }),
+    ).toEqual({
+      success: false,
+      errorMessage: 'Invalid email or password',
+      isNonCaptchaLimitReached: false,
+    })
+
+    expect(pkceRepository.removeCodeChallenge).toHaveBeenCalledWith('base64-url-encoded', '1-2-3')
   })
 
   it('should sign in a user even if publishing a sign in event fails', async () => {
@@ -256,6 +303,7 @@ describe('SignIn', () => {
     ).toEqual({
       success: false,
       errorMessage: 'Invalid email or password',
+      isNonCaptchaLimitReached: false,
     })
   })
 
@@ -274,6 +322,7 @@ describe('SignIn', () => {
     ).toEqual({
       success: false,
       errorMessage: 'Invalid email or password',
+      isNonCaptchaLimitReached: false,
     })
   })
 
@@ -292,6 +341,7 @@ describe('SignIn', () => {
     ).toEqual({
       success: false,
       errorMessage: 'Invalid email or password',
+      isNonCaptchaLimitReached: false,
     })
   })
 
@@ -363,6 +413,131 @@ describe('SignIn', () => {
     ).toEqual({
       success: false,
       errorMessage: 'Human verification step failed.',
+      isNonCaptchaLimitReached: true,
     })
+  })
+
+  it('should return isNonCaptchaLimitReached when incrementing login attempts reaches the limit', async () => {
+    increaseLoginAttempts.execute = jest.fn().mockReturnValue(Result.ok({ isNonCaptchaLimitReached: true }))
+
+    expect(
+      await createUseCase().execute({
+        email: 'test@test.te',
+        password: 'asdasd123123',
+        userAgent: 'Google Chrome',
+        apiVersion: '20190520',
+        ephemeralSession: false,
+        codeVerifier: 'test',
+      }),
+    ).toEqual({
+      success: false,
+      errorMessage: 'Invalid email or password',
+      isNonCaptchaLimitReached: true,
+    })
+  })
+
+  it('should increment login attempts on invalid password', async () => {
+    await createUseCase().execute({
+      email: 'test@test.te',
+      password: 'asdasd123123',
+      userAgent: 'Google Chrome',
+      apiVersion: '20190520',
+      ephemeralSession: false,
+      codeVerifier: 'test',
+    })
+
+    expect(increaseLoginAttempts.execute).toHaveBeenCalledWith({
+      email: 'test@test.te',
+      skipUsernameValidation: true,
+    })
+  })
+
+  it('should not increment login attempts when human verification fails', async () => {
+    requireHumanVerification()
+    verifyHumanInteractionUseCase.execute = jest
+      .fn()
+      .mockReturnValueOnce(Result.fail('Human verification step failed.'))
+
+    await createUseCase().execute({
+      email: 'test@test.te',
+      password: 'qweqwe123123',
+      userAgent: 'Google Chrome',
+      apiVersion: '20190520',
+      ephemeralSession: false,
+      codeVerifier: 'test',
+      hvmToken: 'bad-token',
+    })
+
+    expect(increaseLoginAttempts.execute).not.toHaveBeenCalled()
+  })
+
+  it('should not increment login attempts when human verification token is missing', async () => {
+    requireHumanVerification()
+    verifyHumanInteractionUseCase.execute = jest.fn().mockReturnValueOnce(Result.fail('No HVM token available.'))
+
+    await createUseCase().execute({
+      email: 'test@test.te',
+      password: 'qweqwe123123',
+      userAgent: 'Google Chrome',
+      apiVersion: '20190520',
+      ephemeralSession: false,
+      codeVerifier: 'test',
+    })
+
+    expect(increaseLoginAttempts.execute).not.toHaveBeenCalled()
+  })
+
+  it('should not set isNonCaptchaLimitReached when increasing login attempts fails', async () => {
+    increaseLoginAttempts.execute = jest.fn().mockReturnValue(Result.fail('invalid email'))
+
+    expect(
+      await createUseCase().execute({
+        email: 'test@test.te',
+        password: 'asdasd123123',
+        userAgent: 'Google Chrome',
+        apiVersion: '20190520',
+        ephemeralSession: false,
+        codeVerifier: 'test',
+      }),
+    ).toEqual({
+      success: false,
+      errorMessage: 'Invalid email or password',
+    })
+  })
+
+  it('should require human verification in captcha mode and not increment on failure', async () => {
+    lockRepository.getLockCounter = jest.fn().mockReturnValueOnce(0).mockReturnValueOnce(1)
+    verifyHumanInteractionUseCase.execute = jest
+      .fn()
+      .mockReturnValueOnce(Result.fail('Human verification step failed.'))
+
+    await createUseCase().execute({
+      email: 'test@test.te',
+      password: 'qweqwe123123',
+      userAgent: 'Google Chrome',
+      apiVersion: '20190520',
+      ephemeralSession: false,
+      codeVerifier: 'test',
+      hvmToken: 'bad-token',
+    })
+
+    expect(increaseLoginAttempts.execute).not.toHaveBeenCalled()
+  })
+
+  it('should not increment login attempts on human verification failure for unknown user', async () => {
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
+    lockRepository.getLockCounter = jest.fn().mockReturnValueOnce(maxNonCaptchaAttempts).mockReturnValueOnce(0)
+    verifyHumanInteractionUseCase.execute = jest.fn().mockReturnValueOnce(Result.fail('No HVM token available.'))
+
+    await createUseCase().execute({
+      email: 'test@test.te',
+      password: 'asdasd123123',
+      userAgent: 'Google Chrome',
+      apiVersion: '20190520',
+      ephemeralSession: false,
+      codeVerifier: 'test',
+    })
+
+    expect(increaseLoginAttempts.execute).not.toHaveBeenCalled()
   })
 })

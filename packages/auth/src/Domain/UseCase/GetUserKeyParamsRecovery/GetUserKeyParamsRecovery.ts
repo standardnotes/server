@@ -70,7 +70,7 @@ export class GetUserKeyParamsRecovery implements UseCaseInterface<KeyParamsData>
   }
 
   private async createKeyParams(codeChallenge: string, user: User): Promise<KeyParamsData> {
-    await this.pkceRepository.storeCodeChallenge(codeChallenge)
+    await this.pkceRepository.storeCodeChallenge(codeChallenge, user.uuid)
 
     return this.keyParamsFactory.create(user, false)
   }

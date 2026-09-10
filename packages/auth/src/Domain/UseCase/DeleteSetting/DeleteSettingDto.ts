@@ -7,4 +7,5 @@ export type DeleteSettingDto = {
   serverPassword?: string
   authTokenVersion?: number
   shouldVerifyUserServerPassword?: boolean
+  checkUserPermissions?: boolean
 }

@@ -10,4 +10,8 @@ export class AuthenticatorChallenge extends Entity<AuthenticatorChallengeProps> 
   static create(props: AuthenticatorChallengeProps, id?: UniqueEntityId): Result<AuthenticatorChallenge> {
     return Result.ok<AuthenticatorChallenge>(new AuthenticatorChallenge(props, id))
   }
+
+  isExpired(maxAgeSeconds: number, now: Date = new Date()): boolean {
+    return now.getTime() - this.props.createdAt.getTime() > maxAgeSeconds * 1000
+  }
 }

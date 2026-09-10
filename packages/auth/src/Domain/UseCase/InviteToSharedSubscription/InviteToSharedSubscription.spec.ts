@@ -58,6 +58,38 @@ describe('InviteToSharedSubscription', () => {
     domainEventFactory.createEmailRequestedEvent = jest.fn().mockReturnValue({} as jest.Mocked<EmailRequestedEvent>)
   })
 
+  it('should not create an invitation if user invites themselves', async () => {
+    expect(
+      await createUseCase().execute({
+        inviteeIdentifier: 'inviter@test.te',
+        inviterUuid: '1-2-3',
+        inviterEmail: 'inviter@test.te',
+        inviterRoles: [RoleName.NAMES.ProUser],
+      }),
+    ).toEqual({
+      success: false,
+    })
+
+    expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
+    expect(domainEventFactory.createSharedSubscriptionInvitationCreatedEvent).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+  })
+
+  it('should not create an inivitation if user invites themselves with different email casing', async () => {
+    expect(
+      await createUseCase().execute({
+        inviteeIdentifier: 'Inviter@Test.TE',
+        inviterUuid: '1-2-3',
+        inviterEmail: 'inviter@test.te',
+        inviterRoles: [RoleName.NAMES.ProUser],
+      }),
+    ).toEqual({
+      success: false,
+    })
+
+    expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
+  })
+
   it('should not create an inivitation for sharing the subscription if inviter has no subscription', async () => {
     userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue(null)
 

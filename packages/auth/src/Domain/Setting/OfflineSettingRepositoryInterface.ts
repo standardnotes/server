@@ -5,4 +5,5 @@ export interface OfflineSettingRepositoryInterface {
   findOneByNameAndEmail(name: OfflineSettingName, email: string): Promise<OfflineSetting | null>
   findOneByNameAndValue(name: OfflineSettingName, value: string): Promise<OfflineSetting | null>
   save(offlineSetting: OfflineSetting): Promise<OfflineSetting>
+  deleteByNameAndValueExcludingEmail(name: OfflineSettingName, value: string, email: string): Promise<void>
 }

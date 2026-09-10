@@ -14,14 +14,22 @@ export class RedisPKCERepository implements PKCERepositoryInterface {
     @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
-  async storeCodeChallenge(codeChallenge: string): Promise<void> {
+  async storeCodeChallenge(codeChallenge: string, userUuid: string): Promise<void> {
     this.logger.debug(`Storing code challenge: ${codeChallenge}`)
 
-    await this.redisClient.setex(`${this.PREFIX}:${codeChallenge}`, 3600, codeChallenge)
+    await this.redisClient.setex(`${this.PREFIX}:${codeChallenge}`, 3600, userUuid)
   }
 
-  async removeCodeChallenge(codeChallenge: string): Promise<boolean> {
-    const entriesRemoved = await this.redisClient.del(`${this.PREFIX}:${codeChallenge}`)
+  async removeCodeChallenge(codeChallenge: string, userUuid: string): Promise<boolean> {
+    const key = `${this.PREFIX}:${codeChallenge}`
+    const storedUserUuid = await this.redisClient.get(key)
+
+    // Legacy entries (pre user-uuid binding) stored value = codeChallenge; remove after 3600s TTL window.
+    if (!storedUserUuid || (storedUserUuid !== userUuid && storedUserUuid !== codeChallenge)) {
+      return false
+    }
+
+    const entriesRemoved = await this.redisClient.del(key)
 
     this.logger.debug(`Removed ${entriesRemoved} entries for code challenge: ${codeChallenge}`)
 

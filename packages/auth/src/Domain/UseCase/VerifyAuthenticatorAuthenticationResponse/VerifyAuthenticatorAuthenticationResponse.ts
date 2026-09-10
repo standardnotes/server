@@ -13,6 +13,7 @@ export class VerifyAuthenticatorAuthenticationResponse implements UseCaseInterfa
     private relyingPartyId: string,
     private expectedOrigin: string[],
     private requireUserVerification: boolean,
+    private authenticatorChallengeMaxAgeSeconds: number,
   ) {}
 
   async execute(dto: VerifyAuthenticatorAuthenticationResponseDTO): Promise<Result<boolean>> {
@@ -25,6 +26,18 @@ export class VerifyAuthenticatorAuthenticationResponse implements UseCaseInterfa
     const authenticatorChallenge = await this.authenticatorChallengeRepository.findByUserUuid(userUuid)
     if (!authenticatorChallenge) {
       return Result.fail('Could not verify authenticator authentication response: challenge not found')
+    }
+
+    if (authenticatorChallenge.isExpired(this.authenticatorChallengeMaxAgeSeconds)) {
+      await this.authenticatorChallengeRepository.deleteByUserUuid(userUuid)
+
+      return Result.fail('Could not verify authenticator authentication response: challenge expired')
+    }
+
+    const expectedChallenge = authenticatorChallenge.props.challenge.toString()
+    const deletedRows = await this.authenticatorChallengeRepository.deleteByUserUuid(userUuid)
+    if (deletedRows === 0) {
+      return Result.fail('Could not verify authenticator authentication response: challenge already consumed')
     }
 
     const authenticator = await this.authenticatorRepository.findByUserUuidAndCredentialId(
@@ -41,7 +54,7 @@ export class VerifyAuthenticatorAuthenticationResponse implements UseCaseInterfa
     try {
       verification = await verifyAuthenticationResponse({
         response: dto.authenticatorResponse,
-        expectedChallenge: authenticatorChallenge.props.challenge.toString(),
+        expectedChallenge,
         expectedOrigin: this.expectedOrigin,
         expectedRPID: this.relyingPartyId,
         requireUserVerification: this.requireUserVerification,

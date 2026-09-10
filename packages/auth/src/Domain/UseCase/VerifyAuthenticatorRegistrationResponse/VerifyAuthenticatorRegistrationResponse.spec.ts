@@ -1,7 +1,7 @@
 import * as simeplWebAuthnServer from '@simplewebauthn/server'
 import { VerifiedRegistrationResponse } from '@simplewebauthn/server'
 import { RegistrationResponseJSON } from '@simplewebauthn/typescript-types'
-import { Result } from '@standardnotes/domain-core'
+import { Result, Uuid } from '@standardnotes/domain-core'
 import { Authenticator } from '../../Authenticator/Authenticator'
 
 import { AuthenticatorChallenge } from '../../Authenticator/AuthenticatorChallenge'
@@ -18,6 +18,13 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   let userRepository: UserRepositoryInterface
   let featureService: FeatureServiceInterface
 
+  const createChallenge = (createdAt = new Date()) =>
+    AuthenticatorChallenge.create({
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      challenge: 'challenge',
+      createdAt,
+    }).getValue()
+
   const createUseCase = () =>
     new VerifyAuthenticatorRegistrationResponse(
       authenticatorRepository,
@@ -27,6 +34,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
       true,
       userRepository,
       featureService,
+      300,
     )
 
   beforeEach(() => {
@@ -34,11 +42,8 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     authenticatorRepository.save = jest.fn()
 
     authenticatorChallengeRepository = {} as jest.Mocked<AuthenticatorChallengeRepositoryInterface>
-    authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
-      props: {
-        challenge: 'challenge',
-      },
-    } as jest.Mocked<AuthenticatorChallenge>)
+    authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue(createChallenge())
+    authenticatorChallengeRepository.deleteByUserUuid = jest.fn().mockResolvedValue(1)
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
     userRepository.findOneByUuid = jest.fn().mockReturnValue({} as jest.Mocked<User>)
@@ -142,12 +147,6 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   })
 
   it('should return error if verification could not verify', async () => {
-    authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
-      props: {
-        challenge: 'challenge',
-      },
-    } as jest.Mocked<AuthenticatorChallenge>)
-
     const useCase = createUseCase()
 
     const mock = jest.spyOn(simeplWebAuthnServer, 'verifyRegistrationResponse')
@@ -185,12 +184,6 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   })
 
   it('should return error if verification throws error', async () => {
-    authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
-      props: {
-        challenge: 'challenge',
-      },
-    } as jest.Mocked<AuthenticatorChallenge>)
-
     const useCase = createUseCase()
 
     const mock = jest.spyOn(simeplWebAuthnServer, 'verifyRegistrationResponse')
@@ -219,12 +212,6 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   })
 
   it('should return error if verification is missing registration info', async () => {
-    authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
-      props: {
-        challenge: 'challenge',
-      },
-    } as jest.Mocked<AuthenticatorChallenge>)
-
     const useCase = createUseCase()
 
     const mock = jest.spyOn(simeplWebAuthnServer, 'verifyRegistrationResponse')
@@ -257,12 +244,6 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   })
 
   it('should return error if authenticator could not be created', async () => {
-    authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
-      props: {
-        challenge: 'challenge',
-      },
-    } as jest.Mocked<AuthenticatorChallenge>)
-
     const useCase = createUseCase()
 
     const mock = jest.spyOn(simeplWebAuthnServer, 'verifyRegistrationResponse')
@@ -306,12 +287,6 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   })
 
   it('should verify authenticator registration response', async () => {
-    authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
-      props: {
-        challenge: 'challenge',
-      },
-    } as jest.Mocked<AuthenticatorChallenge>)
-
     const useCase = createUseCase()
 
     const mock = jest.spyOn(simeplWebAuthnServer, 'verifyRegistrationResponse')
@@ -343,7 +318,59 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     })
 
     expect(result.isFailed()).toBeFalsy()
+    expect(authenticatorChallengeRepository.deleteByUserUuid).toHaveBeenCalled()
 
     mock.mockRestore()
+  })
+
+  it('should return error if authenticator challenge is already consumed', async () => {
+    authenticatorChallengeRepository.deleteByUserUuid = jest.fn().mockResolvedValue(0)
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      attestationResponse: {
+        id: 'id',
+        rawId: 'rawId',
+        response: {
+          attestationObject: 'attestationObject',
+          clientDataJSON: 'clientDataJSON',
+        },
+        type: 'public-key',
+        clientExtensionResults: {},
+      } as jest.Mocked<RegistrationResponseJSON>,
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+    expect(result.getError()).toEqual(
+      'Could not verify authenticator registration response: challenge already consumed',
+    )
+  })
+
+  it('should return error if authenticator challenge is expired', async () => {
+    authenticatorChallengeRepository.findByUserUuid = jest
+      .fn()
+      .mockReturnValue(createChallenge(new Date(Date.now() - 301_000)))
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      attestationResponse: {
+        id: 'id',
+        rawId: 'rawId',
+        response: {
+          attestationObject: 'attestationObject',
+          clientDataJSON: 'clientDataJSON',
+        },
+        type: 'public-key',
+        clientExtensionResults: {},
+      } as jest.Mocked<RegistrationResponseJSON>,
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+    expect(result.getError()).toEqual('Could not verify authenticator registration response: challenge expired')
+    expect(authenticatorChallengeRepository.deleteByUserUuid).toHaveBeenCalled()
   })
 })

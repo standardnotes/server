@@ -21,7 +21,7 @@ describe('GetUserKeyParams', () => {
     keyParamsFactory.create = jest.fn().mockReturnValue({ foo: 'bar' })
     keyParamsFactory.createPseudoParams = jest.fn().mockReturnValue({ bar: 'baz' })
 
-    user = {} as jest.Mocked<User>
+    user = { uuid: '1-2-3' } as jest.Mocked<User>
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
     userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
@@ -97,7 +97,7 @@ describe('GetUserKeyParams', () => {
       },
     })
 
-    expect(pkceRepository.storeCodeChallenge).toHaveBeenCalledWith('test')
+    expect(pkceRepository.storeCodeChallenge).toHaveBeenCalledWith('test', '1-2-3')
   })
 
   it('should get pseudo key params for a non existing user - when searching by email', async () => {

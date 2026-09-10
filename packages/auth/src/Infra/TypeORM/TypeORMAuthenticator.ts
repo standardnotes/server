@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'authenticators' })
 export class TypeORMAuthenticator {
@@ -9,6 +9,7 @@ export class TypeORMAuthenticator {
     name: 'user_uuid',
     length: 36,
   })
+  @Index('index_authenticators_on_user_uuid')
   declare userUuid: string
 
   @Column({
