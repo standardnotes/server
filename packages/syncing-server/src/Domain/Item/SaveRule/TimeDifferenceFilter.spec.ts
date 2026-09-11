@@ -221,6 +221,51 @@ describe('TimeDifferenceFilter', () => {
     })
   })
 
+  it('should pass items with different timestamp but identical content (microsecond precision)', async () => {
+    itemHash = ItemHash.create({
+      ...itemHash.props,
+      content: 'foobar',
+      enc_item_key: undefined,
+      updated_at_timestamp: existingItem.props.timestamps.updatedAt + 1,
+    }).getValue()
+
+    const result = await createFilter().check({
+      userUuid: '1-2-3',
+      apiVersion: ApiVersion.v20200115,
+      snjsVersion: '2.200.0',
+      itemHash,
+      existingItem,
+    })
+
+    expect(result).toEqual({
+      passed: true,
+    })
+  })
+
+  it('should still conflict items with different timestamp AND different content', async () => {
+    itemHash = ItemHash.create({
+      ...itemHash.props,
+      content: 'totally different stuff',
+      updated_at_timestamp: existingItem.props.timestamps.updatedAt + 1,
+    }).getValue()
+
+    const result = await createFilter().check({
+      userUuid: '1-2-3',
+      apiVersion: ApiVersion.v20200115,
+      snjsVersion: '2.200.0',
+      itemHash,
+      existingItem,
+    })
+
+    expect(result).toEqual({
+      passed: false,
+      conflict: {
+        serverItem: existingItem,
+        type: 'sync_conflict',
+      },
+    })
+  })
+
   it('should leave items having update at timestamp different by less than a millisecond', async () => {
     itemHash = ItemHash.create({
       ...itemHash.props,
