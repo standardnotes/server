@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.136.11](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.136.10...@standardnotes/syncing-server@1.136.11) (2026-09-14)
+
+### Bug Fixes
+
+* Fixes content type authorization check for shared vaults ([65a846a](https://github.com/standardnotes/server/commit/65a846a43685392eafbb9dd777cfbe0134422783))
+
 ## [1.136.10](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.136.9...@standardnotes/syncing-server@1.136.10) (2026-09-09)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

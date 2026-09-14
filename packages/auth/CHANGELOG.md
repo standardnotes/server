@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.178.12](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.178.11...@standardnotes/auth-server@1.178.12) (2026-09-14)
+
+### Bug Fixes
+
+* add index to authenticators table ([fd5ca2e](https://github.com/standardnotes/server/commit/fd5ca2e10131fbe73f1fb588e130f63274a554e5))
+* Binds PKCE challenge to user uuid ([3ca680c](https://github.com/standardnotes/server/commit/3ca680ce4e60bda4d81d51e7c304f3327f0df420))
+* Disallows deleting recovery codes through API ([34c2523](https://github.com/standardnotes/server/commit/34c2523627c000952b2f950cb16a648b1f3a3f82))
+* Disallows overwriting mfa secret setting ([e4944b1](https://github.com/standardnotes/server/commit/e4944b1600d0bdd7a7f42620bfbbac4703b41bf6))
+* fix authenticator options response ([075b941](https://github.com/standardnotes/server/commit/075b9413d30cc9a77849719538bc5b80a66c0de9))
+* Fixes ephemeral session revocation ([f1ea94e](https://github.com/standardnotes/server/commit/f1ea94e571e0f6aa8a7ecc1987981b6befd02516))
+* Prevents failed captchas from causing login lock ([08692cb](https://github.com/standardnotes/server/commit/08692cb3e550821fddc8dee1a87f6b6cee249fef))
+* Prevents self invites to subscriptions ([c879a0e](https://github.com/standardnotes/server/commit/c879a0ebb0c4ec4a34e255ba81c5ee93c769dca0))
+* Prevents Webauthn challenge replay ([d07c915](https://github.com/standardnotes/server/commit/d07c91594a1bab4d2f3eead12d92be1566172ba1))
+* Removes orphaned offline features token setting records ([6abafb5](https://github.com/standardnotes/server/commit/6abafb50c51407fed19fc919f32a6db77bfa26e6))
+* Validates shared vault owner context on token creation ([9eb2b22](https://github.com/standardnotes/server/commit/9eb2b22c6eb58e8cafc7b3fd9d7dff9e2475098d))
+
 ## [1.178.11](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.178.10...@standardnotes/auth-server@1.178.11) (2026-09-09)
 
 **Note:** Version bump only for package @standardnotes/auth-server

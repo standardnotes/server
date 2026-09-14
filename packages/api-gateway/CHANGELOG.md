@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.92.8](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.92.7...@standardnotes/api-gateway@1.92.8) (2026-09-14)
+
+### Bug Fixes
+
+* Adds authentication for bt-token endpoint ([46bbf32](https://github.com/standardnotes/server/commit/46bbf323f6b3ad245b02c3f8d2502185863ec6d3))
+* Adds token authentication for offline Braintree token ([2188933](https://github.com/standardnotes/server/commit/218893338b8cd497324a30384456c72100c07875))
+* Fixes admin and internal endpoints reachable through route params ([e0968d3](https://github.com/standardnotes/server/commit/e0968d3806a8035a816e26b30dd6246b09579657))
+* Validates shared vault owner context on token creation ([9eb2b22](https://github.com/standardnotes/server/commit/9eb2b22c6eb58e8cafc7b3fd9d7dff9e2475098d))
+
 ## [1.92.7](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.92.6...@standardnotes/api-gateway@1.92.7) (2026-09-09)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
