@@ -14,7 +14,7 @@ import { MapperInterface } from '@standardnotes/domain-core'
 import { Setting } from '../../Domain/Setting/Setting'
 import { SettingHttpRepresentation } from '../../Mapping/Http/SettingHttpRepresentation'
 
-@controller('/internal')
+@controller('/internal', TYPES.Auth_AdminKeyMiddleware)
 export class AnnotatedInternalController extends BaseHttpController {
   constructor(
     @inject(TYPES.Auth_GetUserFeatures) private doGetUserFeatures: GetUserFeatures,

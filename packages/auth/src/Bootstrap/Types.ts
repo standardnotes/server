@@ -65,6 +65,7 @@ const TYPES = {
   Auth_ApiGatewayOfflineAuthMiddleware: Symbol.for('Auth_ApiGatewayOfflineAuthMiddleware'),
   Auth_OfflineUserAuthMiddleware: Symbol.for('Auth_OfflineUserAuthMiddleware'),
   Auth_LockMiddleware: Symbol.for('Auth_LockMiddleware'),
+  Auth_AdminKeyMiddleware: Symbol.for('Auth_AdminKeyMiddleware'),
   Auth_SessionMiddleware: Symbol.for('Auth_SessionMiddleware'),
   // Projectors
   Auth_SessionProjector: Symbol.for('Auth_SessionProjector'),
@@ -102,6 +103,7 @@ const TYPES = {
   Auth_U2F_EXPECTED_ORIGIN: Symbol.for('Auth_U2F_EXPECTED_ORIGIN'),
   Auth_U2F_REQUIRE_USER_VERIFICATION: Symbol.for('Auth_U2F_REQUIRE_USER_VERIFICATION'),
   Auth_AUTHENTICATOR_CHALLENGE_MAX_AGE_SECONDS: Symbol.for('Auth_AUTHENTICATOR_CHALLENGE_MAX_AGE_SECONDS'),
+  Auth_ADMIN_KEY: Symbol.for('Auth_ADMIN_KEY'),
   Auth_READONLY_USERS: Symbol.for('Auth_READONLY_USERS'),
   Auth_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING: Symbol.for('Auth_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING'),
   Auth_CAPTCHA_SERVER_URL: Symbol.for('Auth_CAPTCHA_SERVER_URL'),

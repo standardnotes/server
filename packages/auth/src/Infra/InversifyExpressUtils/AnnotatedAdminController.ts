@@ -17,7 +17,7 @@ import { DeleteSetting } from '../../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { GetSetting } from './../../Domain/UseCase/GetSetting/GetSetting'
 import { UserRepositoryInterface } from '../../Domain/User/UserRepositoryInterface'
 
-@controller('/admin')
+@controller('/admin', TYPES.Auth_AdminKeyMiddleware)
 export class AnnotatedAdminController extends BaseAdminController {
   constructor(
     @inject(TYPES.Auth_DeleteSetting) override doDeleteSetting: DeleteSetting,

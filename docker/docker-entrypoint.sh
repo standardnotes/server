@@ -175,6 +175,12 @@ if [ -z "$AUTH_SERVER_ENCRYPTION_SERVER_KEY" ]; then
   exit 1
 fi
 
+file_env 'AUTH_SERVER_ADMIN_KEY'
+if [ -z "$AUTH_SERVER_ADMIN_KEY" ]; then
+  echo "AUTH_SERVER_ADMIN_KEY is not set. /admin and /internal endpoints are unprotected." >&2
+  echo "To protect them, set AUTH_SERVER_ADMIN_KEY in your .env file (run 'openssl rand -hex 32' to generate a random string)." >&2
+fi
+
 export AUTH_SERVER_SYNCING_SERVER_URL=http://localhost:$SYNCING_SERVER_PORT
 
 # File Uploads

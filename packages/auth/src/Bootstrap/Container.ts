@@ -218,6 +218,7 @@ import { OfflineUserAuthMiddleware } from '../Infra/InversifyExpressUtils/Middle
 import { LockMiddleware } from '../Infra/InversifyExpressUtils/Middleware/LockMiddleware'
 import { RequiredCrossServiceTokenMiddleware } from '../Infra/InversifyExpressUtils/Middleware/RequiredCrossServiceTokenMiddleware'
 import { OptionalCrossServiceTokenMiddleware } from '../Infra/InversifyExpressUtils/Middleware/OptionalCrossServiceTokenMiddleware'
+import { AdminKeyMiddleware } from '../Infra/InversifyExpressUtils/Middleware/AdminKeyMiddleware'
 import { BaseSettingsController } from '../Infra/InversifyExpressUtils/Base/BaseSettingsController'
 import { BaseAdminController } from '../Infra/InversifyExpressUtils/Base/BaseAdminController'
 import { BaseAuthController } from '../Infra/InversifyExpressUtils/Base/BaseAuthController'
@@ -350,6 +351,15 @@ export class ContainerConfigLoader {
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
     const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
     const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
+
+    const adminKey = env.get('ADMIN_KEY', true) ?? ''
+
+    if (!adminKey) {
+      logger.warn(
+        'ADMIN_KEY is not set. /admin and /internal endpoints are unprotected until it is configured.',
+      )
+    }
+
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
     const captchaServerUrl = env.get('CAPTCHA_SERVER_URL', true)
     const captchaUIUrl = env.get('CAPTCHA_UI_URL', true)
@@ -992,6 +1002,9 @@ export class ContainerConfigLoader {
           env.get('COOKIE_PARTITIONED', true) ? env.get('COOKIE_PARTITIONED', true) === 'true' : true,
         ),
       )
+
+    container.bind(TYPES.Auth_ADMIN_KEY).toConstantValue(adminKey)
+    container.bind<AdminKeyMiddleware>(TYPES.Auth_AdminKeyMiddleware).to(AdminKeyMiddleware)
 
     // Middleware
     container.bind<SessionMiddleware>(TYPES.Auth_SessionMiddleware).to(SessionMiddleware)
