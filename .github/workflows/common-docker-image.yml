@@ -17,10 +17,6 @@ on:
         required: true
       DOCKER_PASSWORD:
         required: true
-      AWS_ACCESS_KEY_ID:
-        required: true
-      AWS_SECRET_ACCESS_KEY:
-        required: true
 
 jobs:
   publish:
@@ -60,17 +56,6 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v3
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
-
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v2
-
     - name: Set up QEMU
       uses: docker/setup-qemu-action@master
       with:
@@ -91,5 +76,3 @@ jobs:
         tags: |
           standardnotes/${{ inputs.service_name }}:latest
           standardnotes/${{ inputs.service_name }}:${{ github.sha }}
-          ${{ steps.login-ecr.outputs.registry }}/${{ inputs.service_name }}:${{ github.sha }}
-          ${{ steps.login-ecr.outputs.registry }}/${{ inputs.service_name }}:latest
