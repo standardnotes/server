@@ -14,6 +14,7 @@ import { getBody, getSubject } from '../../Email/UserEmailChanged'
 import { Logger } from 'winston'
 import { AuthResponseCreationResult } from '../../Auth/AuthResponseCreationResult'
 import { ApiVersion } from '../../Api/ApiVersion'
+import { SharedSubscriptionInvitationRepositoryInterface } from '../../SharedSubscription/SharedSubscriptionInvitationRepositoryInterface'
 
 export class ChangeCredentials implements UseCaseInterface<AuthResponseCreationResult> {
   constructor(
@@ -23,6 +24,7 @@ export class ChangeCredentials implements UseCaseInterface<AuthResponseCreationR
     private domainEventFactory: DomainEventFactoryInterface,
     private timer: TimerInterface,
     private deleteOtherSessionsForUserUseCase: DeleteOtherSessionsForUser,
+    private sharedSubscriptionInvitationRepository: SharedSubscriptionInvitationRepositoryInterface,
     private logger: Logger,
   ) {}
 
@@ -82,6 +84,8 @@ export class ChangeCredentials implements UseCaseInterface<AuthResponseCreationR
     const updatedUser = await this.userRepository.save(user)
 
     if (userEmailChangedEvent !== undefined) {
+      await this.syncSharedSubscriptionInvitationsAfterEmailChange(existingEmailAddress, updatedUser.email)
+
       await this.domainEventPublisher.publish(userEmailChangedEvent)
 
       await this.sendEmailChangedNotification(existingEmailAddress, updatedUser.email)
@@ -104,6 +108,13 @@ export class ChangeCredentials implements UseCaseInterface<AuthResponseCreationR
     }
 
     return Result.ok(authResponse)
+  }
+
+  private async syncSharedSubscriptionInvitationsAfterEmailChange(fromEmail: string, toEmail: string): Promise<void> {
+    const updatedAt = this.timer.getTimestampInMicroseconds()
+
+    await this.sharedSubscriptionInvitationRepository.updateInviterIdentifierEmail(fromEmail, toEmail, updatedAt)
+    await this.sharedSubscriptionInvitationRepository.updateInviteeIdentifierEmail(fromEmail, toEmail, updatedAt)
   }
 
   private async deleteOtherSessionsForUserIfNeeded(

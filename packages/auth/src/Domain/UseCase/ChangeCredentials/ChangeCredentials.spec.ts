@@ -16,6 +16,7 @@ import { DeleteOtherSessionsForUser } from '../DeleteOtherSessionsForUser'
 import { ApiVersion } from '../../Api/ApiVersion'
 import { Session } from '../../Session/Session'
 import { Logger } from 'winston'
+import { SharedSubscriptionInvitationRepositoryInterface } from '../../SharedSubscription/SharedSubscriptionInvitationRepositoryInterface'
 
 describe('ChangeCredentials', () => {
   let userRepository: UserRepositoryInterface
@@ -26,6 +27,7 @@ describe('ChangeCredentials', () => {
   let timer: TimerInterface
   let user: User
   let deleteOtherSessionsForUser: DeleteOtherSessionsForUser
+  let sharedSubscriptionInvitationRepository: SharedSubscriptionInvitationRepositoryInterface
   let logger: Logger
 
   const createUseCase = () =>
@@ -36,6 +38,7 @@ describe('ChangeCredentials', () => {
       domainEventFactory,
       timer,
       deleteOtherSessionsForUser,
+      sharedSubscriptionInvitationRepository,
       logger,
     )
 
@@ -68,9 +71,14 @@ describe('ChangeCredentials', () => {
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getUTCDate = jest.fn().mockReturnValue(new Date(1))
+    timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(2)
 
     deleteOtherSessionsForUser = {} as jest.Mocked<DeleteOtherSessionsForUser>
     deleteOtherSessionsForUser.execute = jest.fn().mockReturnValue(Result.ok())
+
+    sharedSubscriptionInvitationRepository = {} as jest.Mocked<SharedSubscriptionInvitationRepositoryInterface>
+    sharedSubscriptionInvitationRepository.updateInviterIdentifierEmail = jest.fn()
+    sharedSubscriptionInvitationRepository.updateInviteeIdentifierEmail = jest.fn()
   })
 
   it('should change password', async () => {
@@ -176,6 +184,16 @@ describe('ChangeCredentials', () => {
       updatedAt: new Date(1),
     })
     expect(domainEventFactory.createUserEmailChangedEvent).toHaveBeenCalledWith('1-2-3', 'test@test.te', 'new@test.te')
+    expect(sharedSubscriptionInvitationRepository.updateInviterIdentifierEmail).toHaveBeenCalledWith(
+      'test@test.te',
+      'new@test.te',
+      2,
+    )
+    expect(sharedSubscriptionInvitationRepository.updateInviteeIdentifierEmail).toHaveBeenCalledWith(
+      'test@test.te',
+      'new@test.te',
+      2,
+    )
     expect(domainEventPublisher.publish).toHaveBeenCalled()
     expect(deleteOtherSessionsForUser.execute).toHaveBeenCalled()
   })
@@ -202,6 +220,8 @@ describe('ChangeCredentials', () => {
 
     expect(userRepository.save).not.toHaveBeenCalled()
     expect(domainEventFactory.createUserEmailChangedEvent).not.toHaveBeenCalled()
+    expect(sharedSubscriptionInvitationRepository.updateInviterIdentifierEmail).not.toHaveBeenCalled()
+    expect(sharedSubscriptionInvitationRepository.updateInviteeIdentifierEmail).not.toHaveBeenCalled()
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 

@@ -1299,6 +1299,7 @@ export class ContainerConfigLoader {
           container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
           container.get<TimerInterface>(TYPES.Auth_Timer),
           container.get<DeleteOtherSessionsForUser>(TYPES.Auth_DeleteOtherSessionsForUser),
+          container.get<SharedSubscriptionInvitationRepositoryInterface>(TYPES.Auth_SharedSubscriptionInvitationRepository),
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )

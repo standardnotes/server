@@ -11,4 +11,6 @@ export interface SharedSubscriptionInvitationRepositoryInterface {
     inviterEmail: string,
   ): Promise<SharedSubscriptionInvitation | null>
   countByInviterEmailAndStatus(inviterEmail: string, statuses: InvitationStatus[]): Promise<number>
+  updateInviterIdentifierEmail(fromEmail: string, toEmail: string, updatedAt: number): Promise<void>
+  updateInviteeIdentifierEmail(fromEmail: string, toEmail: string, updatedAt: number): Promise<void>
 }
