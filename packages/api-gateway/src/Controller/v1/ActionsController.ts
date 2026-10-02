@@ -51,7 +51,7 @@ export class ActionsController extends BaseHttpController {
     await this.serviceProxy.callEmailServer(
       request,
       response,
-      `subscriptions/actions/unsubscribe/${request.params.token}`,
+      `subscriptions/actions/unsubscribe/${encodeURIComponent(request.params.token)}`,
       request.body,
     )
   }
