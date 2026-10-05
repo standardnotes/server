@@ -82,29 +82,40 @@ export class CancelSharedSubscriptionInvitation implements UseCaseInterface {
     }
     const inviterUserSubscription = inviterUserSubscriptions[0]
 
+    const invitationWasAccepted = sharedSubscriptionInvitation.status === InvitationStatus.Accepted
+
     sharedSubscriptionInvitation.status = InvitationStatus.Canceled
     sharedSubscriptionInvitation.updatedAt = this.timer.getTimestampInMicroseconds()
 
     await this.sharedSubscriptionInvitationRepository.save(sharedSubscriptionInvitation)
 
-    if (invitee !== null) {
-      await this.removeSharedSubscription(sharedSubscriptionInvitation.subscriptionId, invitee)
-
-      await this.roleService.removeUserRoleBasedOnSubscription(
+    if (invitee !== null && invitationWasAccepted) {
+      const sharedSubscriptionWasRemoved = await this.removeSharedSubscription(
+        sharedSubscriptionInvitation.subscriptionId,
         invitee,
-        inviterUserSubscription.planName as SubscriptionName,
       )
 
-      await this.domainEventPublisher.publish(
-        this.domainEventFactory.createSharedSubscriptionInvitationCanceledEvent({
-          inviteeIdentifier: invitee.uuid,
-          inviteeIdentifierType: InviteeIdentifierType.Uuid,
-          inviterEmail: sharedSubscriptionInvitation.inviterIdentifier,
-          inviterSubscriptionId: sharedSubscriptionInvitation.subscriptionId,
-          inviterSubscriptionUuid: inviterUserSubscription.uuid,
-          sharedSubscriptionInvitationUuid: sharedSubscriptionInvitation.uuid,
-        }),
-      )
+      if (sharedSubscriptionWasRemoved) {
+        if (!(await this.userHasActiveSubscriptionWithPlanName(invitee.uuid, inviterUserSubscription.planName))) {
+          await this.roleService.removeUserRoleBasedOnSubscription(
+            invitee,
+            inviterUserSubscription.planName as SubscriptionName,
+          )
+        }
+
+        if (!(await this.userHasActivePaidSubscription(invitee.uuid))) {
+          await this.domainEventPublisher.publish(
+            this.domainEventFactory.createSharedSubscriptionInvitationCanceledEvent({
+              inviteeIdentifier: invitee.uuid,
+              inviteeIdentifierType: InviteeIdentifierType.Uuid,
+              inviterEmail: sharedSubscriptionInvitation.inviterIdentifier,
+              inviterSubscriptionId: sharedSubscriptionInvitation.subscriptionId,
+              inviterSubscriptionUuid: inviterUserSubscription.uuid,
+              sharedSubscriptionInvitationUuid: sharedSubscriptionInvitation.uuid,
+            }),
+          )
+        }
+      }
     }
 
     return {
@@ -112,18 +123,41 @@ export class CancelSharedSubscriptionInvitation implements UseCaseInterface {
     }
   }
 
-  private async removeSharedSubscription(subscriptionId: number, user: User): Promise<void> {
+  private async removeSharedSubscription(subscriptionId: number, user: User): Promise<boolean> {
     const subscription = await this.userSubscriptionRepository.findOneByUserUuidAndSubscriptionId(
       user.uuid,
       subscriptionId,
     )
 
     if (subscription === null) {
-      return
+      return false
     }
 
     subscription.endsAt = this.timer.getTimestampInMicroseconds()
 
     await this.userSubscriptionRepository.save(subscription)
+
+    return true
+  }
+
+  private async userHasActiveSubscriptionWithPlanName(userUuid: string, planName: string): Promise<boolean> {
+    const subscriptions = await this.userSubscriptionRepository.findByUserUuid(userUuid)
+    const now = this.timer.getTimestampInMicroseconds()
+
+    return subscriptions.some((subscription) => {
+      return Number(subscription.endsAt) > now && subscription.planName === planName
+    })
+  }
+
+  private async userHasActivePaidSubscription(userUuid: string): Promise<boolean> {
+    const subscriptions = await this.userSubscriptionRepository.findByUserUuid(userUuid)
+    const now = this.timer.getTimestampInMicroseconds()
+
+    return subscriptions.some((subscription) => {
+      return (
+        Number(subscription.endsAt) > now &&
+        (subscription.planName === SubscriptionName.PlusPlan || subscription.planName === SubscriptionName.ProPlan)
+      )
+    })
   }
 }
