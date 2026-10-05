@@ -44,11 +44,19 @@ export class SubscriptionTokenAuthMiddleware extends BaseMiddleware {
     } as SubscriptionResponseLocals
     Object.assign(response.locals, locals)
 
+    if (typeof subscriptionToken !== 'string' || !/^[a-f0-9]+$/i.test(subscriptionToken)) {
+      response.status(401).send({ error: { tag: 'invalid-auth', message: 'Invalid login credentials.' } })
+
+      return
+    }
+
+    const encodedSubscriptionToken = encodeURIComponent(subscriptionToken)
+
     try {
       const url =
         locals.tokenAuthenticationMethod == TokenAuthenticationMethod.OfflineSubscriptionToken
-          ? `${this.authServerUrl}/offline/subscription-tokens/${subscriptionToken}/validate`
-          : `${this.authServerUrl}/subscription-tokens/${subscriptionToken}/validate`
+          ? `${this.authServerUrl}/offline/subscription-tokens/${encodedSubscriptionToken}/validate`
+          : `${this.authServerUrl}/subscription-tokens/${encodedSubscriptionToken}/validate`
 
       const authResponse = await this.httpClient.request({
         method: 'POST',
@@ -86,7 +94,7 @@ export class SubscriptionTokenAuthMiddleware extends BaseMiddleware {
         : (error as Error).message
 
       this.logger.error(
-        `Could not pass the request to ${this.authServerUrl}/subscription-tokens/${subscriptionToken}/validate on underlying service: ${errorMessage}`,
+        `Could not pass the request to ${this.authServerUrl}/subscription-tokens/${encodedSubscriptionToken}/validate on underlying service: ${errorMessage}`,
       )
 
       this.logger.debug('Response error: %O', (error as AxiosError).response ?? error)
