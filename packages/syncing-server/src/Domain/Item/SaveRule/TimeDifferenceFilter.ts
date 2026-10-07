@@ -37,6 +37,10 @@ export class TimeDifferenceFilter implements ItemSaveRuleInterface {
     if (this.itemHashHasMicrosecondsPrecision(dto.itemHash)) {
       const passed = difference === 0
 
+      if (!passed && this.contentIsIdentical(dto)) {
+        return { passed: true }
+      }
+
       return {
         passed,
         conflict: passed
@@ -49,6 +53,10 @@ export class TimeDifferenceFilter implements ItemSaveRuleInterface {
     }
 
     const passed = Math.abs(difference) < this.getMinimalConflictIntervalMicroseconds(dto.apiVersion)
+
+    if (!passed && this.contentIsIdentical(dto)) {
+      return { passed: true }
+    }
 
     return {
       passed,
@@ -67,6 +75,18 @@ export class TimeDifferenceFilter implements ItemSaveRuleInterface {
 
   private itemHashHasMicrosecondsPrecision(itemHash: ItemHash) {
     return itemHash.props.updated_at_timestamp !== undefined
+  }
+
+  private contentIsIdentical(dto: ItemSaveValidationDTO): boolean {
+    if (!dto.existingItem) {
+      return false
+    }
+    const incomingContent = dto.itemHash.props.content ?? null
+    const existingContent = dto.existingItem.props.content
+    const incomingEncKey = dto.itemHash.props.enc_item_key ?? null
+    const existingEncKey = dto.existingItem.props.encItemKey
+
+    return incomingContent !== null && incomingContent === existingContent && incomingEncKey === existingEncKey
   }
 
   private getMinimalConflictIntervalMicroseconds(apiVersion?: string): number {
